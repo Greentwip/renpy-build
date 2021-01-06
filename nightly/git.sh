@@ -40,6 +40,6 @@ clonepython3(){
 }
 
 updatepython3 https://github.com/greentwip/renpy-build
-update https://github.com/renpy/renpy renpy
+clonepython3 https://github.com/Greentwip/renpy renpy
 clonepython3 https://github.com/greentwip/pygame_sdl2 pygame_sdl2
-update https://github.com/renpy/renpyweb renpyweb
+#update https://github.com/renpy/renpyweb renpyweb
