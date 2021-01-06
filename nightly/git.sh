@@ -25,5 +25,5 @@ updatepython3(){
 
 updatepython3 https://github.com/greentwip/renpy-build
 update https://github.com/renpy/renpy renpy
-update https://github.com/renpy/pygame_sdl2 pygame_sdl2
+updatepython3 https://github.com/renpy/pygame_sdl2 pygame_sdl2
 update https://github.com/renpy/renpyweb renpyweb
