@@ -5,6 +5,8 @@ import argparse
 import shutil
 from pathlib import Path
 
+import os
+
 sys.path.insert(1, Path(__file__).parent / 'deps')
 
 import renpybuild.model
@@ -25,22 +27,22 @@ class Platform:
 
 
 Platform("linux", "x86_64")
-Platform("linux", "i686")
-Platform("linux", "armv7l")
+#Platform("linux", "i686")
+#Platform("linux", "armv7l")
 
-Platform("windows", "x86_64")
-Platform("windows", "i686")
+#Platform("windows", "x86_64")
+#Platform("windows", "i686")
 
-Platform("mac", "x86_64")
+#Platform("mac", "x86_64")
 
-Platform("android", "x86_64")
-Platform("android", "arm64_v8a")
+#Platform("android", "x86_64")
+#Platform("android", "arm64_v8a")
 Platform("android", "armeabi_v7a")
 
-Platform("ios", "arm64")
-Platform("ios", "x86_64")
+#Platform("ios", "arm64")
+#Platform("ios", "x86_64")
 
-Platform("web", "wasm")
+#Platform("web", "wasm")
 
 # Python Registry ##############################################################
 
@@ -54,7 +56,11 @@ class Python:
         known_pythons.append(self)
 
 
-Python("2")
+if os.environ["RENPY_PYTHON_VER"] == "3":
+    Python("3")
+else:
+    Python("2")
+
 
 
 def build(args):

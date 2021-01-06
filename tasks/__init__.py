@@ -1,4 +1,5 @@
 # The tasks to run, in order.
+import os
 
 from . import sysroot
 from . import toolchain
@@ -13,8 +14,12 @@ from . import libpng
 from . import libjpeg_turbo
 from . import libwebp
 
-from . import hostpython2
-from . import python2
+if os.environ["RENPY_PYTHON_VER"] == "3":
+	from . import hostpython3
+	from . import python3
+else:
+	from . import hostpython2
+	from . import python2
 
 from . import live2d
 
