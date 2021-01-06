@@ -45,15 +45,6 @@ sudo apt-get install -y \
 
 mkdir -p "$BASE/tmp"
 
-GET_PIP="$ROOT/tmp/get-pip.py"
-
-if [ ! -e $GET_PIP ]; then
-    curl https://bootstrap.pypa.io/get-pip.py -o $GET_PIP
-    sudo python $GET_PIP
-fi
-
-pip install virtualenv
-
 # Set up the environment variables.
 
 VENV="$ROOT/tmp/virtualenv.py2"
