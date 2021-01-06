@@ -48,9 +48,9 @@ clonepython3_lowercase(){
         popd
     else
         if [ -e "$REFS/$2/.git" ]; then
-            git clone -b Python3 $1 "$BASE/$2" --reference "$REFS/$2"
+            git clone -b python3 $1 "$BASE/$2" --reference "$REFS/$2"
         else
-            git clone -b Python3 $1 "$BASE/$2"
+            git clone -b python3 $1 "$BASE/$2"
         fi
     fi
 }
