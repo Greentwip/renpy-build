@@ -16,7 +16,11 @@ update () {
 }
 
 updatepython3(){
-    git clone -b Python3 $1 "$BASE/$2" --reference "$REFS/$2"
+    pushd "$BASE/$2"
+        git checkout Python3
+        git reset --hard
+        git pull
+    popd
 }
 
 updatepython3 https://github.com/greentwip/renpy-build
