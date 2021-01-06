@@ -23,7 +23,15 @@ updatepython3(){
     popd
 }
 
+clonepython3(){
+    if [ -e "$REFS/$2/.git" ]; then
+            git clone $1 "$BASE/$2" --reference "$REFS/$2"
+        else
+            git clone $1 "$BASE/$2"
+    fi
+}
+
 updatepython3 https://github.com/greentwip/renpy-build
 update https://github.com/renpy/renpy renpy
-updatepython3 https://github.com/greentwip/pygame_sdl2 pygame_sdl2
+clonepython3 https://github.com/greentwip/pygame_sdl2 pygame_sdl2
 update https://github.com/renpy/renpyweb renpyweb
