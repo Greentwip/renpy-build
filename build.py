@@ -26,7 +26,7 @@ class Platform:
         known_platforms.append(self)
 
 
-Platform("linux", "x86_64")
+#Platform("linux", "x86_64")
 #Platform("linux", "i686")
 #Platform("linux", "armv7l")
 
