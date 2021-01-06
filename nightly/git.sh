@@ -24,10 +24,18 @@ updatepython3(){
 }
 
 clonepython3(){
-    if [ -e "$REFS/$2/.git" ]; then
-            git clone $1 "$BASE/$2" --reference "$REFS/$2"
+    if [ -d "$BASE/$2/.git" ]; then
+        pushd "$BASE/$2"
+        git checkout Python3
+        git reset --hard
+        git pull
+        popd
+    else
+        if [ -e "$REFS/$2/.git" ]; then
+            git clone -b Python3 $1 "$BASE/$2" --reference "$REFS/$2"
         else
-            git clone $1 "$BASE/$2"
+            git clone -b Python3 $1 "$BASE/$2"
+        fi
     fi
 }
 
