@@ -49,10 +49,10 @@ GET_PIP="$ROOT/tmp/get-pip.py"
 
 if [ ! -e $GET_PIP ]; then
     curl https://bootstrap.pypa.io/get-pip.py -o $GET_PIP
-    sudo python2 $GET_PIP
+    sudo python $GET_PIP
 fi
 
-pip2 install virtualenv
+pip install virtualenv
 
 # Set up the environment variables.
 
