@@ -40,6 +40,14 @@ anyone who can log in as rb to become the superuser of this system.
 Preparing
 ---------
 
+Before getting into code you have to ensure and install pyenv and
+run the following:
+
+    pyenv install 3.9.1
+    pyenv local 3.9.1
+    pyenv global 3.9.1
+
+
 To get ready to build, log in as the rb user, and then run the following
 command to clone renpy-build::
 
