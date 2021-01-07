@@ -43,9 +43,6 @@ if [ -z "$1" ]; then
 fi
 
 BASE="$1"
-
-pip install virtualenv
-
 VENV="$1/tmp/virtualenv.py2"
 
 export RENPY_DEPS_INSTALL=/usr::/usr/lib/x86_64-linux-gnu/

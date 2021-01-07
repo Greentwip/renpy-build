@@ -47,6 +47,9 @@ mkdir -p "$BASE/tmp"
 
 # Set up the environment variables.
 
+pip install virtualenv
+
+
 VENV="$ROOT/tmp/virtualenv.py2"
 
 export RENPY_DEPS_INSTALL=/usr::/usr/lib/x86_64-linux-gnu/
