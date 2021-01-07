@@ -1,4 +1,5 @@
 from renpybuild.model import task, annotator
+import os
 
 version = "3.8.7"
 
@@ -38,7 +39,10 @@ def patch_windows(c):
 
 @task(kind="python", pythons="3", platforms="android")
 def patch_android(c):
-    pass
+    c.var("version", version)
+    c.chdir("Python-{{ version }}")
+    c.run(""" autoreconf -vfi """)
+
 
 
 @task(kind="python", pythons="3", platforms="linux,mac")
@@ -62,7 +66,7 @@ def build_posix(c):
 
     c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
-    #c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
+    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
 
     c.run("""{{ make }} install""")
 
@@ -88,7 +92,7 @@ def build_ios(c):
 
     c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --disable-toolbox-glue --enable-ipv6""")
 
-    #c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
+    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
 
     c.run("""{{ make }} install""")
 
@@ -111,9 +115,10 @@ def build_android(c):
 
     c.env("CFLAGS", "{{ CFLAGS }} -DXML_POOR_ENTROPY=1 -DUSE_PYEXPAT_CAPI -DHAVE_EXPAT_CONFIG_H ")
 
+    c.env("READELF", "arm-linux-androideabi-readelf")
     c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
-    #c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
+    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
 
     c.run("""{{ make }} install""")
 
@@ -133,7 +138,7 @@ def build_windows(c):
 
     c.run("""./configure {{ cross_config }} --enable-shared --prefix="{{ install }}" --with-threads --with-system-ffi""")
 
-    #c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
+    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
 
     with open(c.path("Lib/plat-generic/regen"), "w") as f:
         f.write("""\

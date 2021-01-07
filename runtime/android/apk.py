@@ -147,7 +147,7 @@ class APK(object):
 
         if apk is None:
             apk = os.environ["ANDROID_APK"]
-            print "Opening APK %r" % apk
+            print("Opening APK %r" % apk)
 
         self.apk = apk
 
