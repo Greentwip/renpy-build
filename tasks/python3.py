@@ -41,6 +41,9 @@ def patch_windows(c):
 def patch_android(c):
     c.var("version", version)
     c.chdir("Python-{{ version }}")
+    c.patchdir("android-python2")
+    c.patch("android/0036-sysconfigdata-name.patch")
+
     c.run(""" autoreconf -vfi """)
 
 
@@ -62,11 +65,11 @@ def build_posix(c):
 
     c.env("CONFIG_SITE", "config.site")
 
-    c.env("CFLAGS", "{{ CFLAGS }} -DXML_POOR_ENTROPY=1 -DUSE_PYEXPAT_CAPI -DHAVE_EXPAT_CONFIG_H ")
+    c.env("CFLAGS", "{{ CFLAGS  }} -DXML_POOR_ENTROPY=1 -DUSE_PYEXPAT_CAPI -DHAVE_EXPAT_CONFIG_H ")
 
     c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
-    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
+    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     c.run("""{{ make }} install""")
 
@@ -92,7 +95,7 @@ def build_ios(c):
 
     c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --disable-toolbox-glue --enable-ipv6""")
 
-    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
+    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     c.run("""{{ make }} install""")
 
@@ -118,7 +121,7 @@ def build_android(c):
     c.env("READELF", "arm-linux-androideabi-readelf")
     c.run("""./configure --target=arm-linux-androideabi --build=x86_64-linux-gnu  {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
-    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
+    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     c.run("""{{ make }} install""")
 
@@ -138,7 +141,7 @@ def build_windows(c):
 
     c.run("""./configure {{ cross_config }} --enable-shared --prefix="{{ install }}" --with-threads --with-system-ffi""")
 
-    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.local")
+    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     with open(c.path("Lib/plat-generic/regen"), "w") as f:
         f.write("""\

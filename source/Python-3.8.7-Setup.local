@@ -191,10 +191,20 @@ unicodedata unicodedata.c    # static Unicode character database
 # (If you have a really backward UNIX, select and socket may not be
 # supported...)
 
-#fcntl fcntlmodule.c	# fcntl(2) and ioctl(2)
+
+{% if (c.kind == "host") or (c.platform != "windows") %}
+
+fcntl fcntlmodule.c	# fcntl(2) and ioctl(2)
+
+{% if c.platform != "android" %}
+grp grpmodule.c
+{% endif %}
+
+{% endif %}
+
 #spwd spwdmodule.c		# spwd(3)
 #grp grpmodule.c		# grp(3)
-#select selectmodule.c	# select(2); not on ancient System V
+select selectmodule.c	# select(2); not on ancient System V
 
 # Memory-mapped files (also works on Win32).
 mmap mmapmodule.c
@@ -222,10 +232,10 @@ _ssl _ssl.c \
 # are not supported by all UNIX systems:
 
 #nis nismodule.c -lnsl	# Sun yellow pages -- not everywhere
-#termios termios.c	# Steen Lumholt's termios module
-#resource resource.c	# Jeremy Hylton's rlimit interface
+termios termios.c	# Steen Lumholt's termios module
+resource resource.c	# Jeremy Hylton's rlimit interface
 
-#_posixsubprocess _posixsubprocess.c  # POSIX subprocess module helper
+_posixsubprocess _posixsubprocess.c  # POSIX subprocess module helper
 
 # Multimedia modules -- off by default.
 # These don't work for 64-bit platforms!!!
