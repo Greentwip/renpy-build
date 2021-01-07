@@ -13,7 +13,7 @@ def annotate(c):
     c.include("{{ install }}/include/{{ pythonver }}")
 
 
-@task(kind="python", pythons="2")
+@task(kind="python", pythons="3")
 def unpack(c):
     c.clean()
 
@@ -21,27 +21,27 @@ def unpack(c):
     c.run("tar xzf {{source}}/Python-{{version}}.tgz")
 
 
-@task(kind="python", pythons="2", platforms="linux,mac,ios")
+@task(kind="python", pythons="3", platforms="linux,mac,ios")
 def patch_posix(c):
     pass
 
 
-@task(kind="python", pythons="2", platforms="ios")
+@task(kind="python", pythons="3", platforms="ios")
 def patch_ios(c):
     pass
 
 
-@task(kind="python", pythons="2", platforms="windows")
+@task(kind="python", pythons="3", platforms="windows")
 def patch_windows(c):
     pass
 
 
-@task(kind="python", pythons="2", platforms="android")
+@task(kind="python", pythons="3", platforms="android")
 def patch_android(c):
     pass
 
 
-@task(kind="python", pythons="2", platforms="linux,mac")
+@task(kind="python", pythons="3", platforms="linux,mac")
 def build_posix(c):
     c.var("version", version)
 
@@ -95,7 +95,7 @@ def build_ios(c):
     c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
 
 
-@task(kind="python", pythons="2", platforms="android")
+@task(kind="python", pythons="3", platforms="android")
 def build_android(c):
     c.var("version", version)
 
@@ -120,7 +120,7 @@ def build_android(c):
     c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
 
 
-@task(kind="python", pythons="2", platforms="windows")
+@task(kind="python", pythons="3", platforms="windows")
 def build_windows(c):
 
     c.var("version", version)
@@ -148,7 +148,7 @@ eval $PYTHON_FOR_BUILD ../../Tools/scripts/h2py.py -i "'(u_long)'" $REGENHEADER
     c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
 
 
-@task(kind="python", pythons="2")
+@task(kind="python", pythons="3")
 def pip(c):
     c.run("{{ install }}/bin/hostpython3 -s -m ensurepip")
     c.run("{{ install }}/bin/hostpython3 -s -m pip install --upgrade future six rsa pyasn1")
