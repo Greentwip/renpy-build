@@ -6,6 +6,13 @@ ROOT="$(dirname $(readlink -f $0))"
 PYTHON_VERSION="3"
 export RENPY_PYTHON_VER=$PYTHON_VERSION
 
+VENV="$ROOT/tmp/virtualenv.py2"
+if [ ! -e $VENV/bin ]; then
+    python -m virtualenv $VENV
+fi
+
+. $VENV/bin/activate
+
 
 if [ "$1" == "build" ]; then
     pushd "$ROOT"
@@ -18,7 +25,7 @@ elif [ "$1" == "install-sdk" ]; then
     popd
 elif [ "$1" != "" ]; then
     pushd "$ROOT/renpy/rapt2"
-        ./android.py build "$2" installDebug --launch
+        ./android.py build "$1" installDebug --launch
     popd
 fi
 
