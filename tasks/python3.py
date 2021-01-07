@@ -1,7 +1,7 @@
 from renpybuild.model import task, annotator
 import os
 
-version = "3.8.7"
+version = "3.9.1"
 
 
 @annotator
@@ -41,8 +41,8 @@ def patch_windows(c):
 def patch_android(c):
     c.var("version", version)
     c.chdir("Python-{{ version }}")
-    c.patchdir("android-python2")
-    c.patch("android/0036-sysconfigdata-name.patch")
+    #c.patchdir("android-python2")
+    #c.patch("android/0036-sysconfigdata-name.patch")
 
     c.run(""" autoreconf -vfi """)
 
