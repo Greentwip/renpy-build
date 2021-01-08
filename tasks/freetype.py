@@ -42,7 +42,7 @@ def build(c):
     c.var("version", version)
     c.chdir("freetype-{{version}}")
 
-    c.run("""./configure {{ cross_config }} --disable-shared --prefix="{{ install }}" --with-harfbuzz=no""")
+    c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-harfbuzz=no""")
     c.run("""cp {{source}}/ftoption.h builds/unix/""")
     c.run("""cp {{source}}/ftoption.h builds/mac/""")
     c.run("""cp {{source}}/ftoption.h builds/windows/""")

@@ -1,29 +1,22 @@
 from renpybuild.model import task
 python_version = "3.9"
 
+import os
 
 @task(kind="python")
 def clean(c):
     c.clean()
 
 
-@task(kind="host-python", always=True)
+@task(kind="python", always=True)
 def gen_static(c):
     c.var("python_version", python_version)
 
     c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
     c.chdir("{{ renpy }}/module")
 
+    c.env("RENPY_COVERAGE", "True")
     c.env("RENPY_ANDROID", "True")
-
-    print("////////////////////// CC ///////////////////")
-    c.print_env("{{CC}}")
-
-    print("////////////////////// CXX ///////////////////")
-    c.print_env("{{CXX}}")
-
-    print("////////////////////// LD ///////////////////")
-    c.print_env("{{LD}}")
 
     c.env("{{CFLAGS}}", "{{CFLAGS}} -DANDROID")
 

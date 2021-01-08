@@ -75,8 +75,7 @@ def build(c):
         --ranlib="{{ RANLIB }}"
 
         --enable-pic
-        --enable-static
-
+        --enable-shared
         --disable-all
         --disable-everything
 

@@ -18,6 +18,6 @@ def build(c) :
 
     c.env("CPPFLAGS", "{{ CPPFLAGS }} -DPNG_NO_CONSOLE_IO")
 
-    c.run("""./configure {{ cross_config }} --disable-shared --prefix="{{ install }}" """)
+    c.run("""./configure {{ cross_config }} --prefix="{{ install }}" """)
     c.run("""{{ make }}""")
     c.run("""make install """)

@@ -26,6 +26,9 @@ def build_environment(c):
         c.env("CFLAGS", "{{CFLAGS}} -static -static-libgcc -static-libstdc++")
 
     
+    print("/////////////////// PLATFORM /////////////////")
+    print(c.platform)
+    print(c.kind)
 
     c.env("PATH", "{{ host }}/bin:{{ PATH }}")
 
@@ -55,7 +58,7 @@ def build_environment(c):
         c.var("host_platform", "x86_64-apple-darwin")
 
     if c.platform == "android":
-        c.env("LDFLAGS", "")
+        c.env("LDFLAGS", " -shared ")
     else:
         c.env("LDFLAGS", "-L{{install}}/lib")
 
@@ -273,8 +276,8 @@ def build_environment(c):
         c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -fno-integrated-as")
         c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3   -fno-integrated-as")
         c.env("CPP", "ccache {{ crossclang }}clang -E")
-        #c.env("LD", "ccache {{ crossclang }}clang -o")
-        #c.env("LDSHARED", "ccache {{ crossclang }}clang -o")
+        #c.env("LD", "ccache {{ crossclang }}clang ")
+        #c.env("LDSHARED", "ccache {{ crossclang }}clang ")
         c.env("AR", "ccache {{ crossbin }}ar")
         c.env("RANLIB", "ccache {{ crossbin }}ranlib")
         c.env("STRIP", "ccache  {{ crossbin }}strip")

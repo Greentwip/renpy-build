@@ -20,8 +20,6 @@ def build(c):
         c.env("ac_cv_lib_jpeg_jpeg_CreateDecompress", "yes")
 
     c.run("""./configure {{ cross_config }} --prefix="{{ install }}"
-    --disable-shared
-
     --disable-tif
     --disable-imageio
     --disable-jpg-shared
