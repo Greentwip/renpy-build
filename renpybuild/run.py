@@ -22,10 +22,12 @@ def build_environment(c):
         c.env("CPPFLAGS", "{{CPPFLAGS}} -static ")
         c.env("CFLAGS", "{{CFLAGS}} -static ")
         c.env("LDFLAGS", "{{LDFLAGS}} -static ")        
+        c.env("LDFLAGS", "{{LDFLAGS}} --verbose ")        
     else:
         c.env("CPPFLAGS", "{{CPPFLAGS}} -static -static-libgcc -static-libstdc++")
         c.env("CFLAGS", "{{CFLAGS}} -static -static-libgcc -static-libstdc++")
         c.env("LDFLAGS", "{{LDFLAGS}}-static -static-libgcc -static-libstdc++")        
+        c.env("LDFLAGS", "{{LDFLAGS}} --verbose ")        
 
     
 
