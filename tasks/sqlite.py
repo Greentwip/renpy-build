@@ -16,11 +16,12 @@ def build(c):
     c.var("version", version)
     c.chdir("sqlite-autoconf-{{version}}")
 
-    c.env("LDFLAGS", "{{LDFLAGS}} -shared -lz -lm")
+    c.env("LDFLAGS", "{{LDFLAGS}} -static -lz -lm")
 
-    c.run("./configure {{ cross_config }} --shared={{install}}/lib --prefix={{install}}")
+    c.run("./configure {{ cross_config }}  --prefix={{install}}")
     c.run("{{ make }}")
 
-    c.copy(".libs/sqlite3.o", ".libs/libsqlite3.so")
+    c.run("{{ make }} install")
 
-    c.run("make install")
+
+    

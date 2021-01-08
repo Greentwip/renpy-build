@@ -1,6 +1,6 @@
 from renpybuild.model import task
 
-version = "5.2.51"
+version = "5.2.5"
 
 
 @task()
