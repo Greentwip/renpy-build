@@ -18,8 +18,9 @@ def build_environment(c):
     c.env("CPPFLAGS", "-I{{ install }}/include")
     c.env("CFLAGS", "-I{{ install }}/include")
 
-    c.env("CFLAGS", "-static -static-libgcc -static-libstdc++")
-    c.env("LDFLAGS", "-static -static-libgcc -static-libstdc++")
+    c.env("CPPFLAGS", "{{CPPFLAGS}} -static -static-libgcc -static-libstdc++")
+    c.env("CFLAGS", "{{CFLAGS}} -static -static-libgcc -static-libstdc++")
+    c.env("LDFLAGS", "{{LDFLAGS}}-static -static-libgcc -static-libstdc++")
 
     c.env("PATH", "{{ host }}/bin:{{ PATH }}")
 
