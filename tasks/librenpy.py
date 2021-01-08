@@ -15,7 +15,12 @@ def gen_static(c):
     c.chdir("{{ renpy }}/module")
 
     c.env("RENPY_ANDROID", "True")
-    c.env("RENPY_DEPS_INSTALL", "/usr::/usr/lib/x86_64-linux-gnu/")
+
+    if c.platform == "android":
+        c.env("RENPY_DEPS_INSTALL", "{{install}}::{{install}}/lib::{{install}}/include")
+    else:
+        c.env("RENPY_DEPS_INSTALL", "/usr::/usr/lib/x86_64-linux-gnu/")
+
     c.env("RENPY_STATIC", "1")
     
     c.run("{{ hostpython }} setup.py build")
