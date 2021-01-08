@@ -16,6 +16,12 @@ def build(c):
     c.var("version", version)
     c.chdir("util-linux-{{version}}")
 
-    c.run("./configure {{ cross_config }} --disable-all-programs --enable-libuuid --prefix={{install}}")
+    c.env("LDFLAGS", "{{LDFLAGS}} -shared")
+    c.run("./configure {{ cross_config }} --shared={{install}}/lib --disable-all-programs --enable-libuuid --prefix={{install}}")
     c.run("{{ make }}")
+
+    c.copy(".libs/libcommon.o", ".libs/libcommon.so")
+    c.copy(".libs/libtcolors.o", ".libs/libtcolors.so")
+    c.copy(".libs/libuuid.o", ".libs/libuuid.so")
+
     c.run("make install")
