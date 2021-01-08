@@ -39,13 +39,14 @@ def patch_windows(c):
 
 @task(kind="python", pythons="3", platforms="android")
 def patch_android(c):
-    c.var("version", version)
+    pass
+    #c.var("version", version)
 
-    c.chdir("Python-{{ version }}")
-    c.patchdir("android-python3")
-    c.patch("android-python3/unversioned-libpython.patch")
+    #c.chdir("Python-{{ version }}")
+    #c.patchdir("android-python3")
+    #c.patch("android-python3/unversioned-libpython.patch")
 
-    c.run(""" autoreconf -vfi """)
+    #c.run(""" autoreconf -vfi """)
 
 
 
@@ -116,15 +117,18 @@ def build_android(c):
         f.write("ac_cv_header_langinfo_h=no\n")
 
     c.env("CONFIG_SITE", "config.site")
-
+    
+    c.env("CFLAGS", "{{ CFLAGS }} -static ")
     c.env("CFLAGS", "{{ CFLAGS }} -DXML_POOR_ENTROPY=1 ")
     c.env("CFLAGS", "{{ CFLAGS }} -DUSE_PYEXPAT_CAPI ")
     c.env("CFLAGS", "{{ CFLAGS }} -DHAVE_EXPAT_CONFIG_H")
     c.env("CFLAGS", "{{ CFLAGS }} -DOPENSSL_THREADS ")
 
+
     c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include ")
     c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include/ncursesw ")
 
+    c.env("LDFLAGS", "{{ LDFLAGS }} -static ")
     c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib ")
 
     c.env("READELF", "arm-linux-androideabi-readelf")

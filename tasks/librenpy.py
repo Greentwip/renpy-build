@@ -25,6 +25,8 @@ def gen_static(c):
     print("////////////////////// LD ///////////////////")
     c.print_env("{{LD}}")
 
+    c.env("{{CFLAGS}}", "{{CFLAGS}} -DANDROID")
+
 
     if c.platform == "android":
         c.env("RENPY_DEPS_INSTALL", "{{sysroot_include}}::{{sysroot_lib}}::{{install}}::{{install}}/lib::{{install}}/include")
