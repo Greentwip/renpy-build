@@ -8,6 +8,7 @@ fi
 
 . $VENV/bin/activate
 
+pip install --upgrade pip
 pip install -r $ROOT/requirements.txt
 
 pushd $BASE/pygame_sdl2
