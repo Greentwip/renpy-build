@@ -14,6 +14,14 @@ from . import libpng
 from . import libjpeg_turbo
 from . import libwebp
 
+from . import gdbm
+from . import ncurses
+from . import readline
+from . import sqlite
+from . import uuid
+from . import xz
+
+
 from . import hostpython3
 from . import python3
 
