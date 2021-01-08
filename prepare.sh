@@ -37,7 +37,7 @@ sudo apt-get install -y quilt
 
 # Install the standard set of packages needed to build Ren'Py.
 sudo apt-get install -y \
-    python-dev-is-python2 libavcodec-dev libavformat-dev \
+    python-dev-is-python3 libavcodec-dev libavformat-dev \
     libavresample-dev libswresample-dev libswscale-dev libfreetype6-dev libglew1.6-dev \
     libfribidi-dev libsdl2-dev libsdl2-image-dev libsdl2-gfx-dev \
     libsdl2-mixer-dev libsdl2-ttf-dev libjpeg-turbo8-dev
