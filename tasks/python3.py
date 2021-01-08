@@ -127,11 +127,13 @@ def build_android(c):
 
     c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib ")
 
+    c.env("READELF", "arm-linux-androideabi-readelf")
     c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     c.run("""{{ make }}""")
+    quit()
 
     c.run("""{{ make }} install""")
 
