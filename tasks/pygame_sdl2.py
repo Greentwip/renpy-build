@@ -1,4 +1,5 @@
 from renpybuild.model import task, annotator
+python_version = "3.9"
 
 
 @annotator
@@ -8,15 +9,20 @@ def annotate(c):
 
 @task(kind="host-python", always=True)
 def gen_static(c):
+    c.var("python_version", python_version)
 
     c.chdir("{{ pygame_sdl2 }}")
     c.env("PYGAME_SDL2_STATIC", "1")
+    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
+
     c.run("{{ hostpython }} setup.py generate")
 
 
 @task(kind="python", always=True)
 def install(c):
-    c.env("PYTHONPATH", '{{host}}/lib/python3.9/lib-dynload')
+    c.var("python_version", python_version)
+
+    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
 
     exec_string = "{{ hostpython }} -s -m pip install --upgrade setuptools"
     

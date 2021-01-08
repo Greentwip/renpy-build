@@ -1,4 +1,5 @@
 from renpybuild.model import task
+python_version = "3.9"
 
 
 @task(kind="python")
@@ -8,7 +9,9 @@ def clean(c):
 
 @task(kind="host-python", always=True)
 def gen_static(c):
-    c.env("PYTHONPATH", '{{host}}/lib/python3.9/lib-dynload')
+    c.var("python_version", python_version)
+
+    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
     c.chdir("{{ renpy }}/module")
 
     c.env("RENPY_ANDROID", "True")
