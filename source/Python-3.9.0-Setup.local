@@ -171,7 +171,6 @@ _decimal/libmpdec/numbertheory.c \
 _decimal/libmpdec/sixstep.c \
 _decimal/libmpdec/transpose.c \
 -DCONFIG_32 \
--std=c11 \
 -Wno-implicit-function-declaration \
 -IModules/_decimal/libmpdec
 

@@ -31,4 +31,5 @@ def build_host(c):
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
+    c.run("""{{ make }}""")
     c.run("""{{ make }} install""")
