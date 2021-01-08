@@ -176,7 +176,6 @@ def pip(c):
     install_str2 = exec_string + " -m pip install --upgrade urllib3 certifi idna requests "
     c.run(install_str1)
     c.run(install_str2)
-    quit();
 
 # @task(kind="python", pythons="2", always=True)
 # def sitecustomize(c):
