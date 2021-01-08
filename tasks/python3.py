@@ -134,6 +134,8 @@ def build_android(c):
 
     c.run("""{{ make }}""")
 
+    quit()
+
     c.run("""{{ make }} install""")
 
     
