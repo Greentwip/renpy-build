@@ -8,11 +8,12 @@ def clean(c):
 
 @task(kind="host-python", always=True)
 def gen_static(c):
+    c.env("PYTHONPATH", '{{host}}/lib/python3.9/lib-dynload')
 
     c.chdir("{{ renpy }}/module")
     c.env("RENPY_DEPS_INSTALL", "/usr::/usr/lib/x86_64-linux-gnu/")
     c.env("RENPY_STATIC", "1")
-    c.run("{{ hostpython }} setup.py generate")
+    c.run("{{ hostpython }} setup.py build")
 
 
 @task(kind="python", always=True)
