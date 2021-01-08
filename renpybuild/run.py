@@ -228,6 +228,7 @@ def build_environment(c):
         c.env("NM", "{{ crossbin}}nm")
 
         c.env("CFLAGS", "{{ CFLAGS }} -DSDL_MAIN_HANDLED")
+        c.env("LDFLAGS", "{{ LDFLAGS}} -pthread")
 
     elif (c.platform == "android") and (c.arch == "arm64_v8a"):
 

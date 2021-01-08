@@ -14,12 +14,8 @@ from . import libpng
 from . import libjpeg_turbo
 from . import libwebp
 
-if os.environ["RENPY_PYTHON_VER"] == "3":
-	from . import hostpython3
-	from . import python3
-else:
-	from . import hostpython2
-	from . import python2
+from . import hostpython3
+from . import python3
 
 from . import live2d
 

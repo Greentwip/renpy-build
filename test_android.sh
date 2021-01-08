@@ -3,7 +3,7 @@
 set -e
 
 ROOT="$(dirname $(readlink -f $0))"
-PYTHON_VERSION="3"
+PYTHON_VERSION=3
 export RENPY_PYTHON_VER=$PYTHON_VERSION
 
 VENV="$ROOT/tmp/virtualenv.py2"

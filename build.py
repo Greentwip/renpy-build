@@ -56,10 +56,7 @@ class Python:
         known_pythons.append(self)
 
 
-if os.environ["RENPY_PYTHON_VER"] == "3":
-    Python("3")
-else:
-    Python("2")
+Python("3")
 
 
 
