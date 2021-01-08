@@ -128,14 +128,12 @@ def build_android(c):
     c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib ")
 
     c.env("READELF", "arm-linux-androideabi-readelf")
-    #c.run("""./configure --target=arm-linux-androideabi --build=x86_64-linux-gnu  {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
+    c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     c.run("""{{ make }}""")
 
-    quit()
-    
     c.run("""{{ make }} install""")
 
     
@@ -193,7 +191,9 @@ def pip(c):
 
     
     install_str1 = exec_string + " -m pip install --upgrade future six rsa pyasn1 "
-    install_str2 = exec_string + " -m pip install --upgrade urllib3 certifi idna requests "
+    install_str2 = exec_string + " -m pip install --upgrade urllib3 certifi idna  "
+    install_str2 = exec_string + " -m pip install --upgrade requests"
+    
     c.run(install_str1)
     c.run(install_str2)
 
