@@ -22,7 +22,6 @@ def build(c):
 
 @task(kind="python", always=True, platforms="android")
 def build_android(c):
-    print("////////////////////// BUILDING /////////////////////")
     c.run("""
     {{ CC }} {{ CFLAGS }}
 

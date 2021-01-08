@@ -25,11 +25,6 @@ def build_environment(c):
         c.env("CPPFLAGS", "{{CPPFLAGS}} -static -static-libgcc -static-libstdc++")
         c.env("CFLAGS", "{{CFLAGS}} -static -static-libgcc -static-libstdc++")
 
-    
-    print("/////////////////// PLATFORM /////////////////")
-    print(c.platform)
-    print(c.kind)
-
     c.env("PATH", "{{ host }}/bin:{{ PATH }}")
 
     if (c.platform == "linux") and (c.arch == "x86_64"):
