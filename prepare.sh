@@ -34,6 +34,10 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install -y cmake clang libxml2-dev l
 # Needed for web
 sudo apt-get install -y quilt
 
+# Needed for Renpy build 
+sudo apt install gcc-multilib -y
+
+
 
 # Install the standard set of packages needed to build Ren'Py.
 sudo apt-get install -y \
