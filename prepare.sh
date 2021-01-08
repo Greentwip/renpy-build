@@ -46,7 +46,7 @@ sudo apt-get install -y \
 mkdir -p "$BASE/tmp"
 
 # Set up the environment variables.
-
+pip install --upgrade pip
 pip install virtualenv
 
 

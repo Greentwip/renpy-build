@@ -18,6 +18,9 @@ def build_environment(c):
     c.env("CPPFLAGS", "-I{{ install }}/include")
     c.env("CFLAGS", "-I{{ install }}/include")
 
+    c.env("CFLAGS", "-static -static-libgcc -static-libstdc++")
+    c.env("LDFLAGS", "-static -static-libgcc -static-libstdc++")
+
     c.env("PATH", "{{ host }}/bin:{{ PATH }}")
 
     if (c.platform == "linux") and (c.arch == "x86_64"):
