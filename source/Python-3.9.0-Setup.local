@@ -151,6 +151,9 @@ _testimportmultiple _testimportmultiple.c
 _testmultiphase _testmultiphase.c
 _uuid _uuidmodule.c -luuid
 _xxsubinterpreters _xxsubinterpretersmodule.c
+_xxtestfuzz _xxtestfuzz/_xxtestfuzz.c _xxtestfuzz/fuzzer.c
+ossaudiodev ossaudiodev.c
+xxlimited xxlimited.c
 
 # The rest of the modules listed in this file are all commented out by
 # default.  Usually they can be detected and built as dynamically
