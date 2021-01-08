@@ -2,7 +2,7 @@ from renpybuild.model import task, annotator
 import re
 
 version = "1.1.0"
-
+python_version = "3.9"
 
 @annotator
 def annotate(c):
@@ -69,14 +69,17 @@ DEF ARCH = "{{ c.arch }}"
 pyobjus.pyobjus pyobjus.c
 """))
 
-
 @task(kind="host-python")
 def host_build(c):
 
     c.var("version", version)
+    c.var("python_version", python_version)
+
     c.chdir("pyobjus/pyobjus")
+
+    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
 
     c.run("""install -d {{ pytmp }}/pyobjus/pyobjus""")
     c.run("""install dylib_manager.py  __init__.py  objc_py_types.py  protocols.py {{ pytmp }}/pyobjus/pyobjus""")
-    c.run("{{ host }}/bin/python3 -OO -m compileall {{ pytmp }}/pyobjus/pyobjus")
+    c.run("{{ hostpython }} -OO -m compileall {{ pytmp }}/pyobjus/pyobjus")
 

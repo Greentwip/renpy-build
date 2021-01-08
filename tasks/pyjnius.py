@@ -2,7 +2,7 @@ from renpybuild.model import task
 import re
 
 version = "1.2.1"
-
+python_version = "3.9"
 
 @task(kind="host-python")
 def unpack(c):
@@ -16,6 +16,8 @@ def unpack(c):
 def build(c):
 
     c.var("version", version)
+    c.var("python_version", python_version)
+
     c.chdir("pyjnius-{{version}}/jnius")
 
     with open(c.path("config.pxi"), "w") as f:
@@ -56,7 +58,8 @@ cdef JNIEnv *get_platform_jnienv():
     c.run("""install env.py  __init__.py  reflect.py  signatures.py {{ pytmp }}/pyjnius/jnius""")
     c.run("""install jnius.c {{ pytmp }}/pyjnius/""")
 
-    c.run("{{ host }}/bin/python3 -OO -m compileall {{ pytmp }}/pyjnius/jnius")
+    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
+    c.run("{{ hostpython }} -OO -m compileall {{ pytmp }}/pyjnius/jnius")
 
     with open(c.path("{{ pytmp }}/pyjnius/Setup"), "w") as f:
         f.write(c.expand("""\
