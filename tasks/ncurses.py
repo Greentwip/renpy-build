@@ -16,6 +16,6 @@ def build(c):
     c.var("version", version)
     c.chdir("ncurses-{{version}}")
 
-    c.run("./configure {{ configure_cross }} --without-ada, --enable-widec, --without-debug, --without-cxx-binding, --disable-stripping --prefix={{install}}")
+    c.run("./configure {{ cross_config }} --without-ada, --enable-widec, --without-debug, --without-cxx-binding, --disable-stripping --prefix={{install}}")
     c.run("{{ make }}")
     c.run("make install")

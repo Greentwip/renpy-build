@@ -16,6 +16,6 @@ def build(c):
     c.var("version", version)
     c.chdir("sqlite-autoconf-{{version}}")
 
-    c.run("./configure {{ configure_cross }} --prefix={{install}}")
+    c.run("./configure {{ cross_config }} --prefix={{install}}")
     c.run("{{ make }}")
     c.run("make install")

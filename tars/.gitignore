@@ -4,6 +4,7 @@ binutils-2.33.1.tar.gz
 gcc-9.2.0.tar.gz
 MacOSX*.sdk.*
 android-ndk-r21d-linux-x86_64.zip
+android-ndk-r22-linux-x86_64.zip
 iPhoneOS*.sdk.tar.gz
 iPhoneSimulator*.sdk.tar.gz
 Cubism*

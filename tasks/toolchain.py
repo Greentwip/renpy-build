@@ -92,10 +92,10 @@ class ZipFileWithPermissions(ZipFile):
 @task(kind="cross", platforms="android")
 def build(c):
 
-    if c.path("{{cross}}/android-ndk-r21d").exists():
+    if c.path("{{cross}}/android-ndk-r22-linux-x86_64").exists():
         return
 
-    zf = ZipFileWithPermissions(c.path("{{ tars }}/android-ndk-r21d-linux-x86_64.zip"))
+    zf = ZipFileWithPermissions(c.path("{{ tars }}/android-ndk-r22-linux-x86_64.zip"))
     zf.extractall(c.path("{{ install }}"))
     zf.close()
 
