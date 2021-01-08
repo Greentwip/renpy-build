@@ -8,7 +8,7 @@ REFS=$ROOT
 BASE="$ROOT"
 
 # Needed to build things.
-sudo apt-get install -y git build-essential ccache python-dev-is-python2 python3-dev unzip
+sudo apt-get install -y git build-essential ccache python-dev-is-python3 python3-dev unzip
 
 # Needed to install python2 pip
 sudo apt-get install -y curl

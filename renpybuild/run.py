@@ -20,7 +20,7 @@ def build_environment(c):
 
     if c.platform == "android":
         c.env("CPPFLAGS", "{{CPPFLAGS}} -static ")
-        c.env("CFLAGS", "{{CFLAGS}} -static -std=c11 ")
+        c.env("CFLAGS", "{{CFLAGS}} -static -Wimplicit-function-declaration ")
         c.env("LDFLAGS", "{{LDFLAGS}} -static ")        
         c.env("LDFLAGS", "{{LDFLAGS}} --verbose ")        
     else:

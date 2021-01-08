@@ -217,8 +217,8 @@ def pyo_copy(src, dst):
     shutil.copy(src, dst)
 
 
-@task(kind="host-python", pythons="2", always=True)
-def python2(c):
+@task(kind="host-python", pythons="3", always=True)
+def python3(c):
 
     search = [
         c.path("{{ install }}/lib/{{ pythonver }}"),
