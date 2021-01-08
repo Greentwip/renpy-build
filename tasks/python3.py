@@ -123,11 +123,12 @@ def build_android(c):
     c.env("CFLAGS", "{{ CFLAGS }} -DOPENSSL_THREADS ")
 
     c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include ")
+    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include/ncursesw ")
 
     c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib ")
 
     c.env("READELF", "arm-linux-androideabi-readelf")
-    c.run("""./configure --target=arm-linux-androideabi --build=x86_64-linux-gnu  {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
+    #c.run("""./configure --target=arm-linux-androideabi --build=x86_64-linux-gnu  {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 

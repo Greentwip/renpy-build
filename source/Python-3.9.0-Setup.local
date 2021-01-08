@@ -137,6 +137,21 @@ _tracemalloc _tracemalloc.c
 # PEG-based parser module -- slated to be *the* parser
 _peg_parser _peg_parser.c
 
+_ctypes _ctypes/_ctypes.c _ctypes/callbacks.c _ctypes/callproc.c _ctypes/stgdict.c _ctypes/cfield.c -lffi
+_ssl _ssl.c -lssl -lcrypto
+_bz2 _bz2module.c -lbz2
+_hashlib _hashopenssl.c -lssl -lcrypto
+_lsprof _lsprof.c rotatingtree.c
+#_lzma _lzmamodule.c -lssl -lcrypto -llzma
+_multiprocessing _multiprocessing/multiprocessing.c _multiprocessing/semaphore.c -IModules/_multiprocessing
+_opcode _opcode.c
+_queue _queuemodule.c
+_testbuffer _testbuffer.c
+_testimportmultiple _testimportmultiple.c
+_testmultiphase _testmultiphase.c
+_uuid _uuidmodule.c -luuid
+_xxsubinterpreters _xxsubinterpretersmodule.c
+
 # The rest of the modules listed in this file are all commented out by
 # default.  Usually they can be detected and built as dynamically
 # loaded modules by the new setup.py script added in Python 2.1.  If
@@ -164,7 +179,7 @@ _symtable symtablemodule.c
 # it, depending on your system -- see the GNU readline instructions.
 # It's okay for this to be a shared library, too.
 
-readline readline.c -lreadline -ltermcap
+readline readline.c -lreadline -lncursesw
 
 
 # Modules that should always be present (non UNIX dependent):
@@ -175,7 +190,7 @@ math mathmodule.c _math.c -DPy_BUILD_CORE_MODULE # -lm # math library functions,
 _contextvars _contextvarsmodule.c  # Context Variables
 _struct _struct.c	# binary structure packing/unpacking
 _weakref _weakref.c	# basic weak reference support
-_testcapi _testcapimodule.c    # Python C API test module
+#_testcapi _testcapimodule.c    # Python C API test module
 _testinternalcapi _testinternalcapi.c -I$(srcdir)/Include/internal -DPy_BUILD_CORE_MODULE  # Python internal C API test module
 _random _randommodule.c -DPy_BUILD_CORE_MODULE	# Random number generator
 _elementtree -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H -DUSE_PYEXPAT_CAPI _elementtree.c	# elementtree accelerator
@@ -197,7 +212,7 @@ unicodedata unicodedata.c    # static Unicode character database
 
 fcntl fcntlmodule.c	# fcntl(2) and ioctl(2)
 #spwd spwdmodule.c		# spwd(3)
-grp grpmodule.c		# grp(3)
+#grp grpmodule.c		# grp(3)
 select selectmodule.c	# select(2); not on ancient System V
 
 # Memory-mapped files (also works on Win32).
@@ -219,7 +234,7 @@ _ssl _ssl.c \
 # The crypt module is now disabled by default because it breaks builds
 # on many systems (where -lcrypt is needed), e.g. Linux (I believe).
 
-_crypt _cryptmodule.c # -lcrypt	# crypt(3); needs -lcrypt on some systems
+#_crypt _cryptmodule.c # -lcrypt	# crypt(3); needs -lcrypt on some systems
 
 
 # Some more UNIX dependent modules -- off by default, since these
@@ -309,9 +324,9 @@ syslog syslogmodule.c		# syslog daemon interface
 # provided by the ncurses library.  e.g. on Linux, link with -lncurses
 # instead of -lcurses).
 
-_curses _cursesmodule.c -lcurses -ltermcap
+_curses _cursesmodule.c -lncursesw 
 # Wrapper for the panel library that's part of ncurses and SYSV curses.
-_curses_panel _curses_panel.c -lpanel -lncurses
+_curses_panel _curses_panel.c -lpanelw -lncursesw
 
 
 # Modules that provide persistent dictionary-like semantics.  You will
@@ -325,7 +340,7 @@ _curses_panel _curses_panel.c -lpanel -lncurses
 
 # Anthony Baxter's gdbm module.  GNU dbm(3) will require -lgdbm:
 
-_gdbm _gdbmmodule.c -I/usr/local/include -L/usr/local/lib -lgdbm
+_gdbm _gdbmmodule.c -I/usr/local/include -L/usr/local/lib  -lc -ldl -lm -lz -lgdbm
 
 
 # Helper module for various ascii-encoders
