@@ -16,6 +16,8 @@ def build(c):
     c.var("version", version)
     c.chdir("gdbm-{{version}}")
 
+    c.env("CFLAGS", "-fcommon")
+    
     c.run("./configure {{ cross_config }} --enable-libgdbm-compat --prefix={{install}}")
     c.run("{{ make }}")
     c.run("make install")

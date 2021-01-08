@@ -19,15 +19,11 @@ def build_environment(c):
     c.env("CFLAGS", "-I{{ install }}/include")
 
     if c.platform == "android":
-        c.env("CPPFLAGS", "{{CPPFLAGS}} -static ")
-        c.env("CFLAGS", "{{CFLAGS}} -static -Wimplicit-function-declaration ")
-        c.env("LDFLAGS", "{{LDFLAGS}} -static ")        
-        c.env("LDFLAGS", "{{LDFLAGS}} --verbose ")        
+        c.env("CPPFLAGS", "")
+        c.env("CFLAGS", "")
     else:
         c.env("CPPFLAGS", "{{CPPFLAGS}} -static -static-libgcc -static-libstdc++")
         c.env("CFLAGS", "{{CFLAGS}} -static -static-libgcc -static-libstdc++")
-        c.env("LDFLAGS", "{{LDFLAGS}}-static -static-libgcc -static-libstdc++")        
-        c.env("LDFLAGS", "{{LDFLAGS}} --verbose ")        
 
     
 
@@ -58,6 +54,11 @@ def build_environment(c):
     elif (c.platform == "ios") and (c.arch == "x86_64"):
         c.var("host_platform", "x86_64-apple-darwin")
 
+    if c.platform == "android":
+        c.env("LDFLAGS", "")
+    else:
+        c.env("LDFLAGS", "-L{{install}}/lib")
+
     if (c.platform == "ios") and (c.arch == "arm64"):
         c.var("sdl_host_platform", "arm-ios-darwin11")
     elif (c.platform == "ios") and (c.arch == "armv7s"):
@@ -71,8 +72,6 @@ def build_environment(c):
         c.var("ffi_host_platform", "aarch64-ios-darwin11")
     else:
         c.var("ffi_host_platform", "{{ host_platform }}")
-
-    c.env("LDFLAGS", "-L{{install}}/lib")
 
     if (c.platform == "ios") and (c.arch == "arm64"):
         c.env("IPHONEOS_DEPLOYMENT_TARGET", "9.0")
@@ -228,7 +227,7 @@ def build_environment(c):
     elif (c.platform == "android") and (c.arch == "x86_64"):
 
         c.var("crossbin", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}-")
-        c.var("crossclang", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}21-")
+        c.var("crossclang", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}22-")
 
         c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -pthread")
         c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3 -pthread")
@@ -241,12 +240,11 @@ def build_environment(c):
         c.env("NM", "{{ crossbin}}nm")
 
         c.env("CFLAGS", "{{ CFLAGS }} -DSDL_MAIN_HANDLED")
-        c.env("LDFLAGS", "{{ LDFLAGS}} -pthread")
 
     elif (c.platform == "android") and (c.arch == "arm64_v8a"):
 
         c.var("crossbin", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}-")
-        c.var("crossclang", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}21-")
+        c.var("crossclang", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}22-")
 
         c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -pthread")
         c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3 -pthread")
@@ -263,7 +261,7 @@ def build_environment(c):
     elif (c.platform == "android") and (c.arch == "armeabi_v7a"):
 
         c.var("crossbin", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-")
-        c.var("crossclang", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}21-")
+        c.var("crossclang", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}22-")
 
         c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -pthread -fno-integrated-as")
         c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3 -pthread  -fno-integrated-as")

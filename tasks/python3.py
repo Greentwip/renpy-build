@@ -117,21 +117,11 @@ def build_android(c):
 
     c.env("CONFIG_SITE", "config.site")
 
-    c.env("CFLAGS", "-I{{ install }}/include")
-
-    c.env("CFLAGS", "{{ CFLAGS }} -Wimplicit-function-declaration ")
-
     c.env("CFLAGS", "{{ CFLAGS }} -DXML_POOR_ENTROPY=1 ")
     c.env("CFLAGS", "{{ CFLAGS }} -DUSE_PYEXPAT_CAPI ")
     c.env("CFLAGS", "{{ CFLAGS }} -DHAVE_EXPAT_CONFIG_H")
     c.env("CFLAGS", "{{ CFLAGS }} -DOPENSSL_THREADS ")
     
-    c.env("LDFLAGS", "{{ LDFLAGS }}")
-
-    c.env("LDFLAGS", "{{LDFLAGS}} --verbose ")        
-    c.env("LDFLAGS", "{{ LDFLAGS}} -pthread")
-
-
     c.env("READELF", "arm-linux-androideabi-readelf")
     c.run("""./configure --api 21 --target=arm-linux-androideabi --build=x86_64-linux-gnu  {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 

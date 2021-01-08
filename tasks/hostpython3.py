@@ -25,7 +25,7 @@ def build_host(c):
 
     c.env("CONFIG_SITE", "config.site")
 
-    c.env("CFLAGS", "{{ CFLAGS }} -DXML_POOR_ENTROPY=1 -DUSE_PYEXPAT_CAPI -DHAVE_EXPAT_CONFIG_H ")
+    c.env("CFLAGS", "-DXML_POOR_ENTROPY=1 -DUSE_PYEXPAT_CAPI -DHAVE_EXPAT_CONFIG_H ")
 
     c.run("""./configure --prefix="{{ host }}" --enable-ipv6""")
 
