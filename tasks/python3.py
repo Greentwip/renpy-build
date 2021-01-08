@@ -39,12 +39,7 @@ def patch_windows(c):
 
 @task(kind="python", pythons="3", platforms="android")
 def patch_android(c):
-    c.var("version", version)
-    c.chdir("Python-{{ version }}")
-    #c.patchdir("android-python2")
-    #c.patch("android/0036-sysconfigdata-name.patch")
-
-    c.run(""" autoreconf -vfi """)
+    pass
 
 
 
@@ -158,9 +153,30 @@ eval $PYTHON_FOR_BUILD ../../Tools/scripts/h2py.py -i "'(u_long)'" $REGENHEADER
 
 @task(kind="python", pythons="3")
 def pip(c):
-    c.run("{{ install }}/bin/hostpython3 -s -m ensurepip")
-    c.run("{{ install }}/bin/hostpython3 -s -m pip install --upgrade future six rsa pyasn1")
-    c.run("{{ install }}/bin/hostpython3 -s -m pip install --upgrade urllib3 certifi idna requests")
+
+    if (c.platform == "android"):
+        c.copy("{{ host }}/lib/python3.9/_sysconfigdata__linux_x86_64-linux-gnu.py", "{{ host }}/lib/python3.9/lib-dynload/_sysconfigdata__linux_x86_64-linux-gnu.py")
+
+    c.env("PYTHONPATH", '{{host}}/lib/python3.9/lib-dynload')
+    exec_string = "{{ install }}/bin/hostpython3 -s "
+    #exec_string = exec_string + """ -c "import sys;"""
+    #exec_string = exec_string + """ sys.path.append('{{host}}'); """
+
+    #exec_string = exec_string + """ sys.path.append('{{host}}/lib/python39.zip'); """
+    #exec_string = exec_string + """ sys.path.append('{{host}}/lib/python3.9'); """
+    #exec_string = exec_string + """ sys.path.append('{{host}}/lib/lib-dynload'); """
+    #exec_string = exec_string + """ sys.path.append('{{host}}/lib/python3.9/site-packages'); " """
+
+    ensure_pip = exec_string + " -m ensurepip "
+
+    c.run(ensure_pip)
+
+    
+    install_str1 = exec_string + " -m pip install --upgrade future six rsa pyasn1 "
+    install_str2 = exec_string + " -m pip install --upgrade urllib3 certifi idna requests "
+    c.run(install_str1)
+    c.run(install_str2)
+    quit();
 
 # @task(kind="python", pythons="2", always=True)
 # def sitecustomize(c):
