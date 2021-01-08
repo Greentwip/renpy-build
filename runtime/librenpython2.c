@@ -175,12 +175,12 @@ static void find_python_home(const char *p) {
 
 
 #ifdef WINDOWS
-    if (exists(p, "\\lib\\python2.7\\site.pyo") || exists(p, "\\lib\\python27.zip")) {
+    if (exists(p, "\\lib\\python3.9\\site.pyo") || exists(p, "\\lib\\python39.zip")) {
         found = 1;
         Py_SetPythonHome(join(p, NULL));
     }
 #else
-    if (exists(p, "/lib/python2.7/site.pyo") || exists(p, "/lib/python27.zip")) {
+    if (exists(p, "/lib/python3.9/site.pyo") || exists(p, "/lib/python39.zip")) {
         found = 1;
         Py_SetPythonHome(join(p, NULL));
     }

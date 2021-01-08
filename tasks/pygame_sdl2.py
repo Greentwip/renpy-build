@@ -16,5 +16,11 @@ def gen_static(c):
 
 @task(kind="python", always=True)
 def install(c):
+    c.env("PYTHONPATH", '{{host}}/lib/python3.9/lib-dynload')
+
+    exec_string = "{{ hostpython }} -s -m pip install --upgrade setuptools"
+    
+    c.run(exec_string)
+
     c.run("{{ hostpython }} {{ pygame_sdl2 }}/setup.py install --single-version-externally-managed --record files.txt --no-extensions")
     c.run("{{ hostpython }} {{ pygame_sdl2 }}/setup.py install_headers")

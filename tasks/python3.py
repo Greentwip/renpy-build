@@ -9,7 +9,7 @@ def annotate(c):
     if c.python == "2":
         c.var("pythonver", "python2.7")
     else:
-        c.var("pythonver", "python3.8")
+        c.var("pythonver", "python3.9")
 
     c.include("{{ install }}/include/{{ pythonver }}")
 
