@@ -16,13 +16,22 @@ def gen_static(c):
 
     c.env("RENPY_ANDROID", "True")
 
+    print("////////////////////// CC ///////////////////")
+    c.print_env("{{CC}}")
+
+    print("////////////////////// CXX ///////////////////")
+    c.print_env("{{CXX}}")
+
+    print("////////////////////// LD ///////////////////")
+    c.print_env("{{LD}}")
+
+
     if c.platform == "android":
-        c.env("RENPY_DEPS_INSTALL", "{{install}}::{{install}}/lib::{{install}}/include")
+        c.env("RENPY_DEPS_INSTALL", "{{sysroot_include}}::{{sysroot_lib}}::{{install}}::{{install}}/lib::{{install}}/include")
     else:
         c.env("RENPY_DEPS_INSTALL", "/usr::/usr/lib/x86_64-linux-gnu/")
 
     c.env("RENPY_STATIC", "1")
-    
     c.run("{{ hostpython }} setup.py build")
 
 

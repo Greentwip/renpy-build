@@ -263,6 +263,13 @@ def build_environment(c):
         c.var("crossbin", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-")
         c.var("crossclang", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}22-")
 
+        c.var("sysroot", "{{ cross }}/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/sysroot")
+        c.var("sysroot_include", "{{sysroot}}/usr/include")
+        c.var("sysroot_lib", "{{sysroot}}/usr/lib/arm-linux-androideabi/22")
+
+        #c.env("SYSROOT_INCLUDE", "{{sysroot_include}}")
+        #c.env("SYSROOT_LIB", "{{sysroot_lib}}")
+
         c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -pthread -fno-integrated-as")
         c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3 -pthread  -fno-integrated-as")
         c.env("CPP", "ccache {{ crossclang }}clang -E")
