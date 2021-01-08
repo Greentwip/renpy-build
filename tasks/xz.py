@@ -15,6 +15,7 @@ def unpack(c):
 def build(c):
     c.var("version", version)
     c.chdir("xz-{{version}}")
+    c.env("LDFLAGS", "{{LDFLAGS}} -static -lz -lm")
 
     c.run("./configure {{ cross_config }} --prefix={{install}}")
     c.run("{{ make }}")

@@ -43,7 +43,7 @@ def patch_android(c):
 
     c.chdir("Python-{{ version }}")
     c.patchdir("android-python3")
-    c.patch("unversioned-libpython.patch")
+    c.patch("android-python3/unversioned-libpython.patch")
 
     c.run(""" autoreconf -vfi """)
 
@@ -121,9 +121,13 @@ def build_android(c):
     c.env("CFLAGS", "{{ CFLAGS }} -DUSE_PYEXPAT_CAPI ")
     c.env("CFLAGS", "{{ CFLAGS }} -DHAVE_EXPAT_CONFIG_H")
     c.env("CFLAGS", "{{ CFLAGS }} -DOPENSSL_THREADS ")
-    
+
+    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include ")
+
+    c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib ")
+
     c.env("READELF", "arm-linux-androideabi-readelf")
-    c.run("""./configure --api 21 --target=arm-linux-androideabi --build=x86_64-linux-gnu  {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
+    c.run("""./configure --target=arm-linux-androideabi --build=x86_64-linux-gnu  {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
