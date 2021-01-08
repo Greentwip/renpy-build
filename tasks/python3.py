@@ -133,7 +133,6 @@ def build_android(c):
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     c.run("""{{ make }}""")
-    quit()
 
     c.run("""{{ make }} install""")
 

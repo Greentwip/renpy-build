@@ -56,7 +56,7 @@ cdef JNIEnv *get_platform_jnienv():
     c.run("""install env.py  __init__.py  reflect.py  signatures.py {{ pytmp }}/pyjnius/jnius""")
     c.run("""install jnius.c {{ pytmp }}/pyjnius/""")
 
-    c.run("{{ hostpython }} -OO -m compileall {{ pytmp }}/pyjnius/jnius")
+    c.run("{{ host }}/bin/python3 -OO -m compileall {{ pytmp }}/pyjnius/jnius")
 
     with open(c.path("{{ pytmp }}/pyjnius/Setup"), "w") as f:
         f.write(c.expand("""\
