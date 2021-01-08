@@ -16,6 +16,6 @@ def build(c):
     c.var("version", version)
     c.chdir("util-linux-{{version}}")
 
-    c.run("./configure {{ configure_cross }} --disable-all-programs --enable-libuuid --prefix={{install}}")
+    c.run("./configure {{ cross_config }} --disable-all-programs --enable-libuuid --prefix={{install}}")
     c.run("{{ make }}")
     c.run("make install")

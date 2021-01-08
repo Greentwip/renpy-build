@@ -19,6 +19,6 @@ def build(c):
     c.run("./configure {{ cross_config }} --prefix={{install}}")
     c.run("{{ make }}")
 
-    c.copy(".libs/sqlite3.o", ".libs/sqliste.so")
+    c.copy(".libs/sqlite3.o", ".libs/libsqlite3.so")
 
     c.run("make install")
