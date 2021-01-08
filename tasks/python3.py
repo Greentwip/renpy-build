@@ -1,7 +1,7 @@
 from renpybuild.model import task, annotator
 import os
 
-version = "3.9.1"
+version = "3.9.0"
 
 
 @annotator
@@ -39,7 +39,13 @@ def patch_windows(c):
 
 @task(kind="python", pythons="3", platforms="android")
 def patch_android(c):
-    pass
+    c.var("version", version)
+
+    c.chdir("Python-{{ version }}")
+    c.patchdir("android-python3")
+    c.patch("unversioned-libpython.patch")
+
+    c.run(""" autoreconf -vfi """)
 
 
 
@@ -111,7 +117,9 @@ def build_android(c):
 
     c.env("CONFIG_SITE", "config.site")
 
-    c.env("CFLAGS", "-Wimplicit-function-declaration ")
+    c.env("CFLAGS", "-I{{ install }}/include")
+
+    c.env("CFLAGS", "{{ CFLAGS }} -Wimplicit-function-declaration ")
 
     c.env("CFLAGS", "{{ CFLAGS }} -DXML_POOR_ENTROPY=1 ")
     c.env("CFLAGS", "{{ CFLAGS }} -DUSE_PYEXPAT_CAPI ")
@@ -120,7 +128,7 @@ def build_android(c):
     
     c.env("LDFLAGS", "{{ LDFLAGS }}")
 
-    c.env("LDFLAGS", "{{LDFLAGS}} -shared --verbose ")        
+    c.env("LDFLAGS", "{{LDFLAGS}} --verbose ")        
     c.env("LDFLAGS", "{{ LDFLAGS}} -pthread")
 
 
@@ -130,8 +138,12 @@ def build_android(c):
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     c.run("""{{ make }}""")
+
+    quit()
     
     c.run("""{{ make }} install""")
+
+    
 
     c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
 

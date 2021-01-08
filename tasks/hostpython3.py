@@ -1,6 +1,6 @@
 from renpybuild.model import task
 
-version = "3.9.1"
+version = "3.9.0"
 
 
 @task(kind="host", pythons="3")
