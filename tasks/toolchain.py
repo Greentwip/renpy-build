@@ -3,7 +3,7 @@ import zipfile
 
 binutils_version = "2.33.1"
 gcc_version = "9.2.0"
-ndk_version = "21d"
+ndk_version = "22"
 
 @task(kind="cross", platforms="linux")
 def build(c):

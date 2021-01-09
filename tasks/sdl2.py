@@ -1,7 +1,7 @@
 from renpybuild.model import task, annotator
 import shutil
 
-version = "2.0.12"
+version = "2.0.14"
 
 
 @annotator

@@ -4,8 +4,8 @@ import subprocess
 import sys
 import sysconfig
 
-ndk_version = "21d"
-ndk_version_alone = "21"
+ndk_version = "22"
+ndk_version_alone = "22"
 
 def build_environment(c):
     """
@@ -229,7 +229,7 @@ def build_environment(c):
 
     elif (c.platform == "android") and (c.arch == "x86_64"):
 
-        c.var("crossbin", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}-")
+        c.var("crossbin", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-")
         c.var("crossclang", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}{{ndk_version_alone}}-")
 
         c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -pthread")
@@ -246,7 +246,7 @@ def build_environment(c):
 
     elif (c.platform == "android") and (c.arch == "arm64_v8a"):
 
-        c.var("crossbin", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}-")
+        c.var("crossbin", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-")
         c.var("crossclang", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}{{ndk_version_alone}}-")
 
         c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -pthread")
@@ -263,7 +263,7 @@ def build_environment(c):
 
     elif (c.platform == "android") and (c.arch == "armeabi_v7a"):
 
-        c.var("crossbin", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}-")
+        c.var("crossbin", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-")
         c.var("crossclang", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/bin/{{ host_platform }}{{ndk_version_alone}}-")
 
         c.var("sysroot", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/sysroot")
