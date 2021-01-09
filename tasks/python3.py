@@ -118,7 +118,7 @@ def build_android(c):
 
     c.env("CONFIG_SITE", "config.site")
     
-    c.env("CFLAGS", "{{ CFLAGS }} -static ")
+    c.env("CFLAGS", "")
     c.env("CFLAGS", "{{ CFLAGS }} -DXML_POOR_ENTROPY=1 ")
     c.env("CFLAGS", "{{ CFLAGS }} -DUSE_PYEXPAT_CAPI ")
     c.env("CFLAGS", "{{ CFLAGS }} -DHAVE_EXPAT_CONFIG_H")
@@ -128,11 +128,12 @@ def build_android(c):
     c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include ")
     c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include/ncursesw ")
 
-    c.env("LDFLAGS", "{{ LDFLAGS }} -static ")
+    c.env("LDFLAGS", "")
     c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib ")
 
     c.env("READELF", "arm-linux-androideabi-readelf")
-    c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
+    c.run("""./configure {{ cross_config }}  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
+
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 

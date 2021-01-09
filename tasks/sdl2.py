@@ -31,10 +31,12 @@ def build(c):
         c.env("CFLAGS", "{{ CFLAGS }} -fobjc-arc")
 
     c.env("ac_cv_header_libunwind_h", "no")
+    c.env("CFLAGS", "-I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include")
+    c.env("LDFLAGS", "-shared -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib ")
+    c.env("CFLAGS", "{{CFLAGS}} -DANDROID")
 
     c.run("""
     ./configure {{ sdl_cross_config }}
-    --disable-shared
     --prefix="{{ install }}"
 
     --disable-wasapi

@@ -25,7 +25,7 @@ def build(c):
     elif (c.platform == "windows") and (c.arch == "i686"):
         c.run("""./Configure mingw no-shared no-asm no-engine --prefix="{{ install }}" """)
     else:
-        c.run("""./Configure cc no-tests no-asm no-engine --prefix="{{ install }}" """)
+        c.run("""./Configure CFLAGS="{{CFLAGS}} -shared" LDFLAGS="{{LDFLAGS}} -shared" cc shared no-static-engine zlib-dynamic no-tests no-asm no-engine --prefix="{{ install }}" """)    
 
     c.run("""{{ make }}""")
     c.run("""make install_sw""")
