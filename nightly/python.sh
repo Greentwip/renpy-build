@@ -35,6 +35,4 @@ rm -Rf pygame_sdl2/gen-static
 rm -Rf pygame_sdl2/gen3-static
 rm -Rf pygame_sdl2/gen
 rm -Rf pygame_sdl2/gen3
-
-./run.sh launcher quit
 popd
