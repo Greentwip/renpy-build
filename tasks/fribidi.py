@@ -13,7 +13,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xjf {{source}}/fribidi-{{version}}.tar.bz2")
+    c.run("tar xvf {{source}}/fribidi-{{version}}.tar.bz2")
 
 
 @task()

@@ -10,7 +10,7 @@ SDK=$(ls -l $XCODE/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs
 cp -r $XCODE/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk /tmp/$SDK 1>/dev/null
 cp -r $XCODE/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 /tmp/$SDK/usr/include/c++ 1>/dev/null
 pushd /tmp
-tar -cvzf $SDK.tar.gz $SDK
+tar xvf $SDK.tar.gz $SDK
 rm -rf $SDK
 popd
 
@@ -20,7 +20,7 @@ SDK=$(ls -l $XCODE/Contents/Developer/Platforms/iPhoneSimulator.platform/Develop
 cp -r $XCODE/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk /tmp/$SDK 1>/dev/null
 cp -r $XCODE/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 /tmp/$SDK/usr/include/c++ 1>/dev/null
 pushd /tmp
-tar -cvzf $SDK.tar.gz $SDK
+tar xvf $SDK.tar.gz $SDK
 rm -rf $SDK
 popd
 

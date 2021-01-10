@@ -8,7 +8,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/libuuid-{{version}}.tar.gz")
+    c.run("tar xvf {{source}}/libuuid-{{version}}.tar.gz")
 
 
 @task()

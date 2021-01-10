@@ -8,7 +8,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/ncurses-{{version}}.tar.gz")
+    c.run("tar xvf {{source}}/ncurses-{{version}}.tar.gz")
 
 
 @task()

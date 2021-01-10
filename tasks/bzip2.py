@@ -8,7 +8,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/bzip2-{{version}}.tar.gz")
+    c.run("tar xvf {{source}}/bzip2-{{version}}.tar.gz")
 
     c.chdir("bzip2-{{version}}")
     c.patch("bzip2-no-tests.diff")

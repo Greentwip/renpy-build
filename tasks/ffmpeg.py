@@ -8,7 +8,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/ffmpeg-{{version}}.tar.gz")
+    c.run("tar xvf {{source}}/ffmpeg-{{version}}.tar.gz")
 
     c.var("version", version)
     c.chdir("ffmpeg-{{version}}")

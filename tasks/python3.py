@@ -19,7 +19,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/Python-{{version}}.tgz")
+    c.run("tar xvf {{source}}/Python-{{version}}.tgz")
 
 
 @task(kind="python", pythons="3", platforms="linux,mac,ios")

@@ -362,11 +362,16 @@ def build_environment(c):
         c.var("cross_config", "--host={{ host_platform }} --build={{ build_platform }}")
         c.var("sdl_cross_config", "--host={{ sdl_host_platform }} --build={{ build_platform }}")
         c.var("ffi_cross_config", "--host={{ ffi_host_platform }} --build={{ build_platform }}")
+        print("/////////// CROS CONFIG /////////////")
+        print(c.get_var("{{cross_config}}"))
 
 
 def run(command, context, verbose=False, quiet=False):
     args = shlex.split(command)
 
+
+    print("//////// COMMAND ////////")
+    print(command)
     if verbose:
         print(" ".join(shlex.quote(i) for i in args))
 

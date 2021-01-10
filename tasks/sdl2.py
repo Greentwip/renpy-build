@@ -14,7 +14,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/SDL2-{{version}}.tar.gz")
+    c.run("tar xvf {{source}}/SDL2-{{version}}.tar.gz")
 
     if c.platform == "ios":
         c.chdir("SDL2-{{version}}")

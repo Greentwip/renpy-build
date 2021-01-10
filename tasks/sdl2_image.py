@@ -8,7 +8,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/SDL2_image-{{version}}.tar.gz")
+    c.run("tar xvf {{source}}/SDL2_image-{{version}}.tar.gz")
 
 
 @task()

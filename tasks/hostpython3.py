@@ -8,7 +8,7 @@ def unpack_hostpython(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/Python-{{version}}.tgz")
+    c.run("tar xvf {{source}}/Python-{{version}}.tgz")
 
     c.chdir("Python-{{ version }}")
 

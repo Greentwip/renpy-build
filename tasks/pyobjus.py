@@ -14,7 +14,7 @@ def unpack(c):
     c.clean()
 
     # c.var("version", version)
-    # c.run("tar xzf {{source}}/pyobjus-{{version}}.tar.gz")
+    # c.run("tar xvf {{source}}/pyobjus-{{version}}.tar.gz")
     c.run("git clone https://github.com/kivy/pyobjus pyobjus")
     c.chdir("pyobjus")
     c.run("git checkout ea4ef7c96dcc83d5f1f18d4b15f3709f32c47a24")

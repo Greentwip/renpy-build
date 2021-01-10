@@ -13,7 +13,7 @@ def hostunpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/freetype-{{version}}.tar.gz")
+    c.run("tar xvf {{source}}/freetype-{{version}}.tar.gz")
 
 
 @task()
@@ -21,7 +21,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/freetype-{{version}}.tar.gz")
+    c.run("tar xvf {{source}}/freetype-{{version}}.tar.gz")
 
 
 @task(kind="host")
