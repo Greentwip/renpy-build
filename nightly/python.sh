@@ -2,12 +2,6 @@
 
 set -e
 
-if [ ! -e $VENV/bin ]; then
-    python -m virtualenv $VENV
-fi
-
-. $VENV/bin/activate
-
 pip install --upgrade pip
 pip install -r $ROOT/requirements.txt
 
