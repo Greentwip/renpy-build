@@ -27,6 +27,9 @@ run the following:
     pyenv install 3.9.0
     pyenv global 3.9.0
 
+And then don't forget to run (and append to ~./zshrc)
+eval "$(pyenv init -)"
+
 Note: There seems to be a bug while installing with pyenv on mac, zlib can't be found.
 
 Refer to this:
