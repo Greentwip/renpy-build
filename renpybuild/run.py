@@ -292,6 +292,7 @@ def build_environment(c):
         c.env("STRIP", "ccache  {{ crossbin }}strip")
         c.env("NM", "{{ crossbin}}nm")
         c.env("CHOST", "{{host_platform}}")
+        c.env("HOSTCC", "{{CC}}")
 
         c.env("CFLAGS", "{{ CFLAGS }} -DSDL_MAIN_HANDLED")
 
