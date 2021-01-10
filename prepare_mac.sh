@@ -30,46 +30,7 @@ brew install zlib
 
 
 # Install the standard set of packages needed to build Ren'Py.
-brew install ffmpeg \
---with-chromaprint \
---with-fdk-aac \
---with-fontconfig \
---with-freetype \
---with-frei0r \
---with-game-music-emu \
---with-libass \
---with-libbluray \
---with-libbs2b \
---with-libcaca \
---with-libgsm \
---with-libmodplug \
---with-libsoxr \
---with-libssh \
---with-libvidstab \
---with-libvorbis \
---with-libvpx \
---with-opencore-amr \
---with-openh264 \
---with-openjpeg \
---with-openssl \
---with-opus \
---with-rtmpdump \
---with-rubberband \
---with-sdl2 \
---with-snappy \
---with-speex \
---with-tesseract \
---with-theora \
---with-tools \
---with-two-lame \
---with-wavpack \
---with-webp \
---with-x265 \
---with-xz \
---with-zeromq \
---with-zimg
-
-brew install freetype fribidi glew sdl2 sdl2_image sdl2_gfx sdl2_mixer sdl2_ttf jpeg-turbo
+brew install ffmpeg freetype fribidi glew sdl2 sdl2_image sdl2_gfx sdl2_mixer sdl2_ttf jpeg-turbo
 
 mkdir -p "$BASE/tmp"
 
