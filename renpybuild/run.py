@@ -15,7 +15,7 @@ def build_environment(c):
     c.var("ndk_version", ndk_version)
     c.var("ndk_version_alone", ndk_version_alone)
  
-    c.var("make", "nice make -j 12")
+    c.var("make", "make -j 12")
 
     c.var("sysroot", c.tmp / f"sysroot.{c.platform}-{c.arch}")
     c.var("build_platform", sysconfig.get_config_var("HOST_GNU_TYPE"))
@@ -264,6 +264,8 @@ def build_environment(c):
 
     elif (c.platform == "android") and (c.arch == "armeabi_v7a"):
 
+        c.var("ndk_root", "{{ cross }}/android-ndk-r{{ndk_version}}")
+        c.var("ndk_toolchain", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/bin")
         c.var("crossbin", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-")
         c.var("crossclang", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/bin/{{ host_platform }}{{ndk_version_alone}}-")
 
@@ -271,18 +273,25 @@ def build_environment(c):
         c.var("sysroot_include", "{{sysroot}}/usr/include")
         c.var("sysroot_lib", "{{sysroot}}/usr/lib/arm-linux-androideabi/{{ndk_version_alone}}")
 
+        #print("NDK ROOT///////////")
+        #print(c.get_var("{{ndk_toolchain}}"))
+        #c.env("ANDROID_NDK_HOME", "{{ndk_toolchain}}")
+        #c.env("PATH", "{{PATH}}:{{ndk_toolchain}}")
+
+
         #c.env("SYSROOT_INCLUDE", "{{sysroot_include}}")
         #c.env("SYSROOT_LIB", "{{sysroot_lib}}")
 
         c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -fno-integrated-as")
         c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3   -fno-integrated-as")
         c.env("CPP", "ccache {{ crossclang }}clang -E")
-        #c.env("LD", "ccache {{ crossclang }}clang ")
+        c.env("LD", "ccache {{ crossclang }}clang ")
         #c.env("LDSHARED", "ccache {{ crossclang }}clang ")
         c.env("AR", "ccache {{ crossbin }}ar")
         c.env("RANLIB", "ccache {{ crossbin }}ranlib")
         c.env("STRIP", "ccache  {{ crossbin }}strip")
         c.env("NM", "{{ crossbin}}nm")
+        c.env("CHOST", "{{host_platform}}")
 
         c.env("CFLAGS", "{{ CFLAGS }} -DSDL_MAIN_HANDLED")
 
@@ -346,7 +355,7 @@ def build_environment(c):
 
         c.env("CCFLAGS", " -static ")
         c.env("LDFLAGS", " -static  ")
-        c.env("LDSHARED", " -shared ")
+
         c.env("CC", "ccache clang ")
         c.env("CXX", "ccache clang ")
         c.env("CPP", "ccache clang -E")
@@ -359,6 +368,7 @@ def build_environment(c):
 
 
     if c.kind != "host":
+        c.var("has_context", "True")
         c.var("cross_config", "--host={{ host_platform }} --build={{ build_platform }}")
         c.var("sdl_cross_config", "--host={{ sdl_host_platform }} --build={{ build_platform }}")
         c.var("ffi_cross_config", "--host={{ ffi_host_platform }} --build={{ build_platform }}")
@@ -366,20 +376,26 @@ def build_environment(c):
         print(c.get_var("{{cross_config}}"))
 
 
-def run(command, context, verbose=False, quiet=False):
+def run(command, context, verbose=False, quiet=False, has_context=False):
     args = shlex.split(command)
-
 
     print("//////// COMMAND ////////")
     print(command)
     if verbose:
         print(" ".join(shlex.quote(i) for i in args))
 
-    if not quiet:
-        p = subprocess.run(command, shell=True, cwd=context.cwd)
+    if has_context:
+        if not quiet:
+            p = subprocess.run(command, shell=True, cwd=context.cwd, env=context.environ)
+        else:
+            with open("/dev/null", "w") as f:
+                p = subprocess.run(command, shell=True, cwd=context.cwd, env=context.environ, stdout=f, stderr=f)
     else:
-        with open("/dev/null", "w") as f:
-            p = subprocess.run(command, shell=True, cwd=context.cwd, stdout=f, stderr=f)
+        if not quiet:
+            p = subprocess.run(command, shell=True, cwd=context.cwd)
+        else:
+            with open("/dev/null", "w") as f:
+                p = subprocess.run(command, shell=True, cwd=context.cwd, stdout=f, stderr=f)
 
     if p.returncode != 0:
         print(f"{context.task_name}: process failed with {p.returncode}.")

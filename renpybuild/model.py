@@ -242,8 +242,13 @@ class Context:
             and then is run using popen.
         """
 
+        has_context = False
+
+        if self.variables.get("has_context"):
+            has_context = True
+        
         command = self.expand(command)
-        renpybuild.run.run(command, self, verbose, quiet)
+        renpybuild.run.run(command, self, verbose, quiet, has_context)
 
     def clean(self, d="{{build}}"):
         """
