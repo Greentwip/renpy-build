@@ -25,8 +25,11 @@ brew install cmake xml2
 # Needed for web
 brew install quilt
 
-# Neede for pyenv
+# Needed for pyenv
 brew install zlib
+
+# Needed for some build scripts
+brew install coreutils
 
 
 # Install the standard set of packages needed to build Ren'Py.
