@@ -93,10 +93,16 @@ class ZipFileWithPermissions(ZipFile):
 def build(c):
     c.var("ndk_version", ndk_version)
 
-    if c.path("{{cross}}/android-ndk-r{{ndk_version}}-linux-x86_64").exists():
-        return
+    if c.platform == "mac":
+        if c.path("{{cross}}/android-ndk-r{{ndk_version}}-linux-x86_64").exists():
+            return
+        zf = ZipFileWithPermissions(c.path("{{ tars }}/android-ndk-r{{ndk_version}}-darwin-x86_64.zip"))            
+    else:
+        if c.path("{{cross}}/android-ndk-r{{ndk_version}}-linux-x86_64").exists():
+                    return        
+        zf = ZipFileWithPermissions(c.path("{{ tars }}/android-ndk-r{{ndk_version}}-linux-x86_64.zip"))                    
 
-    zf = ZipFileWithPermissions(c.path("{{ tars }}/android-ndk-r{{ndk_version}}-linux-x86_64.zip"))
+    
     zf.extractall(c.path("{{ install }}"))
     zf.close()
 
