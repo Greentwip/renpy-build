@@ -13,6 +13,14 @@ macOS, Xcode, XCode command line tools, Python 3.9 and pyenv
 Preparing
 ---------
 
+To install Python 3 via pyenv you need to run:
+brew install openssl
+brea install bzip2 
+brew install zlib
+
+And finally:
+brew install pyenv
+
 Before getting into code you have to ensure and install pyenv and
 run the following:
 
@@ -28,6 +36,7 @@ https://github.com/pyenv/pyenv/wiki/Common-build-problems#build-failed-error-the
 Most likely you would run:
 CCFLAGS="-I$(brew --prefix openssl)/include  -I$(brew --prefix bzip2)/include -I$(brew --prefix zlib)/include -I$(xcrun --show-sdk-path)/usr/include" LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix zlib)/lib -L$(brew --prefix bzip2)/lib"  pyenv install -v 3.9.0
 
+Which has openssl, bzip and zlib paths from brew.
 
 To get ready to build, run the following
 command to clone renpy-build::
