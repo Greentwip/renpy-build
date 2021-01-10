@@ -8,7 +8,7 @@ REFS=$ROOT
 BASE="$ROOT"
 
 # Needed to build things.
-brew install ccache python
+brew install ccache
 
 # Needed by renpy-build itself.
 brew install jinja2-cli
