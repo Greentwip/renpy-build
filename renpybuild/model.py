@@ -210,6 +210,9 @@ class Context:
             self.variables[variable] = self.expand(str(value))
         else:
             self.variables[variable] = value
+
+    def get_var(self, variable):
+        return self.expand(str(variable))
     
     def print_var(self, variable):
         """
