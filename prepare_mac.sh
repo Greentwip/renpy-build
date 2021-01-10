@@ -8,24 +8,19 @@ REFS=$ROOT
 BASE="$ROOT"
 
 # Needed to build things.
-brew install ccache
-brew install python
+brew install ccache python
 
 # Needed by renpy-build itself.
 brew install jinja2-cli
 
 # Needed by gcc.
-brew install gmp
-brew install mpfr
-brew install mpc
+brew install gmp mpfr mpc
 
 # Needed by hostpython.
-brew install openssl
-brew install bzip2
+brew install openssl bzip2
 
 # Needed for mac
-brea install cmake
-brew install xml2
+brew install cmake xml2
 
 # Needed for web
 brew install quilt
@@ -74,15 +69,7 @@ brew install ffmpeg \
 --with-zeromq \
 --with-zimg
 
-brew install freetype
-brew install fribidi
-brew install glew
-brew install sdl2
-brew install sdl2_image 
-brew install sdl2_gfx 
-brew install sdl2_mixer
-brew install sdl2_ttf
-brew install jpeg-turbo
+brew install freetype fribidi glew sdl2 sdl2_image sdl2_gfx sdl2_mixer sdl2_ttf jpeg-turbo
 
 mkdir -p "$BASE/tmp"
 
