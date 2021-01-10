@@ -34,12 +34,10 @@ brew install ffmpeg freetype fribidi glew sdl2 sdl2_image sdl2_gfx sdl2_mixer sd
 
 mkdir -p "$BASE/tmp"
 
-# Set up the environment variables.
-pip install --upgrade pip
-pip install virtualenv
-
 
 VENV="$ROOT/tmp/virtualenv.py3"
+
+export RENPY_DEPS_INSTALL=/usr/local::/usr::/usr/lib::usr/local/lib
 
 . $BASE/nightly/git.sh
 . $BASE/nightly/python.sh
