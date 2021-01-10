@@ -26,7 +26,7 @@ Refer to this:
 https://github.com/pyenv/pyenv/wiki/Common-build-problems#build-failed-error-the-python-zlib-extension-was-not-compiled-missing-the-zlib
 
 Most likely you would run:
-FLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix zlib)/include -I$(xcrun --show-sdk-path)/usr/include" LDFLAGS="-L$(brew --prefix openssl)/lib L$(brew --prefix zlib)/lib" pyenv install -v 3.9.0
+CCFLAGS="-I$(brew --prefix openssl)/include  -I$(brew --prefix bzip2)/include -I$(brew --prefix zlib)/include -I$(xcrun --show-sdk-path)/usr/include" LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix zlib)/lib -L$(brew --prefix bzip2)/lib"  pyenv install -v 3.9.0
 
 
 To get ready to build, run the following
