@@ -14,7 +14,7 @@ def gen_static(c):
     c.chdir("{{ pygame_sdl2 }}")
     c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
     c.env("_PYTHON_SYSCONFIGDATA_NAME", "_sysconfigdata__linux_")
-    c.env("CFLAGS", "{{CFLAGS}} -I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include")
+    c.env("CFLAGS", "{{CFLAGS}} -I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include -shared")
     c.env("LDFLAGS", "{{LDFLAGS}} -shared -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib")
 
     os.environ['_PYTHON_SYSCONFIGDATA_NAME'] = '_sysconfigdata__linux_'

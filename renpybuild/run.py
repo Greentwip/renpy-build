@@ -24,8 +24,8 @@ def build_environment(c):
     c.env("CFLAGS", "-I{{ install }}/include")
 
     if c.platform == "android":
-        c.env("CPPFLAGS", "")
-        c.env("CFLAGS", "")
+        c.env("CPPFLAGS", " -static ")
+        c.env("CFLAGS", " -static ")
     else:
         c.env("CPPFLAGS", "{{CPPFLAGS}} -static -static-libgcc -static-libstdc++")
         c.env("CFLAGS", "{{CFLAGS}} -static -static-libgcc -static-libstdc++")
@@ -59,7 +59,7 @@ def build_environment(c):
         c.var("host_platform", "x86_64-apple-darwin")
 
     if c.platform == "android":
-        c.env("LDFLAGS", " -shared ")
+        c.env("LDFLAGS", " -static ")
     else:
         c.env("LDFLAGS", "-L{{install}}/lib")
 
