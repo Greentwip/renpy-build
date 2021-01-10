@@ -25,7 +25,6 @@ Before getting into code you have to ensure and install pyenv and
 run the following:
 
     pyenv install 3.9.0
-    pyenv local 3.9.0
     pyenv global 3.9.0
 
 Note: There seems to be a bug while installing with pyenv on mac, zlib can't be found.
@@ -34,7 +33,7 @@ Refer to this:
 https://github.com/pyenv/pyenv/wiki/Common-build-problems#build-failed-error-the-python-zlib-extension-was-not-compiled-missing-the-zlib
 
 Most likely you would run:
-CCFLAGS="-I$(brew --prefix openssl)/include  -I$(brew --prefix bzip2)/include -I$(brew --prefix zlib)/include -I$(xcrun --show-sdk-path)/usr/include" LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix zlib)/lib -L$(brew --prefix bzip2)/lib"  pyenv install -v 3.9.0
+CCFLAGS="-I$(brew --prefix openssl)/include  -I$(brew --prefix bzip2)/include -I$(brew --prefix zlib)/include -I$(xcrun --show-sdk-path)/usr/include" LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix zlib)/lib -L$(brew --prefix bzip2)/lib"  pyenv install 3.9.0
 
 Which has openssl, bzip and zlib paths from brew.
 
