@@ -15,8 +15,6 @@ def unpack(c):
 def build(c):
     c.var("version", version)
 
-    c.env("LDFLAGS", " -static ")
-
     c.chdir("nasm-{{version}}")
     c.run("""./configure --prefix="{{install}}" """)
     c.run("""{{ make }}""")

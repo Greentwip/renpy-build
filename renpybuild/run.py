@@ -30,8 +30,6 @@ def build_environment(c):
         c.env("CPPFLAGS", "{{CPPFLAGS}} -static -static-libgcc -static-libstdc++")
         c.env("CFLAGS", "{{CFLAGS}} -static -static-libgcc -static-libstdc++")
 
-    c.env("PATH", "{{ host }}/bin:{{ PATH }}")
-
     print("ARCH///////////")
     print(c.arch)
 
@@ -332,6 +330,34 @@ def build_environment(c):
 
     c.env("CFLAGS", "{{ CFLAGS }} -DRENPY_BUILD")
 
+    if c.kind == "host":
+        print("IS HOST/////////////")
+        print(c.get_var("{{host_platform}}"))
+        c.var("sysroot", " /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk")
+        c.platform = "mac"
+        c.arch = "x86_64"
+        c.var("host_platform", "x86_64-apple-darwin20.2.0")
+
+        c.env("SDKROOT", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk")
+
+        print(c.get_var("{{PATH}}/usr/lib"))
+        c.var("sysroot_include", " -I{{sysroot}}/usr/include")
+        c.var("sysroot_lib", "-L {{sysroot}}/usr/lib")
+
+        c.env("CCFLAGS", " -static ")
+        c.env("LDFLAGS", " -static  ")
+        c.env("LDSHARED", " -shared ")
+        c.env("CC", "ccache clang ")
+        c.env("CXX", "ccache clang ")
+        c.env("CPP", "ccache clang -E")
+        c.env("LD", "ccache ld ")
+        c.env("AR", "ccache ar")
+        c.env("RANLIB", "ccache ranlib")
+        c.env("STRIP", "ccache  strip")
+        c.env("NM", "nm")
+
+
+
     if c.kind != "host":
         c.var("cross_config", "--host={{ host_platform }} --build={{ build_platform }}")
         c.var("sdl_cross_config", "--host={{ sdl_host_platform }} --build={{ build_platform }}")
@@ -345,10 +371,10 @@ def run(command, context, verbose=False, quiet=False):
         print(" ".join(shlex.quote(i) for i in args))
 
     if not quiet:
-        p = subprocess.run(args, cwd=context.cwd, env=context.environ)
+        p = subprocess.run(command, shell=True, cwd=context.cwd)
     else:
         with open("/dev/null", "w") as f:
-            p = subprocess.run(args, cwd=context.cwd, env=context.environ, stdout=f, stderr=f)
+            p = subprocess.run(command, shell=True, cwd=context.cwd, stdout=f, stderr=f)
 
     if p.returncode != 0:
         print(f"{context.task_name}: process failed with {p.returncode}.")

@@ -8,7 +8,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xzf {{source}}/xz-{{version}}.tar.gz")
+    c.run("tar -xzf {{source}}/xz-{{version}}.tar.gz")
 
 
 @task()
