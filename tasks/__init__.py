@@ -2,6 +2,7 @@
 import os
 
 from . import sysroot
+from . import gcc
 from . import toolchain
 from . import nasm
 

@@ -32,6 +32,9 @@ def build_environment(c):
 
     c.env("PATH", "{{ host }}/bin:{{ PATH }}")
 
+    print("ARCH///////////")
+    print(c.arch)
+
     if (c.platform == "linux") and (c.arch == "x86_64"):
         c.var("host_platform", "x86_64-pc-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "i686"):
@@ -43,7 +46,7 @@ def build_environment(c):
     elif (c.platform == "windows") and (c.arch == "i686"):
         c.var("host_platform", "i686-w64-mingw32")
     elif (c.platform == "mac") and (c.arch == "x86_64"):
-        c.var("host_platform", "x86_64-apple-darwin14")
+        c.var("host_platform", "x86_64-apple-darwin20.2.0")
     elif (c.platform == "android") and (c.arch == "x86_64"):
         c.var("host_platform", "x86_64-linux-android")
     elif (c.platform == "android") and (c.arch == "arm64_v8a"):
