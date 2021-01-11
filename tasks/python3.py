@@ -1,7 +1,7 @@
 from renpybuild.model import task, annotator
 import os
 
-version = "3.9.1"
+version = "3.9.0"
 
 
 @annotator
@@ -19,7 +19,7 @@ def unpack(c):
     c.clean()
 
     c.var("version", version)
-    c.run("tar xvf {{source}}/Python-{{version}}.tgz")
+    c.run("tar xzf {{source}}/Python-{{version}}.tgz")
 
 
 @task(kind="python", pythons="3", platforms="linux,mac,ios")
@@ -124,27 +124,30 @@ def build_android(c):
     c.env("CFLAGS", "{{ CFLAGS }} -DHAVE_EXPAT_CONFIG_H")
     c.env("CFLAGS", "{{ CFLAGS }} -DOPENSSL_THREADS ")
 
-    c.env("CPPFLAGS", "{{CFLAGS}}")
 
-    #c.env("CFLAGS", "{{ CFLAGS }} -shared ")
+    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include ")
+    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include/ncursesw ")
 
+    c.env("CFLAGS", "{{ CFLAGS }} -static ")
+    c.env("CPPFLAGS", "{{ CFLAGS }} ")
 
-    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include -I{{sysroot_include}} ")
-    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include/ncursesw  -fno-math-errno")
+    c.env("LDFLAGS", "")
+    c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib ")
 
-    c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib -L{{sysroot_lib}} -lc -lm")
-    #c.env("LDFLAGS", "{{ LDFLAGS }} -shared ")    
+    c.env("LDFLAGS", "{{ LDFLAGS }} -static ")
+
+    c.env("PYTHON_TARGET_PLATFORM", "android")
+
+    c.env("PYTHOH_TARGET_SOURCE_DIR", c.cwd)
 
     c.env("READELF", "arm-linux-androideabi-readelf")
-    c.run("""./configure {{ cross_config }}  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
-    
+    #c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
+
+
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     c.run("""{{ make }}""")
-    quit()
-    c.run("""{{ make }} install""")
-
-    
+    c.run("""{{ make }} install""")    
 
     c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
 

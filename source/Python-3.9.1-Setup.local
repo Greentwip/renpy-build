@@ -553,7 +553,6 @@ _decimal/libmpdec/numbertheory.c \
 _decimal/libmpdec/sixstep.c \
 _decimal/libmpdec/transpose.c \
 -DUNIVERSAL \
--Wno-implicit-function-declaration \
 -IModules/_decimal/libmpdec
 
 # The rest of the modules listed in this file are all commented out by
