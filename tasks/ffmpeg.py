@@ -54,9 +54,20 @@ def build(c):
     c.var("version", version)
     c.chdir("ffmpeg-{{version}}")
 
-    c.run("""
+    c.env("CFLAGS", "-I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include")
+    c.env("LDFLAGS", "-L{{sysroot_lib}} -L{{install}} -L{{install}}/lib ")
+    c.env("CFLAGS", "{{CFLAGS}} -DANDROID")
+    c.env("CFLAGS", "{{CFLAGS}} -D__ANDROID__")
+    c.env("CFLAGS", "{{ CFLAGS }} -static")
+
+    c.env("LDFLAGS", "{{ CFLAGS }} -static")
+
+    configure_string = """
     ./configure
         --prefix="{{ install }}"
+
+        --disable-programs
+        --disable-shared --enable-static
 
         --arch={{ arch }}
         --target-os={{ os }}
@@ -169,7 +180,10 @@ def build(c):
         --disable-vaapi
         --disable-vdpau
         --disable-videotoolbox
-    """)
+    """
+
+    configure_string = configure_string.replace("\n", "")
+    c.run(configure_string)
 
     c.run("""{{ make }} V=1""")
     c.run("""make install""")

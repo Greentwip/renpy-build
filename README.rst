@@ -8,12 +8,26 @@ the same manner that is used to make official Ren'Py releases.
 Greentwip's notes
 -------------
 Be aware that there are several patches done to the required libraries, such as 
-Python 3 implicit function declarations warnings instead of errors,
+Python 3 and FFMPEG implicit function declarations warnings instead of errors (configure.ac and configure),
 sysconfigdata using a generic linux name __sysconfigdata__linux or something like that, 
 SDL2 fseek64, fopen64 and so on for android use normal fseek and fopen, 
 the gdbm library Python 3 module got patched so it does not use errno (unavailable in android)
 and finally the test program in SDL2_image replaced with a blank main function, it failed to link and
 for some reason the configure script always wanted to make it
+
+Other changes include SDL2_cpuinfo.c info sys/sysctl.h 
+
+#include <sys/types.h>
+#include <sys/sysctl.h>
+
+and same apply to FFMPEG libavutil/cpu.c  via
+
+#if defined(ANDROID) || defined(__ANDROID__) 
+#undef HAVE_SYSCTL
+#endif
+
+I didn't create patches so if you update the libraries you will have to find a way with these notes,
+unless maintainers update to compile with Android.
 
 Requirements
 -------------
