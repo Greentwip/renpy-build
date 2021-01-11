@@ -16,8 +16,8 @@ def build(c):
     c.var("version", version)
     c.chdir("SDL2_image-{{version}}")
 
-    c.env("CFLAGS", "-I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include")
-    c.env("LDFLAGS", "-shared -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib")
+    c.env("CFLAGS", "-static -I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include")
+    c.env("LDFLAGS", "-static -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib")
 
 
     c.env("CFLAGS", "{{CFLAGS}} -DANDROID")
@@ -25,13 +25,7 @@ def build(c):
     if c.platform == "windows":
         c.env("ac_cv_lib_jpeg_jpeg_CreateDecompress", "yes")
 
-    c.run("""./configure {{ cross_config }} --prefix="{{ install }}"
-    --disable-tif
-    --disable-imageio
-    --enable-webp
-    --disable-xcf
-    --disable-svg
-    """)
+    c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --disable-tif --disable-imageio --enable-webp --disable-xcf --disable-svg """)
 
     c.run("""{{ make }}""")
     c.run("""make install""")

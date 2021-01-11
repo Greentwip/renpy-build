@@ -1,7 +1,7 @@
 from renpybuild.model import task, annotator
 import shutil
 
-version = "2.0.14"
+version = "2.0.12"
 
 
 @annotator
@@ -31,37 +31,11 @@ def build(c):
         c.env("CFLAGS", "{{ CFLAGS }} -fobjc-arc")
 
     c.env("ac_cv_header_libunwind_h", "no")
-    c.env("CFLAGS", "-I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include")
-    c.env("LDFLAGS", "-shared -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib ")
+    c.env("CFLAGS", " -static -I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include")
+    c.env("LDFLAGS", " -static -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib ")
     c.env("CFLAGS", "{{CFLAGS}} -DANDROID")
 
-    c.run("""
-    ./configure {{ sdl_cross_config }}
-    --prefix="{{ install }}"
-
-    --disable-wasapi
-    --disable-render-metal
-    --disable-jack
-
-{% if c.platform in [ "linux", "windows", "mac" ] %}
-    --enable-hidapi
-{% endif %}
-
-{% if c.platform == "android" %}
-    --disable-video-wayland
-    --disable-video-x11
-
-    --disable-oss
-    --disable-alsa
-    --disable-esd
-    --disable-pulseaudio
-    --disable-arts
-    --disable-nas
-    --disable-sndio
-    --disable-fusionsound
-{% endif %}
-
-    """)
+    c.run("""./configure {{ sdl_cross_config }} --prefix="{{ install }}" """)
 
     if c.platform == "ios":
         with open(c.path("include/SDL_config.h"), "a") as f:
