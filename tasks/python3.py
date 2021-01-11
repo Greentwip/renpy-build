@@ -141,7 +141,7 @@ def build_android(c):
     c.env("PYTHOH_TARGET_SOURCE_DIR", c.cwd)
 
     c.env("READELF", "arm-linux-androideabi-readelf")
-    #c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
+    c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
@@ -184,7 +184,7 @@ eval $PYTHON_FOR_BUILD ../../Tools/scripts/h2py.py -i "'(u_long)'" $REGENHEADER
 def pip(c):
 
     if (c.platform == "android"):
-        c.copy("{{ host }}/lib/python3.9/_sysconfigdata__linux_x86_64-linux-gnu.py", "{{ host }}/lib/python3.9/lib-dynload/_sysconfigdata__linux_x86_64-linux-gnu.py")
+        c.copy("{{ host }}/lib/python3.9/_sysconfigdata__darwin_darwin.py", "{{ host }}/lib/python3.9/lib-dynload/_sysconfigdata__darwin_darwin.py")
 
     c.env("PYTHONPATH", '{{host}}/lib/python3.9/lib-dynload')
     exec_string = "{{ install }}/bin/hostpython3 -s "
