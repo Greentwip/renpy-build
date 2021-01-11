@@ -5,6 +5,16 @@ The purpose of the Ren'Py build system is to provide a single system that
 can build the binary components of Ren'Py and all its dependencies, in
 the same manner that is used to make official Ren'Py releases.
 
+Greentwip's notes
+-------------
+Be aware that there are several patches done to the required libraries, such as 
+Python 3 implicit function declarations warnings instead of errors,
+sysconfigdata using a generic linux name __sysconfigdata__linux or something like that, 
+SDL2 fseek64, fopen64 and so on for android use normal fseek and fopen, 
+the gdbm library Python 3 module got patched so it does not use errno (unavailable in android)
+and finally the test program in SDL2_image replaced with a blank main function, it failed to link and
+for some reason the configure script always wanted to make it
+
 Requirements
 -------------
 
