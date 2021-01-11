@@ -1,7 +1,7 @@
 from renpybuild.model import task, annotator
 import os
 
-version = "3.9.0"
+version = "3.9.1"
 
 
 @annotator
@@ -124,21 +124,24 @@ def build_android(c):
     c.env("CFLAGS", "{{ CFLAGS }} -DHAVE_EXPAT_CONFIG_H")
     c.env("CFLAGS", "{{ CFLAGS }} -DOPENSSL_THREADS ")
 
+    c.env("CPPFLAGS", "{{CFLAGS}}")
 
-    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include ")
-    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include/ncursesw ")
+    #c.env("CFLAGS", "{{ CFLAGS }} -shared ")
 
-    c.env("LDFLAGS", "")
-    c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib ")
+
+    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include -I{{sysroot_include}} ")
+    c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include/ncursesw  -fno-math-errno")
+
+    c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib -L{{sysroot_lib}} -lc -lm")
+    #c.env("LDFLAGS", "{{ LDFLAGS }} -shared ")    
 
     c.env("READELF", "arm-linux-androideabi-readelf")
     c.run("""./configure {{ cross_config }}  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
-
-
+    
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
     c.run("""{{ make }}""")
-
+    quit()
     c.run("""{{ make }} install""")
 
     

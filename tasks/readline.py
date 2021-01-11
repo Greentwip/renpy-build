@@ -16,6 +16,6 @@ def build(c):
     c.var("version", version)
     c.chdir("readline-{{version}}")
 
-    c.run("./configure {{ cross_config }} bash_cv_wcwidth_broken=yes --prefix={{install}}")
+    c.run("./configure {{ cross_config }} -disable-shared bash_cv_wcwidth_broken=yes --prefix={{install}}")
     c.run("{{ make }}")
     c.run("make install")
