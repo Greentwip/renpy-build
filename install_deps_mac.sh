@@ -30,4 +30,4 @@ brew install coreutils
 # Install the standard set of packages needed to build Ren'Py.
 brew install ffmpeg freetype fribidi glew sdl2 sdl2_image sdl2_gfx sdl2_mixer sdl2_ttf jpeg-turbo
 
-mkdir -p "$BASE/tmp"
+. $BASE/nightly/git.sh
