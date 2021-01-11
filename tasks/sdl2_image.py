@@ -31,5 +31,4 @@ def build(c):
     
     c.run("""{{ make }}""")
     c.run("""{{ make }} install""")
-    quit()
 
