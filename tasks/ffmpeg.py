@@ -58,16 +58,16 @@ def build(c):
     c.env("LDFLAGS", "-L{{sysroot_lib}} -L{{install}} -L{{install}}/lib ")
     c.env("CFLAGS", "{{CFLAGS}} -DANDROID")
     c.env("CFLAGS", "{{CFLAGS}} -D__ANDROID__")
-    c.env("CFLAGS", "{{ CFLAGS }} -static")
+    c.env("CFLAGS", "{{ CFLAGS }} -shared")
 
-    c.env("LDFLAGS", "{{ CFLAGS }} -static")
+    c.env("LDFLAGS", "{{ CFLAGS }} -shared")
 
     configure_string = """
     ./configure
         --prefix="{{ install }}"
 
         --disable-programs
-        --disable-shared --enable-static
+        --enable-shared --disable-static
 
         --arch={{ arch }}
         --target-os={{ os }}

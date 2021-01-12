@@ -10,30 +10,45 @@ def clean(c):
 
 @task(kind="python", always=True)
 def gen_static(c):
+    print("// GEN STATIC //")
     c.var("python_version", python_version)
 
-    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
     c.chdir("{{ renpy }}/module")
 
-    c.env("RENPY_COVERAGE", "True")
     c.env("RENPY_ANDROID", "True")
+    c.env("PYGAME_SDL2_ANDROID", "True")
+
+    c.env("CFLAGS", "-I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include -shared")
+    c.env("LDFLAGS", "-L{{sysroot_lib}} -L{{install}} -L{{install}}/lib -shared")
 
     c.env("{{CFLAGS}}", "{{CFLAGS}} -DANDROID")
 
+    #c.env("PYGAME_SDL2_CFLAGS", "{{CFLAGS}}")
+    #c.env("PYGAME_SDL2_LDFLAGS", "{{LDFLAGS}}")
+
+    c.env("PY_OVERRIDEN_CROSS_BUILD", "True")
+
+    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
+    c.env("_PYTHON_SYSCONFIGDATA_NAME", "_sysconfigdata__linux_")
+
+    #c.env("RENPY_EXTRA_LIB_DIRS", "-l{{sysroot_lib}} -l{{install}} -l{{install}}/lib")
+    #c.env("PY_DISTUTILS_EXT_LIB_DIRS", "-l{{sysroot_lib}} -l{{install}} -l{{install}}/lib")
 
     if c.platform == "android":
         c.env("RENPY_DEPS_INSTALL", "{{sysroot_include}}::{{sysroot_lib}}::{{install}}::{{install}}/lib::{{install}}/include")
     else:
         c.env("RENPY_DEPS_INSTALL", "/usr::/usr/lib/x86_64-linux-gnu/")
 
-    c.env("RENPY_STATIC", "1")
     c.run("{{ hostpython }} setup.py build")
+
+    quit()
 
 
 @task(kind="python", always=True)
 def build(c):
+    print("RENPY BUILD")
 
-    c.env("CFLAGS", """{{ CFLAGS }} "-I{{ pygame_sdl2 }}" "-I{{ pygame_sdl2 }}/src" "-I{{ renpy }}/module" """)
+    c.env("CFLAGS", """"-I{{ pygame_sdl2 }}" "-I{{ pygame_sdl2 }}/src" "-I{{ renpy }}/module" """)
 
     if c.python == "3":
         gen = "gen3-static/"

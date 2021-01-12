@@ -269,7 +269,7 @@ def build_environment(c):
         c.var("crossbin",      "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-")
         c.var("crossclang", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/bin/{{ host_platform }}{{ndk_version_alone}}-")
 
-        c.var("sysroot", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/linux-x86_64/sysroot")
+        c.var("sysroot", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/sysroot")
         c.var("sysroot_include", "{{sysroot}}/usr/include")
         c.var("sysroot_lib", "{{sysroot}}/usr/lib/arm-linux-androideabi/{{ndk_version_alone}}")
 
@@ -286,7 +286,7 @@ def build_environment(c):
         c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3   -fno-integrated-as")
         c.env("CPP", "ccache {{ crossclang }}clang -E")
         c.env("LD", "ccache {{ ndk_toolchain }}/ld ")
-        #c.env("LDSHARED", "ccache {{ crossclang }}clang ")
+        c.env("LDSHARED", "ccache {{ ndk_toolchain }}/ld ")
         c.env("AR", "ccache {{ crossbin }}ar")
         c.env("RANLIB", "ccache {{ crossbin }}ranlib")
         c.env("STRIP", "ccache  {{ crossbin }}strip")
