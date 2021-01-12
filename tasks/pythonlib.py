@@ -219,6 +219,7 @@ def pyo_copy(src, dst):
 
 @task(kind="host-python", pythons="3", always=True)
 def python3(c):
+    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
 
     search = [
         c.path("{{ install }}/lib/{{ pythonver }}"),
@@ -231,6 +232,8 @@ def python3(c):
 
     c.clean("{{ distlib }}/{{ pythonver }}")
     c.run("{{ hostpython }} -OO -m compileall {{ install }}/lib/{{ pythonver }}/site-packages")
+
+    quit()
 
     for i in PYTHON27_MODULES.split():
 

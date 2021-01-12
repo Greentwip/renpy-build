@@ -96,8 +96,20 @@ static PyMethodDef AndroidEmbedMethods[] = {
     {NULL, NULL, 0, NULL}
 };
 
+
+static struct PyModuleDef renpythonModDef =
+{
+    PyModuleDef_HEAD_INIT,
+    "androidembed", /* name of module */
+    "",          /* module documentation, may be NULL */
+    -1,          /* size of per-interpreter state of the module, or -1 if the module keeps state in global variables. */
+    AndroidEmbedMethods
+};
+
+
 PyMODINIT_FUNC initandroidembed(void) {
-    (void) Py_InitModule("androidembed", AndroidEmbedMethods);
+    PyModule_Create(&renpythonModDef);
+    //(void) Py_InitModule("androidembed", AndroidEmbedMethods);
 }
 
 static struct _inittab inittab[] = {

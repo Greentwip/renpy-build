@@ -108,17 +108,21 @@ def link_linux(c):
 @task(kind="python", always=True, platforms="android")
 def link_android(c):
 
+    renpy_build_ldfags = """"""
+
+    renpy_build_ldfags += """ -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib """
+
+    c.env("LDFLAGS", renpy_build_ldfags)
+
     renpy_args = """
-    {{ CC }} {{ LDFLAGS }}
+    {{ LD }} {{ LDFLAGS }}
     -shared
-    -Wl,-Bsymbolic
-    -Wl,--no-undefined
 
     -o librenpython.so
     librenpython_android.o
 
-    -lrenpy
     -l{{ pythonver }}
+    -lrenpy
 
     -lavformat
     -lavcodec
@@ -126,8 +130,8 @@ def link_android(c):
     -lswresample
     -lavutil
 
-    -lSDL2_image
-    -lSDL2
+    -l:libSDL2.a
+    -l:libSDL2_image.a
 
     -lGLESv1_CM
     -lGLESv2
