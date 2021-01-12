@@ -41,7 +41,7 @@ def gen_static(c):
 
     c.run("{{ hostpython }} setup.py build")
 
-    quit()
+    print("RENPY GEN STATIC DONE")
 
 
 @task(kind="python", always=True)
