@@ -15,18 +15,17 @@ fi
 
 . $VENV/bin/activate
 
-
 if [ "$1" == "build" ]; then
     pushd "$ROOT"
         ./build.py --platform android rebuild rapt rapt-sdl2
     popd    
 elif [ "$1" == "install-sdk" ]; then
-    pushd "$ROOT/renpy/rapt2"
+    pushd "$ROOT/renpy/rapt3"
         export PGS4A_NO_TERMS=1
 	    python android.py installsdk
     popd
 elif [ "$1" != "" ]; then
-    pushd "$ROOT/renpy/rapt2"
+    pushd "$ROOT/renpy/rapt3"
         ./android.py build "$1" installDebug --launch
     popd
 fi
