@@ -48,12 +48,31 @@ def gen_static(c):
 def build(c):
     print("RENPY BUILD")
 
-    c.env("CFLAGS", """"-I{{ pygame_sdl2 }}" "-I{{ pygame_sdl2 }}/src" "-I{{ renpy }}/module" """)
 
-    if c.python == "3":
-        gen = "gen3-static/"
-    else:
-        gen = "gen-static/"
+    
+
+    renpy_build_cflags = """"""
+    renpy_build_cflags += """ -I{{ pygame_sdl2 }} """
+    renpy_build_cflags += """ -I{{ pygame_sdl2 }}/src """
+    renpy_build_cflags += """ -I{{ renpy }}/module """
+    renpy_build_cflags += """ -I{{install}}/include/SDL2 """
+    renpy_build_cflags += """ -I{{install}}/include/fribidi """
+    renpy_build_cflags += """ -I{{sysroot_include}} -I{{install}}/include -I{{install}}/include/python3.9 """
+
+    c.env("CFLAGS", renpy_build_cflags)
+
+    renpy_build_ldfags = """"""
+
+    renpy_build_ldfags += """ -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib """
+
+    c.env("LDFLAGS", renpy_build_ldfags)
+
+#    if c.python == "3":
+#        gen = "gen3-static/"
+#    else:
+#        gen = "gen-static/"
+
+    gen = "gen/"
 
     modules = [ ]
     sources = [ ]
