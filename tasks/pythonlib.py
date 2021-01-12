@@ -1,6 +1,7 @@
 from renpybuild.model import task
 
 import shutil
+python_version = "3.9"
 
 PYTHON27_MODULES = """
 genericpath.pyo
@@ -219,6 +220,7 @@ def pyo_copy(src, dst):
 
 @task(kind="host-python", pythons="3", always=True)
 def python3(c):
+    c.var("python_version", python_version)
     c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
 
     search = [

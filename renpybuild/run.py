@@ -15,7 +15,7 @@ def build_environment(c):
     c.var("ndk_version", ndk_version)
     c.var("ndk_version_alone", ndk_version_alone)
  
-    c.var("make", "make")
+    c.var("make", "make -j4")
 
     c.var("sysroot", c.tmp / f"sysroot.{c.platform}-{c.arch}")
     c.var("build_platform", sysconfig.get_config_var("HOST_GNU_TYPE"))

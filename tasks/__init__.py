@@ -51,8 +51,8 @@ from . import renpython
 from . import pythonlib
 
 from . import renpysh
-from . import renios
+#from . import renios
 
-from . import steam
+#from . import steam
 
-from . import web
+#from . import web
