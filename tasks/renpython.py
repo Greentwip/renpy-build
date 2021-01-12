@@ -9,27 +9,33 @@ def clean(c):
 
 @task(kind="python", always=True)
 def build(c):
-
-    c.run("""
+    renpy_args = """
     {{ CC }} {{ CFLAGS }}
 
     -DPLATFORM=\\"{{ c.platform }}\\" -DARCH=\\"{{ c.arch }}\\" -D{{ c.platform|upper }}
 
     -c -o librenpython.o
     {{ runtime }}/librenpython{{ c.python }}.c
-    """)
+    """
+
+    renpy_args = renpy_args.replace("\n", "")
+    c.run(renpy_args)
 
 
 @task(kind="python", always=True, platforms="android")
 def build_android(c):
-    c.run("""
+    renpy_args = """
     {{ CC }} {{ CFLAGS }}
 
     -DPLATFORM=\\"{{ c.platform }}\\" -DARCH=\\"{{ c.arch }}\\"
 
     -c -o librenpython_android.o
     {{ runtime }}/librenpython{{ c.python }}_android.c
-    """)
+    """
+
+    renpy_args = renpy_args.replace("\n", "")
+    c.run(renpy_args)
+
 
 
 @task(kind="python", always=True, platforms="linux")
@@ -102,7 +108,7 @@ def link_linux(c):
 @task(kind="python", always=True, platforms="android")
 def link_android(c):
 
-    c.run("""
+    renpy_args = """
     {{ CC }} {{ LDFLAGS }}
     -shared
     -Wl,-Bsymbolic
@@ -141,7 +147,10 @@ def link_android(c):
 
     -llog
     -landroid
-    """)
+    """
+
+    renpy_args = renpy_args.replace("\n", "")
+    c.run(renpy_args)
 
     if not c.args.nostrip:
         c.run("""{{ STRIP }} --strip-unneeded librenpython.so""")

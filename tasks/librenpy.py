@@ -48,15 +48,13 @@ def gen_static(c):
 def build(c):
     print("RENPY BUILD")
 
-
-    
-
     renpy_build_cflags = """"""
     renpy_build_cflags += """ -I{{ pygame_sdl2 }} """
     renpy_build_cflags += """ -I{{ pygame_sdl2 }}/src """
     renpy_build_cflags += """ -I{{ renpy }}/module """
     renpy_build_cflags += """ -I{{install}}/include/SDL2 """
     renpy_build_cflags += """ -I{{install}}/include/fribidi """
+    renpy_build_cflags += """ -I{{install}}/include/freetype2 """
     renpy_build_cflags += """ -I{{sysroot_include}} -I{{install}}/include -I{{install}}/include/python3.9 """
 
     c.env("CFLAGS", renpy_build_cflags)
