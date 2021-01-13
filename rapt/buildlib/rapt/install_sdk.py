@@ -2,6 +2,7 @@
 
 import traceback
 import os
+import sys
 import zipfile
 import tarfile
 import shutil
@@ -25,6 +26,17 @@ def run(interface, *args, **kwargs):
     except (subprocess.CalledProcessError, OSError):
         return False
 
+def run_slow_shell(interface, *args, **kwargs):
+    """
+    Runs the supplied arguments in a manner that lets the program
+    be cancelled.
+    """
+
+    try:
+        interface.call_shell(args, cancel=True, **kwargs)
+    except (subprocess.CalledProcessError, OSError):
+        return False
+    return True
 
 def run_slow(interface, *args, **kwargs):
     """
@@ -139,13 +151,22 @@ def get_packages(interface):
 
         interface.info(__("I'm about to download and install the required Android packages. This might take a while."))
 
-        if not run_slow(interface, plat.sdkmanager, "--update", yes=True):
+        if not run_slow_shell(interface, "ls", "", yes=False):
+            interface.fail(__("Couldn't set permissions."))
+
+
+        if not run_slow_shell(interface, "chmod -R 777 .", "", yes=False):
+            interface.fail(__("Couldn't set permissions."))
+
+
+            
+        if not run_slow(interface, plat.sdkmanager, "--update", yes=False):
+            interface.fail(__("I was unable to update the sdk."))
+
+        if not run_slow(interface, plat.sdkmanager, "--licenses", yes=False):
             interface.fail(__("I was unable to accept the Android licenses."))
 
-        if not run_slow(interface, plat.sdkmanager, "--licenses", yes=True):
-            interface.fail(__("I was unable to accept the Android licenses."))
-
-        if not run_slow(interface, plat.sdkmanager, yes=True, *packages):
+        if not run_slow(interface, plat.sdkmanager, yes=False, *packages):
             interface.fail(__("I was unable to install the required Android packages."))
 
     interface.success(__("I've finished installing the required Android packages."))

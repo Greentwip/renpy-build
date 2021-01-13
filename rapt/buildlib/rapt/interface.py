@@ -82,7 +82,7 @@ class Interface(object):
             else:
                 prompt = "yes/no> "
 
-            choice = raw_input(prompt)
+            choice = input(prompt)
             choice = choice.strip().lower()
 
             if choice == "yes" or choice == "y":
@@ -104,7 +104,7 @@ class Interface(object):
 
         self.info("Opening {} in a web browser.".format(url))
 
-        webbrowser.open_new(url)
+        #webbrowser.open_new(url)
         time.sleep(.5)
 
         if not self.yesno(prompt):
@@ -127,7 +127,7 @@ class Interface(object):
             else:
                 prompt = "> "
 
-            rv = raw_input(prompt)
+            rv = input(prompt)
             rv = rv.strip()
 
             if rv:
@@ -174,7 +174,7 @@ class Interface(object):
 
         while True:
             try:
-                choice = raw_input(prompt).strip()
+                choice = input(prompt).strip()
                 if choice:
                     choice = int(choice)
                 else:
@@ -234,12 +234,45 @@ class Interface(object):
         else:
             subprocess.check_call(args, cwd=plat.RAPT_PATH)
 
+
+    def call_shell(self, args, cancel=False, use_path=False, yes=False):
+        """
+        Executes `args` as a program. Raises subprocess.CalledProcessError
+        if the program fails.
+
+        `cancel`
+            If true, this is an expensive call that the user may be offered
+            the opportunity to cancel.
+
+        `use_path`
+            If true, searches the system path for the file.
+
+        `yes`
+            Repeatedly sends 'y\n' to the command's stdin.
+        """
+
+        if yes:
+            p = subprocess.Popen(args, shell=True, cwd=plat.RAPT_PATH, stdin=subprocess.PIPE)
+
+            try:
+                while p.poll() is None:
+                    time.sleep(.2)
+                    p.stdin.write('y\n')
+                    p.stdin.flush()
+            except:
+                pass
+
+            p.wait()
+
+        else:
+            subprocess.check_call(args, shell=True, cwd=plat.RAPT_PATH)
+
     def download(self, url, dest):
         """
         Downloads `url` to `dest`.
         """
 
-        urllib.urlretrieve(url, dest)
+        urllib.request.urlretrieve(url, dest)
 
     def background(self, f):
         """

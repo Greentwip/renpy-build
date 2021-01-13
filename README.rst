@@ -32,7 +32,7 @@ unless maintainers update to compile with Android.
 Requirements
 -------------
 
-macOS, Xcode, XCode command line tools, Python 3.9 and pyenv
+macOS, Xcode, XCode command line tools, Python 3.9, pyenv and the Java JDK
 
 Preparing
 ---------

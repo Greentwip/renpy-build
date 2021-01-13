@@ -65,7 +65,7 @@ def set_win32_java_home():
             a = l.split(b"    ")
 
             key = prefix + b"\\" + a[1]
-            rv[key.decode("utf-8")] = a[3]
+            rv[key] = a[3]
 
         return rv
 
@@ -88,13 +88,15 @@ def set_mac_java_home():
     """
     When run on macOS, this is used to set the JAVA_HOME environment variable.
     """
+    return #it is supposed JDK 1.8 got installed and we don't need to check all this
 
     if "JAVA_HOME" in os.environ:
         return
 
     java_home = subprocess.check_output("/usr/libexec/java_home -v 1.8", shell=True).strip()
+
     if java_home:
-        os.environ["JAVA_HOME"] = java_home
+        os.environ["JAVA_HOME"] = java_home.decode("utf-8") 
 
 
 def maybe_java_home(s):
@@ -156,7 +158,7 @@ else:
     gradlew = "project/gradlew"
 
 # The path to RAPT.
-RAPT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__.decode(sys.getfilesystemencoding())))))
+RAPT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def path(path, relative=False):

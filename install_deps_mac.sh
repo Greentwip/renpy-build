@@ -3,7 +3,7 @@
 set -e
 
 # Needed to build things.
-brew install ccache openjdk
+brew install ccache
 
 # Needed by renpy-build itself.
 brew install jinja2-cli
