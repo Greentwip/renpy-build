@@ -66,6 +66,8 @@ def build_posix(c):
 
     c.env("CFLAGS", "{{ CFLAGS  }} -DXML_POOR_ENTROPY=1 -DUSE_PYEXPAT_CAPI -DHAVE_EXPAT_CONFIG_H ")
 
+    c.env("PY_OVERRIDEN_CROSS_BUILD", "True")
+
     c.run("""./configure {{ cross_config }} --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
