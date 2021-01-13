@@ -4,6 +4,7 @@ import sys
 import time
 import subprocess
 import urllib
+import urllib.request
 
 from . import plat
 

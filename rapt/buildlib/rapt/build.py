@@ -464,7 +464,7 @@ def build(iface, directory, commands, launch=False, finished=None):
 
     iface.info(__("Updating project."))
 
-    copy_project(config.update_always)
+    copy_project(True)
 
     copy_libs()
 
