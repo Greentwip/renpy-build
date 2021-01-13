@@ -160,7 +160,9 @@ def link_android(c):
         c.run("""{{ STRIP }} --strip-unneeded librenpython.so""")
 
     c.run("install -d {{ jniLibs }}")
-    c.run("install librenpython.so {{ jniLibs }}")
+    #c.run("install librenpython.so {{ jniLibs }}")
+    c.copy("librenpython.so", "{{ install }}/lib/librenpython.so")
+    c.copy("librenpython.so", "{{ jniLibs }}/librenpython.so")
 
 
 @task(kind="python", always=True, platforms="mac")

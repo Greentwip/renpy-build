@@ -194,5 +194,3 @@ def build(c):
     c.copy("{{install}}/lib/libswresample.so", "{{ jniLibs }}/libswresample.so")
     c.copy("{{install}}/lib/libswscale.so", "{{ jniLibs }}/libswscale.so")
     c.copy("{{install}}/lib/libavutil.so", "{{ jniLibs }}/libavutil.so")
-
-    quit()
