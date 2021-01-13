@@ -32,11 +32,11 @@ def copy(c):
     if c.path("{{ raptver }}/prototype/local.properties").exists():
         os.unlink(c.path("{{ raptver }}/prototype/local.properties"))
 
-    c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-mdpi")
-    c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-hdpi")
-    c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xhdpi")
-    c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xxhdpi")
-    c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xxxhdpi")
+    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-mdpi")
+    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-hdpi")
+    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xhdpi")
+    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xxhdpi")
+    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xxxhdpi")
 
     c.rmtree("{{ raptver }}/prototype/renpyandroid/build/")
     c.rmtree("{{ raptver }}/prototype/app/build/")
