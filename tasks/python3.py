@@ -139,6 +139,9 @@ def build_android(c):
 
     c.env("PYTHOH_TARGET_SOURCE_DIR", c.cwd)
 
+    c.environ.pop("LD", None)
+
+
     c.env("READELF", "arm-linux-androideabi-readelf")
     c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
