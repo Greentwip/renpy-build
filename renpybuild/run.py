@@ -360,7 +360,7 @@ def build_environment(c):
         c.env("CC", "ccache clang ")
         c.env("CXX", "ccache clang ")
         c.env("CPP", "ccache clang -E")
-        c.env("LD", "ccache ld ")
+        #c.env("LD", "ccache ld ")
         c.env("AR", "ccache ar")
         c.env("RANLIB", "ccache ranlib")
         c.env("STRIP", "ccache  strip")
