@@ -123,7 +123,7 @@ def render(always, template, dest, **kwargs):
     template = environment.get_template(template)
     text = template.render(**kwargs)
 
-    f = file(dest, "wb")
+    f = open(dest, "wb")
     f.write(text.encode("utf-8"))
     f.close()
 
