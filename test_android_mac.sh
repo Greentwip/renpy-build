@@ -24,9 +24,14 @@ elif [ "$1" == "install-sdk" ]; then
         export PGS4A_NO_TERMS=1
 	    python android.py installsdk
     popd
+elif [ "$1" == "configure" ]; then
+    pushd "$ROOT/renpy/rapt3"
+        python ./android.py configure $2
+    popd
+
 elif [ "$1" != "" ]; then
     pushd "$ROOT/renpy/rapt3"
-        ./android.py build "$1" installDebug --launch
+        python ./android.py build "$1" installDebug --launch
     popd
 fi
 
