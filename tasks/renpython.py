@@ -24,6 +24,8 @@ def build(c):
 
 @task(kind="python", always=True, platforms="android")
 def build_android(c):
+
+    c.env("CFLAGS", "-shared -DSDL_MAIN_HANDLED")
     renpy_args = """
     {{ CC }} {{ CFLAGS }}
 
@@ -156,8 +158,8 @@ def link_android(c):
     renpy_args = renpy_args.replace("\n", "")
     c.run(renpy_args)
 
-    if not c.args.nostrip:
-        c.run("""{{ STRIP }} --strip-unneeded librenpython.so""")
+    #if not c.args.nostrip:
+    #    c.run("""{{ STRIP }} --strip-unneeded librenpython.so""")
 
     c.run("install -d {{ jniLibs }}")
     #c.run("install librenpython.so {{ jniLibs }}")
