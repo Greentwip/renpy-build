@@ -187,3 +187,12 @@ def build(c):
 
     c.run("""{{ make }} V=1""")
     c.run("""make install""")
+    c.copy("{{install}}/lib/libavfilter.so", "{{ jniLibs }}/libavfilter.so")
+    c.copy("{{install}}/lib/libavformat.so", "{{ jniLibs }}/libavformat.so")
+    c.copy("{{install}}/lib/libavcodec.so", "{{ jniLibs }}/libavcodec.so")
+    c.copy("{{install}}/lib/libavresample.so", "{{ jniLibs }}/libavresample.so")
+    c.copy("{{install}}/lib/libswresample.so", "{{ jniLibs }}/libswresample.so")
+    c.copy("{{install}}/lib/libswscale.so", "{{ jniLibs }}/libswscale.so")
+    c.copy("{{install}}/lib/libavutil.so", "{{ jniLibs }}/libavutil.so")
+
+    quit()
