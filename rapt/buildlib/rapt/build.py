@@ -566,8 +566,8 @@ def build(iface, directory, commands, launch=False, finished=None):
             sdkpath=plat.path("Sdk"),
             )
 
-    if config.update_icons:
-        iconmaker.IconMaker(directory, config)
+#    if config.update_icons:
+#        iconmaker.IconMaker(directory, config)
 
     # Copy the presplash files.
     copy_presplash(directory, "android-presplash", default_presplash)
