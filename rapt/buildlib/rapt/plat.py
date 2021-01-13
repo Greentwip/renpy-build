@@ -88,12 +88,10 @@ def set_mac_java_home():
     """
     When run on macOS, this is used to set the JAVA_HOME environment variable.
     """
-    return #it is supposed JDK 1.8 got installed and we don't need to check all this
-
     if "JAVA_HOME" in os.environ:
         return
 
-    java_home = subprocess.check_output("/usr/libexec/java_home -v 1.8", shell=True).strip()
+    java_home = subprocess.check_output("/usr/libexec/java_home -v 1.8.0", shell=True).strip()
 
     if java_home:
         os.environ["JAVA_HOME"] = java_home.decode("utf-8") 
