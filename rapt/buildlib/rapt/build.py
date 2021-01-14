@@ -400,9 +400,6 @@ def copy_libs():
         project = plat.path("project/" + i)
         prototype = plat.path("prototype/" + i)
 
-        if os.path.exists(project):
-            shutil.rmtree(project)
-
         shutil.copytree(prototype, project)
 
 

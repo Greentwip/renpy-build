@@ -1,4 +1,5 @@
 from renpybuild.model import task
+import os
 
 version = "4.3.1"
 
@@ -187,6 +188,12 @@ def build(c):
 
     c.run("""{{ make }} V=1""")
     c.run("""make install""")
+
+    target = c.get_var("{{jniLibs}}")
+
+    if not os.path.exists(target):
+        os.makedirs(target)
+
     c.copy("{{install}}/lib/libavfilter.so", "{{ jniLibs }}/libavfilter.so")
     c.copy("{{install}}/lib/libavformat.so", "{{ jniLibs }}/libavformat.so")
     c.copy("{{install}}/lib/libavcodec.so", "{{ jniLibs }}/libavcodec.so")
