@@ -135,6 +135,11 @@ def build_android(c):
 
     c.env("LDFLAGS", "{{ LDFLAGS }} -static ")
 
+    c.env("OPENSSL_INCLUDE", "-I{{install}}/include")
+    c.env("OPENSSL_LD", "-L{{install}}/lib")
+    c.env("OPENSSL_LIB", "-lssl -lcrypto")
+    c.env("HAVE_X509_VERIFY_PARAM_SET1_HOST", "True")
+
     c.env("PYTHON_TARGET_PLATFORM", "android")
 
     c.env("PYTHOH_TARGET_SOURCE_DIR", c.cwd)
@@ -150,12 +155,7 @@ def build_android(c):
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
-    c.run("""    
-    export OPENSSL_INCLUDE="-I{{install}}/include" &&
-    export OPENSSL_LD="-L{{install}}/lib" &&
-    export OPENSSL_LIB="-lssl -lcrypto" &&
-    export HAVE_X509_VERIFY_PARAM_SET1_HOST="{{HAVE_X509_VERIFY_PARAM_SET1_HOST}}" &&
-    {{ make }}""")
+    c.run("""{{ make }}""")
     c.run("""{{ make }} install""")    
 
     c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")

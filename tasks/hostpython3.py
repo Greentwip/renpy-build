@@ -25,11 +25,6 @@ def build_host(c):
 
     c.env("CONFIG_SITE", "config.site")
 
-    c.env("OPENSSL_INCLUDES", "-I/usr/local/opt/openssl/include")
-    c.env("OPENSSL_LDFLAGS", "-L/usr/local/opt/openssl/lib")
-    c.env("OPENSSL_LIBS", "-lssl -lcrypto")
-    c.env("HAVE_X509_VERIFY_PARAM_SET1_HOST", "True")
-
     c.env("CFLAGS", "-DXML_POOR_ENTROPY=1 -DUSE_PYEXPAT_CAPI -DHAVE_EXPAT_CONFIG_H ")
     c.env("CFLAGS", "{{CFLAGS}} -I/usr/local/opt/openssl/include")
     c.env("LDFLAGS", " -L/usr/local/opt/openssl/lib ")
@@ -42,7 +37,7 @@ def build_host(c):
     export OPENSSL_INCLUDE="-I/usr/local/opt/openssl/include" &&
     export OPENSSL_LD="-L/usr/local/opt/openssl/lib" &&
     export OPENSSL_LIB="-lssl -lcrypto" &&
-    export HAVE_X509_VERIFY_PARAM_SET1_HOST="{{HAVE_X509_VERIFY_PARAM_SET1_HOST}}" &&
+    export HAVE_X509_VERIFY_PARAM_SET1_HOST="True" &&
     {{make}} 
     """)
     #c.run("""{{ make }}""")
