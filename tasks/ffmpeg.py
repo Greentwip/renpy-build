@@ -184,10 +184,10 @@ def build(c):
     """
 
     configure_string = configure_string.replace("\n", "")
-    c.run(configure_string)
+    #c.run(configure_string)
 
-    c.run("""{{ make }} V=1""")
-    c.run("""make install""")
+    #c.run("""{{ make }} V=1""")
+    #c.run("""make install""")
 
     target = c.get_var("{{jniLibs}}")
 

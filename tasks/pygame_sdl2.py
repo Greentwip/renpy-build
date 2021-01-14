@@ -12,8 +12,8 @@ def gen_static(c):
     c.chdir("{{ pygame_sdl2 }}")
     c.env("PYTHONPATH", "{{host}}/lib/{{pythonver}}/lib-dynload")
     c.env("_PYTHON_SYSCONFIGDATA_NAME", "_sysconfigdata__linux_")
-    c.env("CFLAGS", "{{CFLAGS}} -I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include -static")
-    c.env("LDFLAGS", "{{LDFLAGS}} -static -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib")
+    c.env("CFLAGS", "{{CFLAGS}} -I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include -shared")
+    c.env("LDFLAGS", "{{LDFLAGS}} -shared -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib")
 
     os.environ['_PYTHON_SYSCONFIGDATA_NAME'] = '_sysconfigdata__linux_'
     c.run("{{ host }}/bin/python3 setup.py generate")

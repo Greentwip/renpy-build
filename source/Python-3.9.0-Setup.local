@@ -549,7 +549,10 @@ _symtable symtablemodule.c
 # it, depending on your system -- see the GNU readline instructions.
 # It's okay for this to be a shared library, too.
 
+#*shared*
 readline readline.c -lreadline -lncursesw
+
+#*static*
 
 
 # Modules that should always be present (non UNIX dependent):

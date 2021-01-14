@@ -160,7 +160,9 @@ def link_android(c):
     -lbz2
     -lz
     -lm
-
+    -lreadline 
+    -lncursesw
+    -lgdbm
     -llog
     -landroid
     """
