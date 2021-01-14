@@ -25,7 +25,17 @@ def build(c):
 @task(kind="python", always=True, platforms="android")
 def build_android(c):
 
-    c.env("CFLAGS", "-shared -DSDL_MAIN_HANDLED")
+    
+    renpy_build_cflags = """"""
+
+    renpy_build_cflags += """ -I{{sysroot_lib}} -I{{install}} -I{{install}}/include -I{{install}}/include/SDL2 """
+    renpy_build_cflags += """ -I{{install}}/include/{{ pythonver }} """
+
+    renpy_build_cflags += """ -shared -DSDL_MAIN_HANDLED """
+    
+
+    c.env("CFLAGS", renpy_build_cflags)
+
     renpy_args = """
     {{ CC }} {{ CFLAGS }}
 
