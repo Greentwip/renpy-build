@@ -41,5 +41,4 @@ def build_host(c):
     {{make}} 
     """)
     #c.run("""{{ make }}""")
-    quit()
     c.run("""{{ make }} install""")
