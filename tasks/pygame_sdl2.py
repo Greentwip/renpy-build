@@ -1,5 +1,4 @@
 from renpybuild.model import task, annotator
-python_version = "3.9"
 import os
 
 @annotator
@@ -9,10 +8,9 @@ def annotate(c):
 
 @task(kind="python", pythons="3", platforms="android", always=True)
 def gen_static(c):
-    c.var("python_version", python_version)
 
     c.chdir("{{ pygame_sdl2 }}")
-    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
+    c.env("PYTHONPATH", "{{host}}/lib/{{pythonver}}/lib-dynload")
     c.env("_PYTHON_SYSCONFIGDATA_NAME", "_sysconfigdata__linux_")
     c.env("CFLAGS", "{{CFLAGS}} -I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include -static")
     c.env("LDFLAGS", "{{LDFLAGS}} -static -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib")
@@ -23,9 +21,7 @@ def gen_static(c):
 
 @task(kind="python", pythons="3", platforms="android", always=True)
 def install(c):
-    c.var("python_version", python_version)
-
-    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
+    c.env("PYTHONPATH", "{{host}}/lib/{{pythonver}}/lib-dynload")
 
     exec_string = "{{ hostpython }} -s -m ensurepip"
     c.run(exec_string)
