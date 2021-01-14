@@ -144,8 +144,6 @@ def build_android(c):
 
     c.env("PYTHOH_TARGET_SOURCE_DIR", c.cwd)
 
-    c.environ.pop("LD", None)
-
     c.env("HAVE_X509_VERIFY_PARAM_SET1_HOST", "True")
 
 
