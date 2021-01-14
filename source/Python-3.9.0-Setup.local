@@ -758,7 +758,7 @@ xxsubtype xxsubtype.c
 
 
 _ctypes _ctypes/_ctypes.c _ctypes/callbacks.c _ctypes/callproc.c _ctypes/stgdict.c _ctypes/cfield.c -lffi
-#_ssl _ssl.c -lssl -lcrypto
+_ssl _ssl.c -lssl -lcrypto
 _bz2 _bz2module.c -lbz2
 _hashlib _hashopenssl.c -lssl -lcrypto
 _lsprof _lsprof.c rotatingtree.c
