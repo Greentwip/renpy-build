@@ -141,6 +141,8 @@ def build_android(c):
 
     c.environ.pop("LD", None)
 
+    c.env("HAVE_X509_VERIFY_PARAM_SET1_HOST", "True")
+
 
     c.env("READELF", "arm-linux-androideabi-readelf")
     c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
@@ -148,7 +150,12 @@ def build_android(c):
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
-    c.run("""{{ make }}""")
+    c.run("""    
+    export OPENSSL_INCLUDE="-I{{install}}/include" &&
+    export OPENSSL_LD="-L{{install}}/lib" &&
+    export OPENSSL_LIB="-lssl -lcrypto" &&
+    export HAVE_X509_VERIFY_PARAM_SET1_HOST="{{HAVE_X509_VERIFY_PARAM_SET1_HOST}}" &&
+    {{ make }}""")
     c.run("""{{ make }} install""")    
 
     c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")

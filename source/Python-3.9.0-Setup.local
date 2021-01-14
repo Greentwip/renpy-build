@@ -376,8 +376,7 @@ xxsubtype xxsubtype.c
 #_sqlite3 _tkinter _curses pyexpat
 #_codecs_jp _codecs_kr _codecs_tw unicodedata
 
-SSL=/usr/local/opt/openssl
-_ssl _ssl.c -DUSE_SSL -I$(SSL)/include -L$(SSL)/lib -lssl -lcrypto
+_ssl _ssl.c -DUSE_SSL -I/usr/local/opt/openssl/lib -L/usr/local/opt/openssl/lib -lssl -lcrypto
 
 {% endif %}
 
