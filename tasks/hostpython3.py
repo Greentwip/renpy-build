@@ -28,7 +28,7 @@ def build_host(c):
     c.env("CFLAGS", "-DXML_POOR_ENTROPY=1 -DUSE_PYEXPAT_CAPI -DHAVE_EXPAT_CONFIG_H ")
     c.env("CFLAGS", "{{CFLAGS}} -I/usr/local/opt/openssl/include")
     c.env("LDFLAGS", " -L/usr/local/opt/openssl/lib ")
-    #c.run("""./configure --prefix="{{ host }}" --enable-ipv6""")
+    c.run("""./configure --prefix="{{ host }}" --enable-ipv6""")
 
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.Local")
