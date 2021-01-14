@@ -135,6 +135,8 @@ def build_android(c):
 
     c.env("LDFLAGS", "{{ LDFLAGS }} -static ")
 
+    os.environ.pop("LD", None)
+
     c.env("OPENSSL_INCLUDE", "-I{{install}}/include")
     c.env("OPENSSL_LD", "-L{{install}}/lib")
     c.env("OPENSSL_LIB", "-lssl -lcrypto")
@@ -148,6 +150,8 @@ def build_android(c):
 
 
     c.env("READELF", "arm-linux-androideabi-readelf")
+
+    c.run(""" autoreconf -vfi """)
     c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
 

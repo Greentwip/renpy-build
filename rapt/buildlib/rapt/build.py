@@ -388,6 +388,25 @@ def copy_project(update_always=False):
     if lp is not None:
         with open(plat.path("project/local.properties"), "w") as f:
             f.write(lp + "\n")
+def recursive_overwrite(src, dest, ignore=None):
+    if os.path.isdir(src):
+        if not os.path.isdir(dest):
+            os.makedirs(dest)
+        files = os.listdir(src)
+        if ignore is not None:
+            ignored = ignore(src, files)
+        else:
+            ignored = set()
+        for f in files:
+            if f not in ignored:
+                recursive_overwrite(os.path.join(src, f), 
+                                    os.path.join(dest, f), 
+                                    ignore)
+    else:
+        shutil.copyfile(src, dest)
+
+def copytree(from_path, to_path):
+    recursive_overwrite(from_path, to_path)
 
 
 def copy_libs():
@@ -400,7 +419,7 @@ def copy_libs():
         project = plat.path("project/" + i)
         prototype = plat.path("prototype/" + i)
 
-        shutil.copytree(prototype, project)
+        copytree(prototype, project)
 
 
 def build(iface, directory, commands, launch=False, finished=None):

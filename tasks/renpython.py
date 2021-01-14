@@ -107,8 +107,8 @@ def link_linux(c):
     -Wl,-rpath -Wl,$ORIGIN
     """)
 
-    if not c.args.nostrip:
-        c.run("""{{ STRIP }} --strip-unneeded librenpython.so python renpy""")
+    #if not c.args.nostrip:
+    #   c.run("""{{ STRIP }} --strip-unneeded librenpython.so python renpy""")
 
     c.run("""install -d {{ dlpa }}""")
     c.run("""install librenpython.so {{ dlpa }}""")

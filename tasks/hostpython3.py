@@ -34,6 +34,8 @@ def build_host(c):
     c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup.Local")
 
     c.run("""
+    export CFLAGS="{{CFLAGS}}" &&
+    export LDFLAGS="{{LDFLAGS}}" &&
     export OPENSSL_INCLUDE="-I/usr/local/opt/openssl/include" &&
     export OPENSSL_LD="-L/usr/local/opt/openssl/lib" &&
     export OPENSSL_LIB="-lssl -lcrypto" &&
