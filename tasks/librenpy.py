@@ -34,6 +34,8 @@ def gen_static(c):
     #c.env("RENPY_EXTRA_LIB_DIRS", "-l{{sysroot_lib}} -l{{install}} -l{{install}}/lib")
     #c.env("PY_DISTUTILS_EXT_LIB_DIRS", "-l{{sysroot_lib}} -l{{install}} -l{{install}}/lib")
 
+    c.env("RENPY_STATIC", "True")
+
     if c.platform == "android":
         c.env("RENPY_DEPS_INSTALL", "{{sysroot_include}}::{{sysroot_lib}}::{{install}}::{{install}}/lib::{{install}}/include")
     else:
@@ -70,7 +72,7 @@ def build(c):
 #    else:
 #        gen = "gen-static/"
 
-    gen = "gen/"
+    gen = "gen-static/"
 
     modules = [ ]
     sources = [ ]

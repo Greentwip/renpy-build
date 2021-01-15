@@ -713,7 +713,7 @@ _curses_panel _curses_panel.c -lpanelw -lncursesw
 
 # Anthony Baxter's gdbm module.  GNU dbm(3) will require -lgdbm:
 
-_gdbm _gdbmmodule.c -I/usr/local/include -L/usr/local/lib  -lc -ldl -lm -lz -lgdbm
+_gdbm _gdbmmodule.c -I/usr/local/include -L/usr/local/lib  -lc -ldl -lz -lgdbm
 
 
 # Helper module for various ascii-encoders
