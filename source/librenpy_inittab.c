@@ -1,7 +1,7 @@
 #include "Python.h"
 
 {% for name in modules %}
-PyObject * PyInit_{{ name.replace(".", "_") }} (void);
+PyMODINIT_FUNC PyInit_{{ name.replace(".", "_") }} (void);
 {% endfor %}
 
 static struct _inittab inittab[]  = {

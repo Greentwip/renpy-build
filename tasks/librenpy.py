@@ -115,13 +115,21 @@ def build(c):
         c.var("object", object)
         c.run("{{ CC }} {{ CFLAGS }} -c {{ src }} -o {{ object }}", verbose=True)
 
-    c.generate("{{ source }}/librenpy_inittab.c", "inittab.c", modules=modules)
-    c.run("{{ CC }} {{ CFLAGS }} -c inittab.c -o inittab.o", verbose=True)
-    objects.append("inittab.o")
+    new_modules = []
+    for module in modules:
+        if "renpy" in module:
+            splat_name = module.split(".")
+            splat_name = splat_name[-1]
+            module = splat_name
+        new_modules.append(module)
+
+    c.generate("{{ source }}/librenpy_inittab.c", "{{ tmp }}/inittab.c", modules=new_modules)
+    c.run("{{ CC }} {{ CFLAGS }} -c {{ tmp }}/inittab.c -o {{ tmp }}/inittab.o", verbose=True)
+    objects.append("{{ tmp }}/inittab.o")
 
     c.var("objects", " ".join(objects))
 
-    c.run("{{ AR }} r librenpy.a {{ objects }} inittab.o", verbose=True)
+    c.run("{{ AR }} r librenpy.a {{ objects }} {{ tmp }}/inittab.o", verbose=True)
     c.run("{{ RANLIB }} librenpy.a", verbose=True)
 
     c.copy("librenpy.a", "{{ install }}/lib/librenpy.a")
