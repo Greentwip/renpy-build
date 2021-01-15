@@ -321,6 +321,36 @@ class Context:
         if self.path(path).exists():
             self.env("CFLAGS", "{{ CFLAGS }} -I" + path)
 
+    def recursive_overwrite(self, src, dest, ignore=None):
+        if os.path.isdir(src):
+            if not os.path.isdir(dest):
+                os.makedirs(dest)
+            files = os.listdir(src)
+            if ignore is not None:
+                ignored = ignore(src, files)
+            else:
+                ignored = set()
+            for f in files:
+                if f not in ignored:
+                    self.recursive_overwrite(os.path.join(src, f), 
+                                        os.path.join(dest, f), 
+                                        ignore)
+        else:
+            if os.path.islink(src):
+                if os.path.lexists(dest):
+                    os.unlink(dest)
+                linkto = os.readlink(src)
+                os.symlink(linkto, dest)
+                #shutil.copy(src, dest, follow_symlinks=True)
+            else:
+                shutil.copyfile(src, dest)
+
+    def copytree_recursive(self, from_path, to_path):
+        src = self.path(from_path).absolute()
+        dst = self.path(to_path).absolute()
+
+        self.recursive_overwrite(src, dst)
+
     def copytree(self, src, dst):
         src = self.path(src)
         dst = self.path(dst)
