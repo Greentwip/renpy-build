@@ -7,15 +7,18 @@ import os
 @task(kind="platform-python", platforms="android", always=True)
 def copy(c):
 
-    
-    c.copytree("{{ root }}/rapt/buildlib", "{{ raptver }}/buildlib")
-    c.copytree("{{ root }}/rapt/prototype", "{{ raptver }}/prototype")
-    c.copytree("{{ root }}/rapt/templates", "{{ raptver }}/templates")
+    if not c.path("{{ raptver }}").exists():
+        c.copytree("{{ root }}/rapt", "{{ raptver }}")
 
-    c.copy("{{ root }}/rapt/android.py", "{{ raptver }}/android.py")
-    c.copy("{{ root }}/rapt/blocklist.txt", "{{ raptver }}/blocklist.txt")
-    c.copy("{{ root }}/rapt/keeplist.txt", "{{ raptver }}/keeplist.txt")
-    c.copy("{{ root }}/rapt/update_translations.py", "{{ raptver }}/update_translations.py")
+    #c.copytree("{{ root }}/rapt/buildlib", "{{ raptver }}/buildlib")
+    #c.copytree("{{ root }}/rapt/prototype", "{{ raptver }}/prototype")
+    #c.copytree("{{ root }}/rapt/templates", "{{ raptver }}/templates")
+
+    #c.copy("{{ root }}/rapt/android.py", "{{ raptver }}/android.py")
+    #c.copy("{{ root }}/rapt/blocklist.txt", "{{ raptver }}/blocklist.txt")
+    #c.copy("{{ root }}/rapt/keeplist.txt", "{{ raptver }}/keeplist.txt")
+    #c.copy("{{ root }}/rapt/update_translations.py", "{{ raptver }}/update_translations.py")
+
 
     with open(c.path("{{ raptver }}/prototype/build.txt"), "w") as f:
         f.write(time.ctime())
@@ -37,8 +40,8 @@ def copy(c):
     os.unlink(c.path("{{ raptver }}/prototype/renpyandroid/src/main/res/values/strings.xml"))
     os.unlink(c.path("{{ raptver }}/prototype/renpyandroid/src/main/java/org/renpy/android/Constants.java"))
 
-    #if c.path("{{ raptver }}/prototype/local.properties").exists():
-    #    os.unlink(c.path("{{ raptver }}/prototype/local.properties"))
+    if c.path("{{ raptver }}/prototype/local.properties").exists():
+        os.unlink(c.path("{{ raptver }}/prototype/local.properties"))
 
     #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-mdpi")
     #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-hdpi")
@@ -48,21 +51,6 @@ def copy(c):
 
     c.rmtree("{{ raptver }}/prototype/renpyandroid/build/")
     c.rmtree("{{ raptver }}/prototype/app/build/")
-
-    target = c.get_var("{{jniLibs}}")
-
-    if not os.path.exists(target):
-        os.makedirs(target)
-
-
-    c.copy("{{install}}/lib/libavfilter.so", "{{ jniLibs }}/libavfilter.so")
-    c.copy("{{install}}/lib/libavformat.so", "{{ jniLibs }}/libavformat.so")
-    c.copy("{{install}}/lib/libavcodec.so", "{{ jniLibs }}/libavcodec.so")
-    c.copy("{{install}}/lib/libavresample.so", "{{ jniLibs }}/libavresample.so")
-    c.copy("{{install}}/lib/libswresample.so", "{{ jniLibs }}/libswresample.so")
-    c.copy("{{install}}/lib/libswscale.so", "{{ jniLibs }}/libswscale.so")
-    c.copy("{{install}}/lib/libavutil.so", "{{ jniLibs }}/libavutil.so")
-
 
 
 @task(kind="host-python", always=True)
