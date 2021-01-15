@@ -122,6 +122,8 @@ def build_android(c):
     c.env("CFLAGS", "{{ CFLAGS }} -DUSE_PYEXPAT_CAPI ")
     c.env("CFLAGS", "{{ CFLAGS }} -DHAVE_EXPAT_CONFIG_H")
     c.env("CFLAGS", "{{ CFLAGS }} -DOPENSSL_THREADS ")
+    c.env("CFLAGS", "{{ CFLAGS }} -DANDROID ")
+    c.env("CFLAGS", "{{ CFLAGS }} -D__ANDROID__ ")
 
 
     c.env("CFLAGS", "{{ CFLAGS }} -I{{install}}/include ")
