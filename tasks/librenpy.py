@@ -117,7 +117,7 @@ def build(c):
 
     new_modules = []
     for module in modules:
-        if "renpy" in module:
+        if "renpy" in module or "jnius" in module:
             splat_name = module.split(".")
             splat_name = splat_name[-1]
             module = splat_name
