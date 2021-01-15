@@ -33,8 +33,6 @@ from . import iossupport
 
 from . import usb
 
-from . import sdl2
-from . import sdl2_image
 
 from . import ffmpeg
 from . import fribidi
@@ -45,6 +43,10 @@ from . import sayvbs
 from . import angle
 
 from . import rapt
+
+from . import sdl2
+from . import sdl2_image
+
 
 from . import pygame_sdl2
 from . import librenpy

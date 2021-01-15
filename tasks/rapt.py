@@ -10,6 +10,40 @@ def copy(c):
     if not c.path("{{ raptver }}").exists():
         c.copytree("{{ root }}/rapt", "{{ raptver }}")
 
+
+        with open(c.path("{{ raptver }}/prototype/build.txt"), "w") as f:
+            f.write(time.ctime())
+
+        try:
+            shutil.rmtree(c.path("{{ raptver }}/prototype/renpyandroid/src/main/java/org/libsdl"))
+        except FileNotFoundError:
+            pass
+
+        try:
+            shutil.rmtree(c.path("{{ raptver }}/prototype/renpyandroid/src/main/java/org/jnius"))
+        except FileNotFoundError:
+            pass
+
+        os.unlink(c.path("{{ raptver }}/prototype/app/build.gradle"))
+        os.unlink(c.path("{{ raptver }}/prototype/app/src/main/AndroidManifest.xml"))
+        os.unlink(c.path("{{ raptver }}/prototype/app/src/main/res/values/strings.xml"))
+        os.unlink(c.path("{{ raptver }}/prototype/renpyandroid/src/main/AndroidManifest.xml"))
+        os.unlink(c.path("{{ raptver }}/prototype/renpyandroid/src/main/res/values/strings.xml"))
+        os.unlink(c.path("{{ raptver }}/prototype/renpyandroid/src/main/java/org/renpy/android/Constants.java"))
+
+        if c.path("{{ raptver }}/prototype/local.properties").exists():
+            os.unlink(c.path("{{ raptver }}/prototype/local.properties"))
+
+        #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-mdpi")
+        #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-hdpi")
+        #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xhdpi")
+        #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xxhdpi")
+        #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xxxhdpi")
+
+        c.rmtree("{{ raptver }}/prototype/renpyandroid/build/")
+        c.rmtree("{{ raptver }}/prototype/app/build/")
+
+
     #c.copytree("{{ root }}/rapt/buildlib", "{{ raptver }}/buildlib")
     #c.copytree("{{ root }}/rapt/prototype", "{{ raptver }}/prototype")
     #c.copytree("{{ root }}/rapt/templates", "{{ raptver }}/templates")
@@ -19,38 +53,19 @@ def copy(c):
     #c.copy("{{ root }}/rapt/keeplist.txt", "{{ raptver }}/keeplist.txt")
     #c.copy("{{ root }}/rapt/update_translations.py", "{{ raptver }}/update_translations.py")
 
+    target = c.get_var("{{jniLibs}}")
 
-    with open(c.path("{{ raptver }}/prototype/build.txt"), "w") as f:
-        f.write(time.ctime())
+    if not os.path.exists(target):
+        os.makedirs(target)
 
-    try:
-        shutil.rmtree(c.path("{{ raptver }}/prototype/renpyandroid/src/main/java/org/libsdl"))
-    except FileNotFoundError:
-        pass
+    c.copy("{{install}}/lib/libavfilter.so", "{{ jniLibs }}/libavfilter.so")
+    c.copy("{{install}}/lib/libavformat.so", "{{ jniLibs }}/libavformat.so")
+    c.copy("{{install}}/lib/libavcodec.so", "{{ jniLibs }}/libavcodec.so")
+    c.copy("{{install}}/lib/libavresample.so", "{{ jniLibs }}/libavresample.so")
+    c.copy("{{install}}/lib/libswresample.so", "{{ jniLibs }}/libswresample.so")
+    c.copy("{{install}}/lib/libswscale.so", "{{ jniLibs }}/libswscale.so")
+    c.copy("{{install}}/lib/libavutil.so", "{{ jniLibs }}/libavutil.so")
 
-    try:
-        shutil.rmtree(c.path("{{ raptver }}/prototype/renpyandroid/src/main/java/org/jnius"))
-    except FileNotFoundError:
-        pass
-
-    os.unlink(c.path("{{ raptver }}/prototype/app/build.gradle"))
-    os.unlink(c.path("{{ raptver }}/prototype/app/src/main/AndroidManifest.xml"))
-    os.unlink(c.path("{{ raptver }}/prototype/app/src/main/res/values/strings.xml"))
-    os.unlink(c.path("{{ raptver }}/prototype/renpyandroid/src/main/AndroidManifest.xml"))
-    os.unlink(c.path("{{ raptver }}/prototype/renpyandroid/src/main/res/values/strings.xml"))
-    os.unlink(c.path("{{ raptver }}/prototype/renpyandroid/src/main/java/org/renpy/android/Constants.java"))
-
-    if c.path("{{ raptver }}/prototype/local.properties").exists():
-        os.unlink(c.path("{{ raptver }}/prototype/local.properties"))
-
-    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-mdpi")
-    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-hdpi")
-    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xhdpi")
-    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xxhdpi")
-    #c.rmtree("{{ raptver }}/prototype/app/src/main/res/mipmap-xxxhdpi")
-
-    c.rmtree("{{ raptver }}/prototype/renpyandroid/build/")
-    c.rmtree("{{ raptver }}/prototype/app/build/")
 
 
 @task(kind="host-python", always=True)
