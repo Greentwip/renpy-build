@@ -11,7 +11,7 @@ def copy(c):
         c.copy("{{ raptver }}/prototype/local.properties", "{{tmp}}/local.properties")
 
     if c.path("{{ raptver }}/Sdk").exists():
-        c.copy("{{ raptver }}/Sdk", "{{tmp}}/Sdk")
+        c.copytree("{{ raptver }}/Sdk", "{{tmp}}/Sdk")
 
     c.copytree("{{ root }}/rapt", "{{ raptver }}")
 
