@@ -7,19 +7,15 @@ import os
 @task(kind="platform-python", platforms="android", always=True)
 def copy(c):
 
-    if c.path("{{ raptver }}/prototype/local.properties").exists():
-        c.copy("{{ raptver }}/prototype/local.properties", "{{tmp}}/local.properties")
+    
+    c.copytree("{{ root }}/rapt/buildlib", "{{ raptver }}/buildlib")
+    c.copytree("{{ root }}/rapt/prototype", "{{ raptver }}/prototype")
+    c.copytree("{{ root }}/rapt/templates", "{{ raptver }}/templates")
 
-    if c.path("{{ raptver }}/Sdk").exists():
-        c.copytree("{{ raptver }}/Sdk", "{{tmp}}/Sdk")
-
-    c.copytree("{{ root }}/rapt", "{{ raptver }}")
-
-    if c.path("{{tmp}}/local.properties").exists():
-        c.copy("{{tmp}}/local.properties", "{{ raptver }}/prototype/local.properties")    
-
-    if c.path("{{tmp}}/Sdk").exists():
-        c.copytree("{{tmp}}/Sdk", "{{ raptver }}/Sdk")    
+    c.copy("{{ root }}/rapt/android.py", "{{ raptver }}/android.py")
+    c.copy("{{ root }}/rapt/blocklist.txt", "{{ raptver }}/blocklist.txt")
+    c.copy("{{ root }}/rapt/keeplist.txt", "{{ raptver }}/keeplist.txt")
+    c.copy("{{ root }}/rapt/update_translations.py", "{{ raptver }}/update_translations.py")
 
     with open(c.path("{{ raptver }}/prototype/build.txt"), "w") as f:
         f.write(time.ctime())
