@@ -550,7 +550,7 @@ _symtable symtablemodule.c
 # It's okay for this to be a shared library, too.
 
 #*shared*
-readline readline.c -lreadline -lncursesw
+#readline readline.c -lreadline -lncursesw
 
 #*static*
 
