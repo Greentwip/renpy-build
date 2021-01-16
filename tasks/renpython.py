@@ -151,7 +151,6 @@ def link_android(c):
     -ljpeg
     -lpng
     -lwebp
-    -lfribidi
     -lfreetype
     -lffi
     -ldl
@@ -160,7 +159,6 @@ def link_android(c):
     -lbz2
     -lz
     -lm
-    -lreadline 
     -lgdbm
     -llog
     -landroid
