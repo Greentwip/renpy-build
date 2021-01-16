@@ -697,9 +697,9 @@ syslog syslogmodule.c		# syslog daemon interface
 # provided by the ncurses library.  e.g. on Linux, link with -lncurses
 # instead of -lcurses).
 
-_curses _cursesmodule.c -lncursesw 
+#_curses _cursesmodule.c -lncursesw 
 # Wrapper for the panel library that's part of ncurses and SYSV curses.
-_curses_panel _curses_panel.c -lpanelw -lncursesw
+#_curses_panel _curses_panel.c -lpanelw -lncursesw
 
 
 # Modules that provide persistent dictionary-like semantics.  You will
