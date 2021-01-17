@@ -146,6 +146,7 @@ def link_android(c):
     -l:libSDL2_image.a
 
     -lGLESv2
+    -lOpenSLES
 
     -ljpeg
     -lpng

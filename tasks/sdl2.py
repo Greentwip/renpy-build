@@ -44,7 +44,6 @@ def build(c):
     --disable-render-metal
     --disable-jack
 {% if c.platform == "android" %}
-    --disable-video-opengles
     --enable-video-opengles2
     --disable-video-wayland
     --disable-video-x11
@@ -60,6 +59,9 @@ def build(c):
     """
 
     config_string = config_string.replace("\n", "")
+
+    c.run(""" autoreconf -vfi """)
+
     c.run(config_string)
 
     c.run("""{{ make }}""")

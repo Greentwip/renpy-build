@@ -151,16 +151,21 @@ def build_android(c):
 
     c.env("READELF", "arm-linux-androideabi-readelf")
 
-    c.run(""" autoreconf -vfi """)
-    c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
+    def build_pass():
+
+        c.run(""" autoreconf -vfi """)
+        c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --with-system-ffi --enable-ipv6""")
 
 
-    c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
+        c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
 
-    c.run("""{{ make }}""")
-    c.run("""{{ make }} install""")    
+        c.run("""{{ make }}""")
+        c.run("""{{ make }} install""")    
 
-    c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
+        c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
+
+    build_pass() #compiles core python objects
+    build_pass() #links modules
 
 
 @task(kind="python", pythons="3", platforms="windows")
