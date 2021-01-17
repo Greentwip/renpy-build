@@ -35,7 +35,7 @@ from . import usb
 
 
 from . import ffmpeg
-from . import fribidi
+#from . import fribidi #no arab support
 from . import freetype
 
 from . import zsync
