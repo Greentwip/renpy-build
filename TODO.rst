@@ -1,7 +1,4 @@
 Verify why the _ssl module fails to build on Android
-Create Setup file for renpy/module build
-Check Python 3 .pyo modules to comply with Python 2
-Add make -j4 to run.py to create better compile times
-create pyo precompiled python files from lib into dist/python3.9
 Verify and fix platform iconmaker (it's not supporting PNG files)
 Find another way to detect JAVA_HOME (machine defaults to JRE)
+Fork all repos from source and create proper github push for patches
