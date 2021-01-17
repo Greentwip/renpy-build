@@ -37,13 +37,36 @@ def build(c):
     c.env("CFLAGS", "{{CFLAGS}} -D__ANDROID__")
     c.env("CFLAGS", "{{ CFLAGS }} -DSDL_MAIN_HANDLED")
 
-    c.run("""./configure {{ cross_config }} --prefix="{{ install }}"  """)
+    config_string = """
+    ./configure {{ cross_config }} 
+    --prefix="{{ install }}"
+    --disable-wasapi
+    --disable-render-metal
+    --disable-jack
+{% if c.platform == "android" %}
+    --disable-video-wayland
+    --disable-video-x11
+    --disable-oss
+    --disable-alsa
+    --disable-esd
+    --disable-pulseaudio
+    --disable-arts
+    --disable-nas
+    --disable-sndio
+    --disable-fusionsound
+{% endif %}
+    """
+
+    config_string = config_string.replace("\n", "")
+    c.run(config_string)
+
+    #c.run("""./configure {{ cross_config }} --prefix="{{ install }}"  """)
 
     c.run("""{{ make }}""")
     c.run("""{{ make }} install""")
     #quit()
 
-@task(kind="arch-python", platforms="android")
+@task(kind="arch-python", platforms="android", always=True)
 def rapt(c):
     c.var("version", version)
     c.chdir("SDL2-{{version}}")
@@ -56,3 +79,4 @@ def rapt(c):
     c.run("""install {{ cross }}/android-ndk-r22/sources/cxx-stl/llvm-libc++/libs/{{ jni_arch }}/libc++_shared.so {{ jniLibs }}""")
 
     c.copytree("android-project/app/src/main/java/org/libsdl", "{{ raptver }}/prototype/renpyandroid/src/main/java/org/libsdl")
+    c.copytree("android-project/app/src/main/java/org/libsdl", "{{ raptver }}/project/renpyandroid/src/main/java/org/libsdl")

@@ -246,19 +246,27 @@ def build_environment(c):
         c.env("CFLAGS", "{{ CFLAGS }} -DSDL_MAIN_HANDLED")
 
     elif (c.platform == "android") and (c.arch == "arm64_v8a"):
-
-        c.var("crossbin", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-")
+        
+        c.var("ndk_root", "{{ cross }}/android-ndk-r{{ndk_version}}")
+        c.var("ndk_toolchain", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/bin")
+        c.var("crossbin",      "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-")
         c.var("crossclang", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/bin/{{ host_platform }}{{ndk_version_alone}}-")
 
-        c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -pthread")
-        c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3 -pthread")
+        c.var("sysroot", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/sysroot")
+        c.var("sysroot_include", "{{sysroot}}/usr/include")
+        c.var("sysroot_lib", "{{sysroot}}/usr/lib/arm-linux-androideabi/{{ndk_version_alone}}")
+
+        c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -fno-integrated-as")
+        c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3   -fno-integrated-as")
         c.env("CPP", "ccache {{ crossclang }}clang -E")
-        c.env("LD", "ccache {{ crossbin}}ld")
-        c.env("LDSHARED", "ccache {{ crossbin}}ld")
+        c.env("LD", "ccache {{ ndk_toolchain }}/ld ")
+        c.env("LDSHARED", "ccache {{ ndk_toolchain }}/ld ")
         c.env("AR", "ccache {{ crossbin }}ar")
         c.env("RANLIB", "ccache {{ crossbin }}ranlib")
         c.env("STRIP", "ccache  {{ crossbin }}strip")
         c.env("NM", "{{ crossbin}}nm")
+        c.env("CHOST", "{{host_platform}}")
+        c.env("HOSTCC", "{{CC}}")
 
         c.env("CFLAGS", "{{ CFLAGS }} -DSDL_MAIN_HANDLED")
 
@@ -272,15 +280,6 @@ def build_environment(c):
         c.var("sysroot", "{{ cross }}/android-ndk-r{{ndk_version}}/toolchains/llvm/prebuilt/darwin-x86_64/sysroot")
         c.var("sysroot_include", "{{sysroot}}/usr/include")
         c.var("sysroot_lib", "{{sysroot}}/usr/lib/arm-linux-androideabi/{{ndk_version_alone}}")
-
-        #print("NDK ROOT///////////")
-        #print(c.get_var("{{ndk_toolchain}}"))
-        #c.env("ANDROID_NDK_HOME", "{{ndk_toolchain}}")
-        #c.env("PATH", "{{PATH}}:{{ndk_toolchain}}")
-
-
-        #c.env("SYSROOT_INCLUDE", "{{sysroot_include}}")
-        #c.env("SYSROOT_LIB", "{{sysroot_lib}}")
 
         c.env("CC", "ccache {{ crossclang }}clang -fPIC -O3 -fno-integrated-as")
         c.env("CXX", "ccache {{ crossclang }}clang++ -fPIC -O3   -fno-integrated-as")

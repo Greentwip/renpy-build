@@ -65,7 +65,8 @@ JNIEXPORT void JNICALL JAVA_EXPORT_NAME(PythonSDLActivity_nativeSetEnv) (
 
 SDL_Window *window = NULL;
 
-#define LOG(x) __android_log_write(ANDROID_LOG_INFO, "python", (x))
+#define LOG(x) __android_log_write(ANDROID_LOG_INFO, "RenPy", (x))
+#define LOGE(x) __android_log_write(ANDROID_LOG_ERROR, "RenPy", (x))
 
 static PyObject *androidembed_log(PyObject *self, PyObject *args) {
     char *logstr = NULL;
@@ -177,7 +178,56 @@ int SDL_main(int argc, char **argv) {
 
 	IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG);
 
-	window = SDL_CreateWindow("presplash", 0, 0, 0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP| SDL_WINDOW_SHOWN);
+    LOGE("Before creating window");
+
+
+	SDL_DisplayMode mode;
+    SDL_GetDisplayMode(0,0,&mode);
+    int width = mode.w;
+    int height = mode.h;
+
+    LOGE("Display size");
+
+    char width_c [100];
+    char height_c [100];
+
+    sprintf(width_c, "%d", width);
+    sprintf(height_c, "%d", height);
+
+    LOGE(width_c);
+    LOGE(height_c);
+
+    window = SDL_CreateWindow(
+                "presplash",
+                0,
+                0,
+                width,
+                height,
+                SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN
+            );
+
+    SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES );
+
+    LOGE("After creating window");
+
+
+
+    if (!window) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Creating window failed: %s\n", SDL_GetError());
+
+        char* err1 = "Creating window failed: ";
+        char str[1024];
+
+        strcpy(str, err1);
+
+        char* err = SDL_GetError();
+        strcpy(str, err);
+
+        LOGE(str);
+        SDL_ClearError();
+        return -1;
+    }
+
 	surface = SDL_GetWindowSurface(window);
 	pixel = SDL_MapRGB(surface->format, 128, 128, 128);
 
@@ -226,16 +276,25 @@ done:
         SDL_FreeSurface(presplash);
     }
 
-    SDL_UpdateWindowSurface(window);
+    /*SDL_UpdateWindowSurface(window);
     SDL_PumpEvents();
     SDL_UpdateWindowSurface(window);
     SDL_PumpEvents();
     SDL_UpdateWindowSurface(window);
     SDL_PumpEvents();
     SDL_UpdateWindowSurface(window);
-    SDL_PumpEvents();
+    SDL_PumpEvents();*/
 
-    SDL_GL_MakeCurrent(NULL, NULL);
+    SDL_GLContext cur_ctx = SDL_GL_GetCurrentContext();  
+    if (cur_ctx == NULL) 
+    { 
+        cur_ctx = SDL_GL_CreateContext(window); 
+    } 
+
+    
+    SDL_GL_MakeCurrent(window, cur_ctx); 
+
+    //SDL_GL_MakeCurrent(NULL, NULL);
 
 	call_prepare_python();
 

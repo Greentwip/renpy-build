@@ -248,6 +248,9 @@ class Context:
             has_context = True
         
         command = self.expand(command)
+
+        print("///////// DIRECTORY /////////")
+        print(self.cwd)
         renpybuild.run.run(command, self, verbose, quiet, has_context)
 
     def clean(self, d="{{build}}"):

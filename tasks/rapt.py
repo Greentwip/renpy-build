@@ -67,7 +67,6 @@ def copy(c):
     c.copy("{{install}}/lib/libavutil.so", "{{ jniLibs }}/libavutil.so")
 
 
-
 @task(kind="host-python", always=True)
 def android_module(c):
     c.run("""install -d {{ install }}/lib/{{ pythonver }}/site-packages/android""")
