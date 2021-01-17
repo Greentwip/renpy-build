@@ -44,6 +44,8 @@ def build(c):
     --disable-render-metal
     --disable-jack
 {% if c.platform == "android" %}
+    --disable-video-opengles
+    --enable-video-opengles2
     --disable-video-wayland
     --disable-video-x11
     --disable-oss
@@ -59,8 +61,6 @@ def build(c):
 
     config_string = config_string.replace("\n", "")
     c.run(config_string)
-
-    #c.run("""./configure {{ cross_config }} --prefix="{{ install }}"  """)
 
     c.run("""{{ make }}""")
     c.run("""{{ make }} install""")
