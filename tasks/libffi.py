@@ -19,7 +19,7 @@ def build(c):
     c.run("""./autogen.sh""")
     c.run("""autoreconf -vif""")
 
-    c.env("CFLAGS", " -static -DANDROID ")
+    c.env("CFLAGS", " -static -DANDROID -D__ANDROID__")
     c.env("LDFLAGS", " -static ")
 
     c.run("""./configure --disable-builddir --disable-shared --enable-static {{ ffi_cross_config }} --prefix="{{ install }}" """)
