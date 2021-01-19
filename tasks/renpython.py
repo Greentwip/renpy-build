@@ -147,7 +147,7 @@ def link_android(c):
 
     -lGLESv2
     -lOpenSLES
-
+    
     -luuid
     -llzma
     -ljpeg

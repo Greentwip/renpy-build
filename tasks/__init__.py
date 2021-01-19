@@ -42,6 +42,8 @@ from . import zsync
 from . import sayvbs
 from . import angle
 
+#from . import memfd_create
+
 from . import rapt
 
 from . import sdl2
