@@ -58,7 +58,7 @@ def build(c):
     c.env("CFLAGS", "-I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include")
     c.env("LDFLAGS", "-L{{sysroot_lib}} -L{{install}} -L{{install}}/lib ")
     c.env("CFLAGS", "{{CFLAGS}} -DANDROID")
-    c.env("CFLAGS", "{{CFLAGS}} -D__ANDROID__")
+    c.env("CFLAGS", "{{CFLAGS}} ")
     c.env("CFLAGS", "{{ CFLAGS }} -shared")
 
     c.env("LDFLAGS", "{{ CFLAGS }} -shared")
