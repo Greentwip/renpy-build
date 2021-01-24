@@ -492,24 +492,26 @@ def build(iface, directory, commands, launch=False, finished=None):
 
     global RENPY
 
-
-    dir_name = os.path.basename(directory)
-    parent_dir = os.path.abspath(os.path.join(directory, os.pardir))
-    temp_folder = os.path.join(parent_dir, os.path.basename(directory) + ".tmp")
-
-    if os.path.exists(temp_folder):
-        shutil.rmtree(directory)
-        copytree(temp_folder, directory)
-    else:
-        copytree(directory, temp_folder)
-
-    if not os.path.isdir(directory):
-        iface.fail(__("{} is not a directory.").format(directory))
-
     if os.path.isdir(os.path.join(directory, "renpy")):
         RENPY = True
     else:
         RENPY = False
+
+
+    if RENPY:
+        dir_name = os.path.basename(directory)
+        parent_dir = os.path.abspath(os.path.join(directory, os.pardir))
+        temp_folder = os.path.join(parent_dir, os.path.basename(directory) + ".tmp")
+
+        if os.path.exists(temp_folder):
+            shutil.rmtree(directory)
+            copytree(temp_folder, directory)
+        else:
+            copytree(directory, temp_folder)
+
+    if not os.path.isdir(directory):
+        iface.fail(__("{} is not a directory.").format(directory))
+
 
     if RENPY and not os.path.isdir(os.path.join(directory, "game")):
         iface.fail(__("{} does not contain a Ren'Py game.").format(directory))
