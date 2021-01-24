@@ -20,6 +20,9 @@ def unpack(c):
 @task()
 def build(c):
 
+    print("//////////// ARCH ////////")
+    print(c.arch)
+
     if c.arch == "i686":
         c.var("arch", "x86")
     elif c.arch == "x86_64":
@@ -31,11 +34,14 @@ def build(c):
     elif c.arch == "arm64":
         c.var("arch", "aarch64")
     elif c.arch == "armeabi_v7a":
-        c.var("arch", "arm")
+        c.var("arch", "armv7-a")
     elif c.arch == "armv7s":
         c.var("arch", "arm")
     else:
         raise Exception(f"Unknown arch: {c.arch}")
+
+    print("//////////// PLATFORM ////////")
+    print(c.platform)
 
     if c.platform == "linux":
         c.var("os", "linux")
@@ -55,24 +61,14 @@ def build(c):
     c.var("version", version)
     c.chdir("ffmpeg-{{version}}")
 
-    c.env("CFLAGS", "-I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include")
-    c.env("LDFLAGS", "-L{{sysroot_lib}} -L{{install}} -L{{install}}/lib ")
-    c.env("CFLAGS", "{{CFLAGS}} -DANDROID")
-    c.env("CFLAGS", "{{CFLAGS}} ")
-    c.env("CFLAGS", "{{ CFLAGS }} -shared")
-
-    c.env("LDFLAGS", "{{ CFLAGS }} -shared")
+    c.env("CFLAGS", "-DANDROID -shared")
+    c.env("LDFLAGS", "-shared")
 
     configure_string = """
     ./configure
         --prefix="{{ install }}"
-
-        --disable-programs
-        --enable-shared --disable-static
-
         --arch={{ arch }}
         --target-os={{ os }}
-
         --cc="{{ CC }}"
         --cxx="{{ CXX }}"
         --ld="{{ CC }}"
@@ -80,31 +76,24 @@ def build(c):
         --ranlib="{{ RANLIB }}"
         --strip="{{ STRIP }}"
         --nm="{{ NM }}"
-
         --extra-cflags="{{ CFLAGS }}"
         --extra-cxxflags="{{ CFLAGS }}"
         --extra-ldflags="{{ LDFLAGS }}"
         --ranlib="{{ RANLIB }}"
-
         --enable-pic
-        --enable-shared
+        --enable-static
         --disable-all
         --disable-everything
-
         --enable-cross-compile
         --enable-runtime-cpudetect
-
 {% if c.platform == "windows" %}
         --disable-pthreads
         --enable-w32threads
 {% endif %}
-
 {% if c.platform == "ios" and c.arch == "x86_64" %}
         --disable-asm
 {% endif %}
-
         --enable-ffmpeg
-        --enable-ffplay
         --disable-doc
         --enable-avcodec
         --enable-avformat
@@ -112,9 +101,7 @@ def build(c):
         --enable-swscale
         --enable-avfilter
         --enable-avresample
-
         --disable-bzlib
-
         --enable-demuxer=au
         --enable-demuxer=avi
         --enable-demuxer=flac
@@ -128,7 +115,6 @@ def build(c):
         --enable-demuxer=mpegvideo
         --enable-demuxer=ogg
         --enable-demuxer=wav
-
         --enable-decoder=flac
         --enable-decoder=mp2
         --enable-decoder=mp3
@@ -153,22 +139,18 @@ def build(c):
         --enable-decoder=vp3
         --enable-decoder=vp8
         --enable-decoder=vp9
-
         --enable-parser=mpegaudio
         --enable-parser=mpegvideo
         --enable-parser=mpeg4video
         --enable-parser=vp3
         --enable-parser=vp8
         --enable-parser=vp9
-
         --disable-iconv
         --disable-alsa
         --disable-libxcb
         --disable-lzma
         --disable-sndio
         --disable-xlib
-
-
         --disable-amf
         --disable-audiotoolbox
         --disable-cuda-llvm

@@ -24,5 +24,4 @@ export RENPY_DEPS_INSTALL=/usr/local\
 ::/usr/local/opt/bzip2/lib
 
 . $BASE/nightly/python.sh
-. $BASE/nightly/launch.sh
 
