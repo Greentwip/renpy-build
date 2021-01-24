@@ -66,7 +66,7 @@ JNIEXPORT void JNICALL JAVA_EXPORT_NAME(PythonSDLActivity_nativeSetEnv) (
 SDL_Window *window = NULL;
 
 #define LOG(x) __android_log_write(ANDROID_LOG_INFO, "python", (x))
-#define LOGE(x) __android_log_write(ANDROID_LOG_ERROR, "python", (x))
+#define LOGE(x) __android_log_write(ANDROID_LOG_ERROR, "pythonerror", (x))
 
 static PyObject *androidembed_log(PyObject *self, PyObject *args) {
     char *logstr = NULL;
@@ -82,7 +82,7 @@ static PyObject *androidembed_error_log(PyObject *self, PyObject *args) {
     if (!PyArg_ParseTuple(args, "s", &logstr)) {
         return NULL;
     }
-    LOG(logstr);
+    LOGE(logstr);
     Py_RETURN_NONE;
 }
 
@@ -155,7 +155,41 @@ int start_python(void) {
 
     init_librenpy();
 
-    return Py_Main(2, args);
+    char python_zip[2048];
+    snprintf(python_zip, 2048, "%s/python39.zip", private);
+    
+
+    LOGE("INIT");
+    Py_Initialize();
+
+    LOGE("THREADS");
+    PyEval_InitThreads();
+
+    //setenv("PYTHONPATH", python_zip, 1);
+    //Py_SetPath(python_zip);
+
+    char python_command[2048];
+    snprintf(python_command, 2048, "import sys\nsys.path.append(\"%s\")\n", python_zip);
+
+    LOGE("SYS");
+    PyRun_SimpleString(python_command);
+
+    char print_command[2048];
+    snprintf(print_command, 2048, "import androidembed\nandroidembed.error_log(\"%s\")", "sys.path");
+
+    LOGE("PRINT");
+    PyRun_SimpleString(print_command);
+
+    PyEval_ReleaseThread(PyThreadState_Get());
+
+    LOGE("All fine");
+    
+    //int result = Py_Main(2, args);
+
+
+    //return result;
+
+    return 0;
 }
 
 

@@ -711,11 +711,6 @@ syslog syslogmodule.c		# syslog daemon interface
 
 #_dbm _dbmmodule.c 	# dbm(3) may require -lndbm or similar
 
-# Anthony Baxter's gdbm module.  GNU dbm(3) will require -lgdbm:
-
-_gdbm _gdbmmodule.c -I/usr/local/include -L/usr/local/lib  -lc -ldl -lz -lgdbm
-
-
 # Helper module for various ascii-encoders
 binascii binascii.c
 
@@ -797,6 +792,11 @@ _decimal/libmpdec/transpose.c \
 -DUNIVERSAL \
 -Wno-implicit-function-declaration \
 -IModules/_decimal/libmpdec
+
+# Anthony Baxter's gdbm module.  GNU dbm(3) will require -lgdbm:
+
+*disabled*
+_gdbm _gdbmmodule.c -I/usr/local/include -L/usr/local/lib  -lc -ldl -lz -lgdbm
 
 
 {% endif %}

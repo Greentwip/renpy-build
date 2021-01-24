@@ -117,7 +117,7 @@ def build_android(c):
 
     c.env("CONFIG_SITE", "config.site")
     
-    c.env("CFLAGS", "")
+    c.env("CFLAGS", " -g -gdwarf-2 -funwind-tables")
     c.env("CFLAGS", "{{ CFLAGS }} -DXML_POOR_ENTROPY=1 ")
     c.env("CFLAGS", "{{ CFLAGS }} -DUSE_PYEXPAT_CAPI ")
     c.env("CFLAGS", "{{ CFLAGS }} -DHAVE_EXPAT_CONFIG_H")
@@ -153,7 +153,7 @@ def build_android(c):
 
     def build_pass():
 
-        c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --enable-ipv6""")
+        #c.run("""./configure {{ cross_config }} --with-pydebug --disable-shared  --prefix="{{ install }}" --enable-ipv6""")
 
 
         c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
@@ -163,7 +163,7 @@ def build_android(c):
 
         c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
 
-    build_pass() #compiles core python objects
+    #build_pass() #compiles core python objects
     build_pass() #links modules
 
 
