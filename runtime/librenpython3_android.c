@@ -65,8 +65,8 @@ JNIEXPORT void JNICALL JAVA_EXPORT_NAME(PythonSDLActivity_nativeSetEnv) (
 
 SDL_Window *window = NULL;
 
-#define LOG(x) __android_log_write(ANDROID_LOG_INFO, "RenPy", (x))
-#define LOGE(x) __android_log_write(ANDROID_LOG_ERROR, "RenPy", (x))
+#define LOG(x) __android_log_write(ANDROID_LOG_INFO, "python", (x))
+#define LOGE(x) __android_log_write(ANDROID_LOG_ERROR, "python", (x))
 
 static PyObject *androidembed_log(PyObject *self, PyObject *args) {
     char *logstr = NULL;
@@ -97,20 +97,8 @@ static PyMethodDef AndroidEmbedMethods[] = {
     {NULL, NULL, 0, NULL}
 };
 
-
-static struct PyModuleDef renpythonModDef =
-{
-    PyModuleDef_HEAD_INIT,
-    "androidembed", /* name of module */
-    "",          /* module documentation, may be NULL */
-    -1,          /* size of per-interpreter state of the module, or -1 if the module keeps state in global variables. */
-    AndroidEmbedMethods
-};
-
-
 PyMODINIT_FUNC initandroidembed(void) {
-    PyModule_Create(&renpythonModDef);
-    //(void) Py_InitModule("androidembed", AndroidEmbedMethods);
+    (void) Py_InitModule("androidembed", AndroidEmbedMethods);
 }
 
 static struct _inittab inittab[] = {
@@ -144,7 +132,6 @@ int start_python(void) {
 
     init_librenpy();
 
-    LOGE("Py_Main");
     return Py_Main(2, args);
 }
 
@@ -179,56 +166,7 @@ int SDL_main(int argc, char **argv) {
 
 	IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG);
 
-    LOGE("Before creating window");
-
-
-	SDL_DisplayMode mode;
-    SDL_GetDisplayMode(0,0,&mode);
-    int width = mode.w;
-    int height = mode.h;
-
-    LOGE("Display size");
-
-    char width_c [100];
-    char height_c [100];
-
-    sprintf(width_c, "%d", width);
-    sprintf(height_c, "%d", height);
-
-    LOGE(width_c);
-    LOGE(height_c);
-
-    window = SDL_CreateWindow(
-                "presplash",
-                0,
-                0,
-                width,
-                height,
-                SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN
-            );
-
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES );
-
-    LOGE("After creating window");
-
-
-
-    if (!window) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Creating window failed: %s\n", SDL_GetError());
-
-        char* err1 = "Creating window failed: ";
-        char str[1024];
-
-        strcpy(str, err1);
-
-        char* err = SDL_GetError();
-        strcpy(str, err);
-
-        LOGE(str);
-        SDL_ClearError();
-        return -1;
-    }
-
+	window = SDL_CreateWindow("presplash", 0, 0, 0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP| SDL_WINDOW_SHOWN);
 	surface = SDL_GetWindowSurface(window);
 	pixel = SDL_MapRGB(surface->format, 128, 128, 128);
 
@@ -248,57 +186,41 @@ int SDL_main(int argc, char **argv) {
 	Uint8 *pp = (Uint8 *) presplash2->pixels;
 
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
-	pixel = SDL_MapRGB(surface->format, pp[2], pp[1], pp[0]);
+	pixel = SDL_MapRGBA(surface->format, pp[2], pp[1], pp[0], 255);
 #else
-	pixel = SDL_MapRGB(surface->format, pp[0], pp[1], pp[2]);
+	pixel = SDL_MapRGBA(surface->format, pp[0], pp[1], pp[2], 255);
 #endif
 
 	SDL_FreeSurface(presplash2);
 
 done:
 
+    {
+        Uint32 start = SDL_GetTicks();
 
-	while (SDL_WaitEventTimeout(&event, 500)) {
+        while (SDL_GetTicks() < start + 520) {
+            surface = SDL_GetWindowSurface(window);
 
-	    if (event.type == SDL_WINDOWEVENT) {
+            SDL_FillRect(surface, NULL, pixel);
 
-	        if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SHOWN) {
-	            break;
-	        }
-	    }
-	}
+            if (presplash) {
+                pos.x = (surface->w - presplash->w) / 2;
+                pos.y = (surface->h - presplash->h) / 2;
+                SDL_BlitSurface(presplash, NULL, surface, &pos);
+                SDL_UpdateWindowSurface(window);
+            }
 
-    SDL_FillRect(surface, NULL, pixel);
+            SDL_WaitEventTimeout(&event, 10);
+        }
+    }
+
+    SDL_GL_MakeCurrent(NULL, NULL);
 
     if (presplash) {
-        pos.x = (surface->w - presplash->w) / 2;
-        pos.y = (surface->h - presplash->h) / 2;
-        SDL_BlitSurface(presplash, NULL, surface, &pos);
         SDL_FreeSurface(presplash);
     }
 
-    SDL_UpdateWindowSurface(window);
-    SDL_PumpEvents();
-    SDL_UpdateWindowSurface(window);
-    SDL_PumpEvents();
-    SDL_UpdateWindowSurface(window);
-    SDL_PumpEvents();
-    SDL_UpdateWindowSurface(window);
-    SDL_PumpEvents();
-
-    SDL_GLContext cur_ctx = SDL_GL_GetCurrentContext();  
-    if (cur_ctx == NULL) 
-    { 
-        cur_ctx = SDL_GL_CreateContext(window); 
-    } 
-
-    
-    SDL_GL_MakeCurrent(window, cur_ctx); 
-
-    //SDL_GL_MakeCurrent(NULL, NULL);
-
 	call_prepare_python();
 
-    LOGE("Everything fine");
 	return start_python();
 }
