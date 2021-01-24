@@ -6,7 +6,7 @@ def annotate(c):
     c.include("{{ install }}/include/{{ pythonver }}/pygame_sdl2")
 
 
-@task(kind="python", pythons="3", platforms="android", always=True)
+@task(kind="python", pythons="3", always=True)
 def gen_static(c):
 
     c.chdir("{{ pygame_sdl2 }}")
@@ -19,7 +19,7 @@ def gen_static(c):
     c.run("{{ host }}/bin/python3 setup.py generate")
 
 
-@task(kind="python", pythons="3", platforms="android", always=True)
+@task(kind="python", pythons="3", always=True)
 def install(c):
     c.env("PYTHONPATH", "{{host}}/lib/{{pythonver}}/lib-dynload")
 

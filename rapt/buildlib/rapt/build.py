@@ -108,6 +108,25 @@ class PatternList(object):
 # Used by render.
 environment = jinja2.Environment(loader=jinja2.FileSystemLoader(plat.path('')))
 
+def recursive_overwrite(src, dest, ignore=None):
+    if os.path.isdir(src):
+        if not os.path.isdir(dest):
+            os.makedirs(dest)
+        files = os.listdir(src)
+        if ignore is not None:
+            ignored = ignore(src, files)
+        else:
+            ignored = set()
+        for f in files:
+            if f not in ignored:
+                recursive_overwrite(os.path.join(src, f), 
+                                    os.path.join(dest, f), 
+                                    ignore)
+    else:
+        shutil.copyfile(src, dest)
+
+def copytree(from_path, to_path, ignore=None):
+    recursive_overwrite(from_path, to_path, ignore)
 
 def render(always, template, dest, **kwargs):
     """
@@ -303,36 +322,100 @@ def split_renpy(directory):
     into assets.
     """
 
+    dir_name = os.path.basename(directory)
+    parent_dir = os.path.abspath(os.path.join(directory, os.pardir))
+    temp_folder = os.path.join(parent_dir, os.path.basename(directory) + ".tmp")
+
+    '''
+    if os.path.exists(temp_folder):
+        print("SHUTIL //////////")
+        shutil.rmtree(directory)
+        copytree(temp_folder, directory)
+    else:
+        print("NON EXISTENT")
+        print(temp_folder)
+        copytree(directory, temp_folder)
+    '''
+
     private = os.path.join(directory, "private")
     assets = os.path.join(directory, "assets")
 
-    filenames = os.listdir(directory)
+    if not os.path.exists(private):
+        os.mkdir(private)
+    
+    if not os.path.exists(assets):
+        os.mkdir(assets)
+    #os.mkdir(os.path.join(assets, "renpy"))
 
-    os.mkdir(private)
-    os.mkdir(assets)
-    os.mkdir(os.path.join(assets, "renpy"))
+    plat.rename(os.path.join(directory, "renpy"), os.path.join(directory, "renpy.tmp"))
+    copytree(os.path.join(directory, "renpy.tmp"), os.path.join(parent_dir, dir_name))
 
-    plat.rename(os.path.join(directory, "renpy", "common"), os.path.join(assets, "renpy", "common"))
+    shutil.rmtree(os.path.join(directory, "renpy.tmp"))
 
-    for fn in filenames:
-        full_fn = os.path.join(directory, fn)
+    def ignore(dir, files):
 
-        if fn.startswith("android-"):
-            continue
+        rv = [ ]
 
-        if fn.endswith(".py"):
-            plat.rename(full_fn, os.path.join(private, "main.py"))
-            continue
+        for basename in files:
+            fn = os.path.join(dir, basename)
 
-        if fn == "renpy":
-            plat.rename(full_fn, os.path.join(private, fn))
-            continue
+            ignore = False
 
-        if fn == "lib":
-            plat.rename(full_fn, os.path.join(private, fn))
-            continue
+            if fn.startswith("android-"):
+                continue
 
-        plat.rename(full_fn, os.path.join(assets, fn))
+            if ignore:
+                rv.append(basename)
+
+        return rv
+        
+    copytree(directory, os.path.join(parent_dir, os.path.basename(directory) + '.tmp', "assets"), ignore)
+
+    android_json = os.path.join(directory, ".android.json")
+    shutil.copyfile(android_json, os.path.join(parent_dir, os.path.basename(directory) + '.tmp', ".android.json"))
+
+    shutil.rmtree(directory)
+
+    copytree(os.path.join(parent_dir, os.path.basename(directory) + '.tmp'), directory)
+
+    shutil.rmtree(os.path.join(parent_dir, os.path.basename(directory) + '.tmp'))
+
+
+    #plat.rename(os.path.join(directory, "renpy", "common"), os.path.join(assets, "renpy", "common"))
+
+    #filenames = os.listdir(directory)
+    
+
+    #for fn in filenames:
+    #    full_fn = os.path.join(directory, fn)
+
+        
+    #    if fn.startswith(".android-") or fn.startswith("android-"):
+    #        continue
+        
+    #    if fn.startswith("assets"):
+    #        continue
+
+    #    if os.path.isdir(full_fn):
+    #        shutil.rmtree(full_fn)
+    #    else:
+    #        os.remove(full_fn)
+
+        #if fn.endswith(".py"):
+        #    plat.rename(full_fn, os.path.join(private, "main.py"))
+        #    continue
+
+        #if fn == "renpy":
+        #    plat.rename(full_fn, os.path.join(private, fn))
+        #    continue
+
+       # if fn == "lib":
+       #     plat.rename(full_fn, os.path.join(private, fn))
+       #     continue
+    
+        #plat.rename(full_fn, os.path.join(assets, fn))
+    
+    #return None
 
     return private, assets
 
@@ -388,25 +471,6 @@ def copy_project(update_always=False):
     if lp is not None:
         with open(plat.path("project/local.properties"), "w") as f:
             f.write(lp + "\n")
-def recursive_overwrite(src, dest, ignore=None):
-    if os.path.isdir(src):
-        if not os.path.isdir(dest):
-            os.makedirs(dest)
-        files = os.listdir(src)
-        if ignore is not None:
-            ignored = ignore(src, files)
-        else:
-            ignored = set()
-        for f in files:
-            if f not in ignored:
-                recursive_overwrite(os.path.join(src, f), 
-                                    os.path.join(dest, f), 
-                                    ignore)
-    else:
-        shutil.copyfile(src, dest)
-
-def copytree(from_path, to_path):
-    recursive_overwrite(from_path, to_path)
 
 
 def copy_libs():
@@ -427,6 +491,17 @@ def build(iface, directory, commands, launch=False, finished=None):
     # Are we doing a Ren'Py build?
 
     global RENPY
+
+
+    dir_name = os.path.basename(directory)
+    parent_dir = os.path.abspath(os.path.join(directory, os.pardir))
+    temp_folder = os.path.join(parent_dir, os.path.basename(directory) + ".tmp")
+
+    if os.path.exists(temp_folder):
+        shutil.rmtree(directory)
+        copytree(temp_folder, directory)
+    else:
+        copytree(directory, temp_folder)
 
     if not os.path.isdir(directory):
         iface.fail(__("{} is not a directory.").format(directory))
@@ -582,8 +657,8 @@ def build(iface, directory, commands, launch=False, finished=None):
             sdkpath=plat.path("Sdk"),
             )
 
-#    if config.update_icons:
-#        iconmaker.IconMaker(directory, config)
+    if config.update_icons:
+        iconmaker.IconMaker(directory, config)
 
     # Copy the presplash files.
     copy_presplash(directory, "android-presplash", default_presplash)

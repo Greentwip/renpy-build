@@ -144,6 +144,7 @@ int start_python(void) {
 
     init_librenpy();
 
+    LOGE("Py_Main");
     return Py_Main(2, args);
 }
 
@@ -276,14 +277,14 @@ done:
         SDL_FreeSurface(presplash);
     }
 
-    /*SDL_UpdateWindowSurface(window);
-    SDL_PumpEvents();
     SDL_UpdateWindowSurface(window);
     SDL_PumpEvents();
     SDL_UpdateWindowSurface(window);
     SDL_PumpEvents();
     SDL_UpdateWindowSurface(window);
-    SDL_PumpEvents();*/
+    SDL_PumpEvents();
+    SDL_UpdateWindowSurface(window);
+    SDL_PumpEvents();
 
     SDL_GLContext cur_ctx = SDL_GL_GetCurrentContext();  
     if (cur_ctx == NULL) 
@@ -298,5 +299,6 @@ done:
 
 	call_prepare_python();
 
+    LOGE("Everything fine");
 	return start_python();
 }
