@@ -91,14 +91,27 @@ static PyObject *androidembed_close_window(PyObject *self, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+
 static PyMethodDef AndroidEmbedMethods[] = {
 	    {"log", androidembed_log, METH_VARARGS, "Log on android platform."},
 	    {"close_window", androidembed_close_window, METH_VARARGS, "Close the initial window."},
     {NULL, NULL, 0, NULL}
 };
 
+
+static struct PyModuleDef renpythonModDef =
+{
+    PyModuleDef_HEAD_INIT,
+    "androidembed", /* name of module */
+    "",          /* module documentation, may be NULL */
+    -1,          /* size of per-interpreter state of the module, or -1 if the module keeps state in global variables. */
+    AndroidEmbedMethods
+};
+
+
 PyMODINIT_FUNC initandroidembed(void) {
-    (void) Py_InitModule("androidembed", AndroidEmbedMethods);
+    PyModule_Create(&renpythonModDef);
+    //(void) Py_InitModule("androidembed", AndroidEmbedMethods);
 }
 
 static struct _inittab inittab[] = {
