@@ -53,18 +53,18 @@ def copy(c):
     #c.copy("{{ root }}/rapt/keeplist.txt", "{{ raptver }}/keeplist.txt")
     #c.copy("{{ root }}/rapt/update_translations.py", "{{ raptver }}/update_translations.py")
 
-    target = c.get_var("{{jniLibs}}")
+    #target = c.get_var("{{jniLibs}}")
 
-    if not os.path.exists(target):
-        os.makedirs(target)
+    #if not os.path.exists(target):
+    #    os.makedirs(target)
 
-    c.copy("{{install}}/lib/libavfilter.so", "{{ jniLibs }}/libavfilter.so")
-    c.copy("{{install}}/lib/libavformat.so", "{{ jniLibs }}/libavformat.so")
-    c.copy("{{install}}/lib/libavcodec.so", "{{ jniLibs }}/libavcodec.so")
-    c.copy("{{install}}/lib/libavresample.so", "{{ jniLibs }}/libavresample.so")
-    c.copy("{{install}}/lib/libswresample.so", "{{ jniLibs }}/libswresample.so")
-    c.copy("{{install}}/lib/libswscale.so", "{{ jniLibs }}/libswscale.so")
-    c.copy("{{install}}/lib/libavutil.so", "{{ jniLibs }}/libavutil.so")
+    #c.copy("{{install}}/lib/libavfilter.so", "{{ jniLibs }}/libavfilter.so")
+    #c.copy("{{install}}/lib/libavformat.so", "{{ jniLibs }}/libavformat.so")
+    #c.copy("{{install}}/lib/libavcodec.so", "{{ jniLibs }}/libavcodec.so")
+    #c.copy("{{install}}/lib/libavresample.so", "{{ jniLibs }}/libavresample.so")
+    #c.copy("{{install}}/lib/libswresample.so", "{{ jniLibs }}/libswresample.so")
+    #c.copy("{{install}}/lib/libswscale.so", "{{ jniLibs }}/libswscale.so")
+    #c.copy("{{install}}/lib/libavutil.so", "{{ jniLibs }}/libavutil.so")
 
 
 @task(kind="host-python", always=True)

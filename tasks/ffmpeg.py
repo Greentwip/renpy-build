@@ -61,8 +61,8 @@ def build(c):
     c.var("version", version)
     c.chdir("ffmpeg-{{version}}")
 
-    c.env("CFLAGS", "-DANDROID -shared")
-    c.env("LDFLAGS", "-shared")
+    c.env("CFLAGS", "-DANDROID")
+    c.env("LDFLAGS", "")
 
     configure_string = """
     ./configure
