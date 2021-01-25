@@ -166,11 +166,15 @@ int start_python(void) {
     setenv("PYTHONPATH", private, 1);
     setenv("PREFIX", private, 1);
     setenv("EXEC_PREFIX", private, 1);
+    setenv("VPATH", private, 1);
+    setenv("PYTHONPLATLIBDIR", private, 1);
 
     setenv("ANDROID_PATH", private, 1);
     setenv("ANDROID_PYTHONPATH", python_path, 1);
     setenv("ANDROID_PREFIX", private, 1);
     setenv("ANDROID_EXEC_PREFIX", private, 1);
+    setenv("ANDROID_VPATH", private, 1);
+    setenv("ANDROID_PYTHONPLATLIBDIR", private, 1);
 
     //Py_SetPath(private);
 
