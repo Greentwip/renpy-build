@@ -160,10 +160,10 @@ int start_python(void) {
 
 
     char python_path[2048];
-    snprintf(python_path, 2048, "%s;%s/lib", private, private);
+    snprintf(python_path, 2048, "%s:%s/lib", private, private);
 
     setenv("PATH", private, 1);
-    setenv("PYTHONPATH", private, 1);
+    setenv("PYTHONPATH", python_path, 1);
     setenv("PREFIX", private, 1);
     setenv("EXEC_PREFIX", private, 1);
     setenv("VPATH", private, 1);
