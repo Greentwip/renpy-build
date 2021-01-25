@@ -157,7 +157,31 @@ int start_python(void) {
 
     char python_zip[2048];
     snprintf(python_zip, 2048, "%s/python39.zip", private);
-    
+
+
+    char python_path[2048];
+    snprintf(python_path, 2048, "%s;%s/lib", private, private);
+
+    setenv("PATH", private, 1);
+    setenv("PYTHONPATH", private, 1);
+    setenv("PREFIX", private, 1);
+    setenv("EXEC_PREFIX", private, 1);
+
+    setenv("ANDROID_PATH", private, 1);
+    setenv("ANDROID_PYTHONPATH", python_path, 1);
+    setenv("ANDROID_PREFIX", private, 1);
+    setenv("ANDROID_EXEC_PREFIX", private, 1);
+
+    //Py_SetPath(private);
+
+    LOGE("PATH");
+    LOGE(getenv("PATH"));
+    LOGE("PYTHONPATH");
+    LOGE(getenv("PYTHONPATH"));
+    LOGE("PREFIX");
+    LOGE(getenv("PREFIX"));
+    LOGE("EXEC_PREFIX");
+    LOGE(getenv("EXEC_PREFIX"));
 
     LOGE("INIT");
     Py_Initialize();
@@ -165,8 +189,6 @@ int start_python(void) {
     LOGE("THREADS");
     PyEval_InitThreads();
 
-    //setenv("PYTHONPATH", python_zip, 1);
-    //Py_SetPath(python_zip);
 
     char python_command[2048];
     snprintf(python_command, 2048, "import sys\nsys.path.append(\"%s\")\n", python_zip);

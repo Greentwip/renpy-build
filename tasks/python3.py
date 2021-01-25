@@ -153,7 +153,7 @@ def build_android(c):
 
     def build_pass():
 
-        c.run("""./configure {{ cross_config }} --with-pydebug --disable-shared  --prefix="{{ install }}" --enable-ipv6""")
+        #c.run("""./configure {{ cross_config }} --with-pydebug --disable-shared  --prefix="{{ install }}" --enable-ipv6""")
 
 
         c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
