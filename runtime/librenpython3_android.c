@@ -119,16 +119,16 @@ static struct PyModuleDef renpythonModDef =
 };
 
 
-PyMODINIT_FUNC initandroidembed(void) {
-    PyModule_Create(&renpythonModDef);
+PyMODINIT_FUNC PyInit_androidembed(void) {
+    return PyModule_Create(&renpythonModDef);
     //(void) Py_InitModule("androidembed", AndroidEmbedMethods);
 }
 
-static struct _inittab inittab[] = {
-               { "androidembed",  initandroidembed },
+/*static struct _inittab inittab[] = {
+               { "androidembed",  PyInit_androidembed },
                { NULL, NULL },
 };
-
+*/
 /* Python Startup *************************************************************/
 
 int start_python(void) {
@@ -142,6 +142,9 @@ int start_python(void) {
     char python[2048];
     snprintf(python, 2048, "%s/python", private);
 
+    
+    //Py_SetPath(private);
+
     Py_SetProgramName(python);
     Py_SetPythonHome(private);
 
@@ -151,41 +154,50 @@ int start_python(void) {
     Py_IgnoreEnvironmentFlag = 1;
     Py_NoUserSiteDirectory = 1;
 
-    PyImport_ExtendInittab(inittab);
+    /* Add a built-in module, before Py_Initialize */
+    if (PyImport_AppendInittab("androidembed", PyInit_androidembed) == -1) {
+        fprintf(stderr, "Error: could not extend in-built modules table\n");
+        exit(1);
+    }
 
     init_librenpy();
 
     char python_zip[2048];
     snprintf(python_zip, 2048, "%s/python39.zip", private);
 
+    char python_standard_libs[2048];
+    snprintf(python_standard_libs, 2048, "%s/python39", private);
 
-    char python_path[2048];
-    snprintf(python_path, 2048, "%s:%s/lib", private, private);
 
-    setenv("PATH", private, 1);
+    char platlibdir[2048];
+    snprintf(platlibdir, 2048, "%s/lib", private);
+
+
+    /*setenv("PATH", private, 1);
     setenv("PYTHONPATH", python_path, 1);
     setenv("PREFIX", private, 1);
     setenv("EXEC_PREFIX", private, 1);
     setenv("VPATH", private, 1);
     setenv("PYTHONPLATLIBDIR", private, 1);
-
+    */
     setenv("ANDROID_PATH", private, 1);
-    setenv("ANDROID_PYTHONPATH", python_path, 1);
+    setenv("ANDROID_PYTHONPATH", private, 1);
     setenv("ANDROID_PREFIX", private, 1);
     setenv("ANDROID_EXEC_PREFIX", private, 1);
     setenv("ANDROID_VPATH", private, 1);
-    setenv("ANDROID_PYTHONPLATLIBDIR", private, 1);
-
+    setenv("ANDROID_PYTHONPLATLIBDIR", platlibdir, 1);
+    setenv("ANDROID_PYTHONPROGRAMNAME", python, 1);
+    setenv("ANDROID_STANDARDLIBS_PATH", python_standard_libs, 1);
     //Py_SetPath(private);
 
-    LOGE("PATH");
+    /*LOGE("PATH");
     LOGE(getenv("PATH"));
     LOGE("PYTHONPATH");
     LOGE(getenv("PYTHONPATH"));
     LOGE("PREFIX");
     LOGE(getenv("PREFIX"));
     LOGE("EXEC_PREFIX");
-    LOGE(getenv("EXEC_PREFIX"));
+    LOGE(getenv("EXEC_PREFIX"));*/
 
     LOGE("INIT");
     Py_Initialize();

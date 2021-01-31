@@ -10,11 +10,7 @@ class IconMaker(object):
 
         self.config = config
 
-        if not pygame_sdl2.display.get_surface():
-            pygame_sdl2.display.init()
-            pygame_sdl2.display.hint("PYGAME_SDL2_AVOID_GL", "1")
-            pygame_sdl2.display.set_mode((640, 480))
-            pygame_sdl2.event.pump()
+        pygame_sdl2.init()
 
         self.directory = directory
 
