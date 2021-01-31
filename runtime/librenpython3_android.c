@@ -326,14 +326,23 @@ int start_python(void) {
         //LOGE(main_content);
     }
 
+    PyObject* pmodule = PyImport_ImportModule("pygame_sdl2.error");
+    if (!pmodule) {
+        FILELOG("Error: could not import module 'pygame_sdl2.error'\n");
+    } else {
+        FILELOG("Import was succesful");
+    }   
+
     int result = PyRun_SimpleString(main_content);
 
     print_back_trace();
 
     free(main_content);
 
-    //int result = Py_Main(2, args);
+    
 
+    //int result = Py_Main(2, args);
+    
     PyEval_ReleaseThread(PyThreadState_Get());
 
 

@@ -58,6 +58,7 @@ def build(c):
     renpy_build_cflags += """ -I{{install}}/include/fribidi """
     renpy_build_cflags += """ -I{{install}}/include/freetype2 """
     renpy_build_cflags += """ -I{{sysroot_include}} -I{{install}}/include -I{{install}}/include/python3.9 """
+    renpy_build_cflags += """ -DCYTHON_PEP489_MULTI_PHASE_INIT=0 """
 
     c.env("CFLAGS", renpy_build_cflags)
 
