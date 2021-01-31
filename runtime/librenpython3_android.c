@@ -131,6 +131,33 @@ PyMODINIT_FUNC PyInit_androidembed(void) {
 */
 /* Python Startup *************************************************************/
 
+char* load_file(char const* path)
+{
+    char* buffer = 0;
+    long length;
+    FILE * f = fopen (path, "rb"); //was "rb"
+
+    if (f)
+    {
+      fseek (f, 0, SEEK_END);
+      length = ftell (f);
+      fseek (f, 0, SEEK_SET);
+      buffer = (char*)malloc ((length+1)*sizeof(char));
+      if (buffer)
+      {
+        fread (buffer, sizeof(char), length, f);
+      }
+      fclose (f);
+    }
+    buffer[length] = '\0';
+    // for (int i = 0; i < length; i++) {
+    //     printf("buffer[%d] == %c\n", i, buffer[i]);
+    // }
+    //printf("buffer = %s\n", buffer);
+
+    return buffer;
+}
+
 int start_python(void) {
     char *private = getenv("ANDROID_PRIVATE");
 
@@ -172,6 +199,9 @@ int start_python(void) {
     char platlibdir[2048];
     snprintf(platlibdir, 2048, "%s/lib", private);
 
+    char gamedir[2048];
+    snprintf(gamedir, 2048, "%s/game", private);
+
 
     /*setenv("PATH", private, 1);
     setenv("PYTHONPATH", python_path, 1);
@@ -188,6 +218,7 @@ int start_python(void) {
     setenv("ANDROID_PYTHONPLATLIBDIR", platlibdir, 1);
     setenv("ANDROID_PYTHONPROGRAMNAME", python, 1);
     setenv("ANDROID_STANDARDLIBS_PATH", python_standard_libs, 1);
+    setenv("ANDROID_HOST_APPLICATION_PATH", gamedir, 1);
     //Py_SetPath(private);
 
     /*LOGE("PATH");
@@ -218,11 +249,18 @@ int start_python(void) {
     LOGE("PRINT");
     PyRun_SimpleString(print_command);
 
-    PyEval_ReleaseThread(PyThreadState_Get());
 
     LOGE("All fine");
+
+    char* main_content = load_file("game/main.py");
     
-    int result = Py_Main(2, args);
+
+    int result = PyRun_SimpleString(main_content);
+
+    //int result = Py_Main(2, args);
+
+    PyEval_ReleaseThread(PyThreadState_Get());
+
 
 
     return result;
