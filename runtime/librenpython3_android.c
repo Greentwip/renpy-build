@@ -213,7 +213,7 @@ int start_python(void) {
     PyRun_SimpleString(python_command);
 
     char print_command[2048];
-    snprintf(print_command, 2048, "import androidembed\nandroidembed.error_log(\"%s\")", "sys.path");
+    snprintf(print_command, 2048, "import androidembed\nandroidembed.error_log(\"%s\")", "wonderful shit");
 
     LOGE("PRINT");
     PyRun_SimpleString(print_command);
@@ -222,12 +222,12 @@ int start_python(void) {
 
     LOGE("All fine");
     
-    //int result = Py_Main(2, args);
+    int result = Py_Main(2, args);
 
 
-    //return result;
+    return result;
 
-    return 0;
+    //return 0;
 }
 
 
