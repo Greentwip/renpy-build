@@ -133,30 +133,94 @@ PyMODINIT_FUNC PyInit_androidembed(void) {
 
 char* load_file(char const* path)
 {
-    char* buffer = 0;
-    long length;
-    FILE * f = fopen (path, "rb"); //was "rb"
+    char *buffer = NULL;
+    size_t size = 0;
 
-    if (f)
-    {
-      fseek (f, 0, SEEK_END);
-      length = ftell (f);
-      fseek (f, 0, SEEK_SET);
-      buffer = (char*)malloc ((length+1)*sizeof(char));
-      if (buffer)
-      {
-        fread (buffer, sizeof(char), length, f);
-      }
-      fclose (f);
-    }
-    buffer[length] = '\0';
-    // for (int i = 0; i < length; i++) {
-    //     printf("buffer[%d] == %c\n", i, buffer[i]);
-    // }
-    //printf("buffer = %s\n", buffer);
+    /* Open your_file in read-only mode */
+    FILE *fp = fopen(path, "r");
+
+    /* Get the buffer size */
+    fseek(fp, 0, SEEK_END); /* Go to end of file */
+    size = ftell(fp); /* How many bytes did we pass ? */
+
+    /* Set position of stream to the beginning */
+    rewind(fp);
+
+    /* Allocate the buffer (no need to initialize it with calloc) */
+    buffer = malloc((size + 1) * sizeof(*buffer)); /* size + 1 byte for the \0 */
+
+    /* Read the file into the buffer */
+    fread(buffer, size, 1, fp); /* Read 1 chunk of size bytes from fp into buffer */
+
+    /* NULL-terminate the buffer */
+    buffer[size] = '\0';
 
     return buffer;
 }
+
+void FILELOG(char* string){
+    char msg2[200000];
+    char* mblog = "\nMBLOG: ";
+
+    for(int i = 0; i<200000; ++i){
+        msg2[i] = '\0';
+    }
+
+    /*size_t max_bytes_string = strlen(string);
+    size_t max_bytes_text = strlen(mblog);*/
+    snprintf(msg2, 200000, "%s%s", mblog, string); 
+    FILE *file = fopen("renpy.log", "a"); 
+    fprintf(file, "%s", msg2); 
+    fclose(file); 
+}
+
+void print_back_trace(){
+    PyObject* err = PyErr_Occurred();
+    char* error_description = NULL;
+    char* full_backtrace = NULL;
+    if (err != NULL) {
+        PyObject *ptype, *pvalue, *ptraceback;
+        PyObject *pystr, *module_name, *pyth_module, *pyth_func;
+        char *str;
+
+        PyErr_Fetch(&ptype, &pvalue, &ptraceback);
+        pystr = PyObject_Str(pvalue);
+        str = PyUnicode_AsUTF8(pystr);
+        error_description = strdup(str);
+
+        /* See if we can get a full traceback */
+        module_name = PyUnicode_FromString("traceback");
+        pyth_module = PyImport_Import(module_name);
+        Py_DECREF(module_name);
+
+        if (pyth_module == NULL) {
+            full_backtrace = NULL;
+            return;
+        }
+
+        pyth_func = PyObject_GetAttrString(pyth_module, "format_exception");
+        if (pyth_func && PyCallable_Check(pyth_func)) {
+            PyObject *pyth_val;
+
+            pyth_val = PyObject_CallFunctionObjArgs(pyth_func, ptype, pvalue, ptraceback, NULL);
+
+            pystr = PyObject_Str(pyth_val);
+            str = PyUnicode_AsUTF8(pystr);
+            full_backtrace = strdup(str);
+            Py_DECREF(pyth_val);
+        }
+    }
+
+    if(error_description != NULL){
+        FILELOG(error_description);
+    }
+
+    if(full_backtrace != NULL){
+        FILELOG(full_backtrace);
+    }
+
+}
+
 
 int start_python(void) {
     char *private = getenv("ANDROID_PRIVATE");
@@ -241,21 +305,32 @@ int start_python(void) {
     snprintf(python_command, 2048, "import sys\nsys.path.append(\"%s\")\n", python_zip);
 
     LOGE("SYS");
-    PyRun_SimpleString(python_command);
+    //PyRun_SimpleString(python_command);
 
     char print_command[2048];
     snprintf(print_command, 2048, "import androidembed\nandroidembed.error_log(\"%s\")", "wonderful shit");
 
     LOGE("PRINT");
-    PyRun_SimpleString(print_command);
+    //PyRun_SimpleString(print_command);
 
 
     LOGE("All fine");
 
     char* main_content = load_file("game/main.py");
     
+    LOGE("File content");
+
+    if(main_content){
+        LOGE("File content seems ok");
+        //FILELOG(main_content);
+        //LOGE(main_content);
+    }
 
     int result = PyRun_SimpleString(main_content);
+
+    print_back_trace();
+
+    free(main_content);
 
     //int result = Py_Main(2, args);
 
