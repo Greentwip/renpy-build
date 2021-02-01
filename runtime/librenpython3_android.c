@@ -251,8 +251,6 @@ int start_python(void) {
         exit(1);
     }
 
-    init_librenpy();
-
     char python_zip[2048];
     snprintf(python_zip, 2048, "%s/python39.zip", private);
 
@@ -296,6 +294,9 @@ int start_python(void) {
 
     LOGE("INIT");
     Py_Initialize();
+
+    init_librenpy();
+
 
     LOGE("THREADS");
     PyEval_InitThreads();

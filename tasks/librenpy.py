@@ -29,7 +29,9 @@ def gen_static(c):
     c.env("PY_OVERRIDEN_CROSS_BUILD", "True")
 
     c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
-    c.env("_PYTHON_SYSCONFIGDATA_NAME", "_sysconfigdata__linux_")
+    #c.env("_PYTHON_SYSCONFIGDATA_NAME", "_sysconfigdata__linux_")
+
+    c.env("CFLAGS", "{{CFLAGS}} -DCYTHON_PEP489_MULTI_PHASE_INIT=0") #disable multi-phase init
 
     #c.env("RENPY_EXTRA_LIB_DIRS", "-l{{sysroot_lib}} -l{{install}} -l{{install}}/lib")
     #c.env("PY_DISTUTILS_EXT_LIB_DIRS", "-l{{sysroot_lib}} -l{{install}} -l{{install}}/lib")
@@ -58,7 +60,7 @@ def build(c):
     renpy_build_cflags += """ -I{{install}}/include/fribidi """
     renpy_build_cflags += """ -I{{install}}/include/freetype2 """
     renpy_build_cflags += """ -I{{sysroot_include}} -I{{install}}/include -I{{install}}/include/python3.9 """
-    renpy_build_cflags += """ -DCYTHON_PEP489_MULTI_PHASE_INIT=0 """
+    #renpy_build_cflags += """ -DCYTHON_PEP489_MULTI_PHASE_INIT=0 """
 
     c.env("CFLAGS", renpy_build_cflags)
 

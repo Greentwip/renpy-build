@@ -117,7 +117,7 @@ def build_android(c):
 
     c.env("CONFIG_SITE", "config.site")
     
-    c.env("CFLAGS", " -g -gdwarf-2 -funwind-tables")
+    #c.env("CFLAGS", " -g -gdwarf-2 -funwind-tables")
     c.env("CFLAGS", "{{ CFLAGS }} -DXML_POOR_ENTROPY=1 ")
     c.env("CFLAGS", "{{ CFLAGS }} -DUSE_PYEXPAT_CAPI ")
     c.env("CFLAGS", "{{ CFLAGS }} -DHAVE_EXPAT_CONFIG_H")
@@ -151,9 +151,23 @@ def build_android(c):
 
     c.env("READELF", "arm-linux-androideabi-readelf")
 
-    def build_pass():
+    def build_pass_1():
 
         #c.run("""./configure {{ cross_config }} --with-pydebug --disable-shared  --prefix="{{ install }}" --enable-ipv6""")
+        c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --enable-ipv6""")
+
+
+        c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
+
+        c.run("""{{ make }}""")
+        #c.run("""{{ make }} install""")    
+
+        #c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
+
+    def build_pass_2():
+
+        #c.run("""./configure {{ cross_config }} --with-pydebug --disable-shared  --prefix="{{ install }}" --enable-ipv6""")
+        #c.run("""./configure {{ cross_config }} --disable-shared  --prefix="{{ install }}" --enable-ipv6""")
 
 
         c.generate("{{ source }}/Python-{{ version }}-Setup.local", "Modules/Setup")
@@ -161,10 +175,10 @@ def build_android(c):
         c.run("""{{ make }}""")
         c.run("""{{ make }} install""")    
 
-        c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")
+        c.copy("{{ host }}/bin/python3", "{{ install }}/bin/hostpython3")        
 
-    #build_pass() #compiles core python objects
-    build_pass() #links modules
+    build_pass_1() #compiles core python objects
+    build_pass_2() #links modules
 
 
 @task(kind="python", pythons="3", platforms="windows")

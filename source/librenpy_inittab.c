@@ -29,9 +29,11 @@ void init_librenpy(void) {
     TABLOG("inittab initializaiton");
 
 {% for name in modules %}
-    if(PyImport_AppendInittab("{{ name }}", PyInit_{{ name.replace(".", "_") }}) == -1){
+    /*if(PyImport_AppendInittab("{{ name }}", PyInit_{{ name.replace(".", "_") }} == -1){
         TABLOG("Error: could not extend in-built modules table");
-    }
+    }*/
+
+    PyInit_{{ name.replace(".", "_") }}();
 {% endfor %}
 
     TABLOG("inittab end");

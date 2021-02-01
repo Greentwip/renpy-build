@@ -15,7 +15,7 @@ def gen_static(c):
     c.env("CFLAGS", "{{CFLAGS}} -I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include ")
     c.env("LDFLAGS", "{{LDFLAGS}} -L{{sysroot_lib}} -L{{install}} -L{{install}}/lib ")
     c.env("PYGAME_SDL2_STATIC", "True")
-    os.environ['_PYTHON_SYSCONFIGDATA_NAME'] = '_sysconfigdata__linux_'
+    #os.environ['_PYTHON_SYSCONFIGDATA_NAME'] = '_sysconfigdata__linux_'
 
     c.env("CFLAGS", "{{CFLAGS}} -DCYTHON_PEP489_MULTI_PHASE_INIT=0") #disable multi-phase init
 

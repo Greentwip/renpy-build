@@ -133,7 +133,7 @@ def link_android(c):
     -o librenpython.so
     librenpython_android.o
 
-    -l{{ pythonver }}d
+    -l{{ pythonver }}
     -lrenpy
 
     -lavformat
