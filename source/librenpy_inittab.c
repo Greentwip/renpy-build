@@ -20,22 +20,18 @@ void TABLOG(char* string){
     fclose(file); 
 }
 
-
 {% for name in modules %}
 PyMODINIT_FUNC PyInit_{{ name.replace(".", "_") }} (void);
 {% endfor %}
 
-void init_librenpy(void) {
-    TABLOG("inittab initializaiton");
-
+static struct _inittab inittab[]  = {
 {% for name in modules %}
-    /*if(PyImport_AppendInittab("{{ name }}", PyInit_{{ name.replace(".", "_") }} == -1){
-        TABLOG("Error: could not extend in-built modules table");
-    }*/
-
-    PyInit_{{ name.replace(".", "_") }}();
+    { "{{ name }}", PyInit_{{ name.replace(".", "_") }} },
 {% endfor %}
+    { NULL, NULL },
+};
 
-    TABLOG("inittab end");
-    //PyImport_ExtendInittab(inittab);
+void init_librenpy(void) {
+    PyImport_ExtendInittab(inittab);
 }
+

@@ -15,26 +15,15 @@ def gen_static(c):
 
     c.chdir("{{ renpy }}/module")
 
-    c.env("RENPY_ANDROID", "True")
-    c.env("PYGAME_SDL2_ANDROID", "True")
 
     c.env("CFLAGS", "-I{{sysroot_include}} -I{{sysroot_lib}} -I{{install}}/include -shared")
     c.env("LDFLAGS", "-L{{sysroot_lib}} -L{{install}} -L{{install}}/lib -shared")
 
-    c.env("{{CFLAGS}}", "{{CFLAGS}} -DANDROID")
+    c.env("RENPY_ANDROID", "True")
+    c.env("PYGAME_SDL2_ANDROID", "True")
 
-    #c.env("PYGAME_SDL2_CFLAGS", "{{CFLAGS}}")
-    #c.env("PYGAME_SDL2_LDFLAGS", "{{LDFLAGS}}")
-
-    c.env("PY_OVERRIDEN_CROSS_BUILD", "True")
-
-    c.env("PYTHONPATH", "{{host}}/lib/python{{python_version}}/lib-dynload")
-    #c.env("_PYTHON_SYSCONFIGDATA_NAME", "_sysconfigdata__linux_")
-
-    c.env("CFLAGS", "{{CFLAGS}} -DCYTHON_PEP489_MULTI_PHASE_INIT=0") #disable multi-phase init
-
-    #c.env("RENPY_EXTRA_LIB_DIRS", "-l{{sysroot_lib}} -l{{install}} -l{{install}}/lib")
-    #c.env("PY_DISTUTILS_EXT_LIB_DIRS", "-l{{sysroot_lib}} -l{{install}} -l{{install}}/lib")
+    c.env("PYTHONPATH", "{{host}}/lib/{{pythonver}}/lib-dynload")
+    c.env("_PYTHON_SYSCONFIGDATA_NAME", "_sysconfigdata__linux_")
 
     c.env("RENPY_STATIC", "True")
 
@@ -151,10 +140,6 @@ def build(c):
         c.run("{{ CC }} {{ CFLAGS }} -c {{ src }} -o {{ object }}", verbose=True)
 
     for source in static_objects:
-
-        
-        
-
         source_path = c.renpy / "module" / source
         fribidi_include = c.renpy / "module" / "fribidi-src"
         build_path_object = c.renpy / "module" / "build" / "static_temp" / source
