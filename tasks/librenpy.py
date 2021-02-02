@@ -24,6 +24,7 @@ def gen_static(c):
 
     c.env("PYTHONPATH", "{{host}}/lib/{{pythonver}}/lib-dynload")
     c.env("_PYTHON_SYSCONFIGDATA_NAME", "_sysconfigdata__linux_")
+    os.environ["_PYTHON_SYSCONFIGDATA_NAME"] = "_sysconfigdata__linux_"
 
     c.env("RENPY_STATIC", "True")
 
