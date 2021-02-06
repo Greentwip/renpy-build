@@ -169,22 +169,6 @@ void FILELOG(char* string){
     /*size_t max_bytes_string = strlen(string);
     size_t max_bytes_text = strlen(mblog);*/
     snprintf(msg2, 200000, "%s%s", mblog, string); 
-    FILE *file = fopen("renpy.log", "w"); 
-    fprintf(file, "%s", msg2); 
-    fclose(file); 
-}
-
-void FILELOGSTACK(char* string){
-    char msg2[200000];
-    char* mblog = "\nMBLOG: ";
-
-    for(int i = 0; i<200000; ++i){
-        msg2[i] = '\0';
-    }
-
-    /*size_t max_bytes_string = strlen(string);
-    size_t max_bytes_text = strlen(mblog);*/
-    snprintf(msg2, 200000, "%s%s", mblog, string); 
     FILE *file = fopen("renpy.log", "a"); 
     fprintf(file, "%s", msg2); 
     fclose(file); 
@@ -228,11 +212,11 @@ void print_back_trace(){
     }
 
     if(error_description != NULL){
-        FILELOGSTACK(error_description);
+        FILELOG(error_description);
     }
 
     if(full_backtrace != NULL){
-        FILELOGSTACK(full_backtrace);
+        FILELOG(full_backtrace);
     }
 
 }
@@ -267,15 +251,13 @@ int start_python(void) {
         exit(1);
     }
 
+    init_librenpy();
+
     char python_zip[2048];
     snprintf(python_zip, 2048, "%s/python39.zip", private);
 
     char python_standard_libs[2048];
     snprintf(python_standard_libs, 2048, "%s/python39", private);
-
-
-    char python_prefix_path[2048];
-    snprintf(python_prefix_path, 2048, "%s/lib/python3.9", private);
 
 
     char platlibdir[2048];
@@ -285,16 +267,16 @@ int start_python(void) {
     snprintf(gamedir, 2048, "%s/game", private);
 
 
-    /*setenv("PATH", private, 1);
-    setenv("PYTHONPATH", python_path, 1);
+    setenv("PATH", private, 1);
+    setenv("PYTHONPATH", private, 1);
     setenv("PREFIX", private, 1);
     setenv("EXEC_PREFIX", private, 1);
     setenv("VPATH", private, 1);
     setenv("PYTHONPLATLIBDIR", private, 1);
-    */
+    
     setenv("ANDROID_PATH", private, 1);
     setenv("ANDROID_PYTHONPATH", private, 1);
-    setenv("ANDROID_PREFIX", python_prefix_path, 1);
+    setenv("ANDROID_PREFIX", private, 1);
     setenv("ANDROID_EXEC_PREFIX", private, 1);
     setenv("ANDROID_VPATH", private, 1);
     setenv("ANDROID_PYTHONPLATLIBDIR", platlibdir, 1);
@@ -313,14 +295,10 @@ int start_python(void) {
     LOGE(getenv("EXEC_PREFIX"));*/
 
     LOGE("INIT");
-
-    init_librenpy();
-
     Py_Initialize();
 
-
-/*    LOGE("THREADS");
-    PyEval_InitThreads();
+    LOGE("THREADS");
+    //PyEval_InitThreads();
 
 
     char python_command[2048];
@@ -348,9 +326,9 @@ int start_python(void) {
         //LOGE(main_content);
     }
 
-    PyObject* pmodule = PyImport_ImportModule("pygame_sdl2");
+    PyObject* pmodule = PyImport_ImportModule("pygame_sdl2.error");
     if (!pmodule) {
-        FILELOG("Error: could not import module 'pygame_sdl2'\n");
+        FILELOG("Error: could not import module 'pygame_sdl2.error'\n");
     } else {
         FILELOG("Import was succesful");
     }   
@@ -365,13 +343,13 @@ int start_python(void) {
 
     //int result = Py_Main(2, args);
     
-    PyEval_ReleaseThread(PyThreadState_Get());
+    //PyEval_ReleaseThread(PyThreadState_Get());
 
 
 
     return result;
-*/
-    return 0;
+
+    //return 0;
 }
 
 
